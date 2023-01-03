@@ -1,25 +1,39 @@
-import logo from './logo.svg';
 import './App.css';
+import Register from './userManagment/Register';
+import Login from './userManagment/Login';
+import Home from './Home';
+import Games from './Games';
+
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
+import { isLoggedIn } from './userManagment/authorization';
+import { useState } from 'react';
+import Levels from './Levels';
+
 
 function App() {
+
+  const [isLogged, setIsLogged] = useState(isLoggedIn());
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      <div className="App">
+        <BrowserRouter>
+        {console.log(isLogged)}
+            {!isLogged && 
+              <Routes>
+              <Route path='/' element={<Home/>}></Route>    
+              <Route path="/login" element={<Login setIsLogged={setIsLogged}/>}></Route>
+              <Route path='/register'element={<Register setIsLogged={setIsLogged}/>}></Route>
+            </Routes>
+            }
+            {isLogged && 
+              <Routes>
+               <Route path='/' element={<Games setIsLogged= {setIsLogged}/>}></Route>
+               <Route path='/levels' element={<Levels/>}></Route>
+              </Routes>
+            }
+        </BrowserRouter>  
+      </div>
+    );
 }
 
 export default App;
