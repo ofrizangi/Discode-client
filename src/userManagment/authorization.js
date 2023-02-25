@@ -1,4 +1,6 @@
 import jwt_decode from "jwt-decode";
+import {setGame} from '../mainPage/GameProvider'
+import {setLevel} from '../levelsPage/LevelProvider'
 
 const createTokenProvider = () => {
 
@@ -29,6 +31,8 @@ const createTokenProvider = () => {
         // when you have refresh_token use it here
         if(isExpired(_token)){
             setToken(null)
+            setGame(null)
+            setLevel(null)
             return null
         }
         return _token  

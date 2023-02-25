@@ -2,12 +2,13 @@ import './App.css';
 import Register from './userManagment/Register';
 import Login from './userManagment/Login';
 import Home from './Home';
-import Games from './Games';
+import Games from './mainPage/Games';
+import Levels from './levelsPage/Levels';
+import GamePage from './gamePage/GamePage'
 
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import { isLoggedIn } from './userManagment/authorization';
 import { useState } from 'react';
-import Levels from './Levels';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
               <Routes>
                <Route path='/' element={<Games setIsLogged= {setIsLogged}/>}></Route>
                <Route path='/levels' element={<Levels/>}></Route>
+               <Route path='/game' element={<GamePage/>}></Route>
               </Routes>
             }
         </BrowserRouter>  
