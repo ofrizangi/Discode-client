@@ -5,11 +5,10 @@ import Home from './Home';
 import Games from './mainPage/Games';
 import Levels from './levelsPage/Levels';
 import GamePage from './gamePage/GamePage'
-
+import ForumPage from './forumPage/ForumPage'
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import { isLoggedIn } from './userManagment/authorization';
 import { useState } from 'react';
-
 
 function App() {
 
@@ -31,6 +30,8 @@ function App() {
                <Route path='/' element={<Games setIsLogged= {setIsLogged}/>}></Route>
                <Route path='/levels' element={<Levels/>}></Route>
                <Route path='/game' element={<GamePage/>}></Route>
+               <Route path='/forum' element={<ForumPage/>}></Route>
+
               </Routes>
             }
         </BrowserRouter>  

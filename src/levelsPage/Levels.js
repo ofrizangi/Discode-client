@@ -5,9 +5,14 @@ import LevelClosedButton from './LevelClosedButton';
 import LevelOpenButton from './LevelOpenButton';
 import {getToken} from '../userManagment/authorization'
 
+import { useNavigate } from 'react-router-dom'
+
 function Levels(props) {
 
     const [levels, setLevels] = useState([])
+    const navigate = useNavigate();
+
+
 
     useEffect(() => {
         async function get_all_game_levels(){
@@ -24,6 +29,9 @@ function Levels(props) {
         get_all_game_levels()
     }, []);
 
+    function goto_fourm(event){
+        navigate('/forum')
+    }
     return (
         <div>
             <h1> Welcome to {getGame()} game levels page </h1>
@@ -31,6 +39,7 @@ function Levels(props) {
                     return level.locked ? <LevelClosedButton key={level.level_number} level={level}/>: <LevelOpenButton key={level.level_number} level={level}/>
                 })
             }
+            <button className="btn btn-primary" onClick={goto_fourm}> go to Fourm</button>
         </div>
       );
   }
