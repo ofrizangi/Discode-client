@@ -1,13 +1,9 @@
-import * as Constants from '../constants';
 
 import { useState, useEffect } from 'react';
+import { get_game_level_data } from './gamesAPI';
 
-import { getLevel } from '../levelsPage/LevelProvider';
-import { getToken } from '../userManagment/authorization';
-import { getGame } from '../mainPage/GameProvider';
-import BlockList from './blockList/BlockList';
-import BlockBoard from './blockBoard/BlockBoard';
 import GameBoard from './gameBoard/GameBoard';
+import BlockPage from './blocksPage/BlocksPage';
 
 
 function GamePage(props) {
@@ -16,32 +12,24 @@ function GamePage(props) {
     const [game, setGame] = useState(null)
 
     useEffect(() => {
-        async function get_game_level_data(){
-            const requestOptions = {
-                method: 'GET',
-                headers: { 'Authorization': 'Bearer ' + getToken() },
-            };
-            const response = await fetch(`${Constants.SERVER_API}/${getGame()}/levels/getOne/${getLevel()}`, requestOptions)
-            if (response.ok) {
-                const my_game = await response.json();
-                await setGame(my_game[0])
-            }
+        async function set_game(){
+            const my_game = await get_game_level_data()
+            setGame(my_game)
         }
-        get_game_level_data()
+        set_game()
     }, []);
 
-
+    
     return (
         <div>
+            {console.log(game)}
             <h1> Game page </h1>
             { game !== null &&
-            <div className="row d-none d-md-flex">
-                <div className="col-2"> <BlockList/> </div>
-                <div className="col-4"> <BlockBoard solution={game.solution}/> </div>
-                <div className="col-6"> <GameBoard game={game} setGame={setGame}/> </div>
-            </div>
+                <div className="row d-none d-md-flex">
+                    <div className='col-4'> <BlockPage solution={game.solution} ></BlockPage> </div>
+                    <div className="col-8"> <GameBoard game={game} setGame={setGame}/> </div>
+                </div>
             }
-
         </div>
       );
 }
