@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import {getToken} from './userManagment/authorization'
-
+import React from 'react';
 
 function Home() {
 

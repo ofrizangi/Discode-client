@@ -5,6 +5,7 @@ import * as Constants from '../constants';
 
 import {getToken } from '../userManagment/authorization';
 
+import React from 'react';
 
 
 function NewText(props) {

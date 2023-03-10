@@ -5,6 +5,7 @@ import { setGame } from "./GameProvider";
 import { setLevel } from "../levelsPage/LevelProvider";
 import { useState, useEffect } from 'react';
 import GameButton from './GameButton'
+import React from 'react';
 
 function Games(props) {
 

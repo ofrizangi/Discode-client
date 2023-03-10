@@ -4,6 +4,7 @@ import { getGame } from "../mainPage/GameProvider";
 import LevelClosedButton from './LevelClosedButton';
 import LevelOpenButton from './LevelOpenButton';
 import {getToken} from '../userManagment/authorization'
+import React from 'react';
 
 import { useNavigate } from 'react-router-dom'
 

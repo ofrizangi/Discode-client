@@ -1,5 +1,6 @@
 import './levels.css'
 import key from '../images/closed_lock.png'
+import React from 'react';
 
 function LevelClosedButton(props) {
     return (

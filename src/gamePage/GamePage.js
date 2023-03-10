@@ -5,6 +5,7 @@ import { get_game_level_data } from './gamesAPI';
 import GameBoard from './gameBoard/GameBoard';
 import BlockPage from './blocksPage/BlocksPage';
 
+import React from 'react';
 
 function GamePage(props) {
 

@@ -1,5 +1,4 @@
-// import { useNavigate } from 'react-router-dom'
-// import { setGame } from "./GameProvider";
+import React from 'react';
 
 function Question(props) {
 

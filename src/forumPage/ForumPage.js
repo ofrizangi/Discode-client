@@ -6,6 +6,7 @@ import {useState, useEffect } from 'react';
 import {getToken } from '../userManagment/authorization';
 import Question from './Question'
 import NewText from "./NewText";
+import React from 'react';
 
 function Forum(props) {
 

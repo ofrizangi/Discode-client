@@ -2,6 +2,7 @@ import './levels.css'
 import key from '../images/open_lock.png'
 import {setLevel} from '../levelsPage/LevelProvider'
 import { useNavigate } from 'react-router-dom'
+import React from 'react';
 
 function LevelOpenButton(props) {
 

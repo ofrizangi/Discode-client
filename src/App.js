@@ -9,6 +9,7 @@ import ForumPage from './forumPage/ForumPage'
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import { isLoggedIn } from './userManagment/authorization';
 import { useState } from 'react';
+import React from 'react';
 
 function App() {
 
