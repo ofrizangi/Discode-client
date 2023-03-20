@@ -13,3 +13,17 @@
     background-color: lightgray;
     height: 100%;
 }
+
+.clickable-board {
+    border-style: solid;
+}
+
+.block {
+    padding-left: 10pt;
+}
+
+/* .mini-board {
+    background-color: rgb(229, 229, 237);
+    height: 100%;
+    padding-left: 5pt;
+} */

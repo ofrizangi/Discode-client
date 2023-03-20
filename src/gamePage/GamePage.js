@@ -23,12 +23,11 @@ function GamePage(props) {
     
     return (
         <div>
-            {console.log(game)}
             <h1> Game page </h1>
             { game !== null &&
                 <div className="row d-none d-md-flex">
-                    <div className='col-4'> <BlockPage solution={game.solution} ></BlockPage> </div>
-                    <div className="col-8"> <GameBoard game={game} setGame={setGame}/> </div>
+                    <div className='col-5'> <BlockPage solution={game.solution} max_number_of_rows={game.max_number_of_rows} ></BlockPage> </div>
+                    <div className="col-7"> <GameBoard game={game} setGame={setGame}/> </div>
                 </div>
             }
         </div>

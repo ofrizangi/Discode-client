@@ -6,17 +6,26 @@ import BlockRow from './BlockRow';
 
 function BlockBoard(props) {
 
+    // solution is only indeces
     const solution = props.solution
 
+    function get_solution(){
+        var my_solution = []
+        for(let i=0;i<solution.length; i++){
+            my_solution[i] = props.commands.find(command => command._id === solution[i])
+        }
+        return my_solution
+    }
+
+
     return (
-        <div className="board">
-            {console.log("current solution", solution)}
-                <p>Block Board</p>
-                <Droppable droppableId={Constants.DROPPABLE_BOARD_ID}>
+        <div className="board clickable-board">
+            {console.log("current solution", solution, get_solution())}
+                <Droppable droppableId={Constants.DROPPABLE_BOARD_ID + props.row_id} >
                     {(provided, snapshot) => (
                         <div  ref={provided.innerRef} {...provided.droppableProps}>
-                            {solution.map((row, index) => (
-                                <BlockRow key={index} row={row} index={index} id={index}> </BlockRow>
+                            {get_solution().map((row, index) => (
+                                <BlockRow key={index} row={row} index={index} id={props.id} setDroppableBlock={props.setDroppableBlock} droppableBlock = {props.droppableBlock} commands={props.commands} setCommands={props.setCommands}> </BlockRow>
                             ))}
                             {provided.placeholder}
                         </div>)}

@@ -5,6 +5,8 @@ import { getLevel } from '../../levelsPage/LevelProvider';
 import { getToken } from '../../userManagment/authorization';
 import { getGame } from '../../mainPage/GameProvider';
 
+import {get_game_level_data} from '../gamesAPI';
+
 function BlockBoard(props) {
 
     async function sloved_game() {
@@ -14,7 +16,7 @@ function BlockBoard(props) {
         };
         const response = await fetch(`${Constants.SERVER_API}/${getGame()}/levels/solve/${getLevel()}`, requestOptions)
         if(response.ok){
-            const my_game = await response.json();
+            const my_game = await get_game_level_data() //getting the data from here so it would do populate
             await props.setGame(my_game)
         }
     }

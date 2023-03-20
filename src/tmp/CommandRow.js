@@ -29,3 +29,21 @@
 
 // }
 // export default CommandRow;
+
+
+
+
+
+
+    // function dragStartHandler(draggable_block){
+    //     if(draggable_block.source.droppableId.includes(Constants.DROPPABLE_LIST_ID)){
+    //         console.log("num" ,commands.length ,props.max_number_of_rows  )
+    //         if(commands.length >= props.max_number_of_rows) {
+    //             alert("to many blocks")
+    //             console.log("startttttttttttttttttttt", draggable_block)
+    //             return false
+    //         }
+    //     }
+    //     return true
+    // }
+      
