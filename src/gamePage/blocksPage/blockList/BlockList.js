@@ -3,6 +3,7 @@ import {Droppable } from 'react-beautiful-dnd';
 
 
 import Block from './Block';
+import React from 'react';
 
 
 function BlockList(props) {

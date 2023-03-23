@@ -1,6 +1,7 @@
 import * as Constants from '../../../constants';
 
 import { Draggable } from 'react-beautiful-dnd';
+import React from 'react';
 
 import { getConstArgument, getDescriptionList, getArgumentIndex } from '../arguments/argumentsProvider';
 

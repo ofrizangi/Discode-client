@@ -9,6 +9,7 @@ import { get_game_blocks, swap_command_api, post_command, delete_command_api, po
     delete_inner_command_api, swap_inner_command_api, get_level_commands } from '../gamesAPI';
 
 import { DragDropContext } from 'react-beautiful-dnd';
+import React from 'react';
 
 function BlocksPage(props) {
 

@@ -2,6 +2,7 @@ import * as Constants from '../../../constants';
 import './blockBoard.css'
 import { Droppable } from 'react-beautiful-dnd';
 import BlockRow from './BlockRow';
+import React from 'react';
 
 
 function BlockBoard(props) {

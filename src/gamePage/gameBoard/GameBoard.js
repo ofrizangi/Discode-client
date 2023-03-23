@@ -4,6 +4,9 @@ import * as Constants from '../../constants';
 import { getLevel } from '../../levelsPage/LevelProvider';
 import { getToken } from '../../userManagment/authorization';
 import { getGame } from '../../mainPage/GameProvider';
+import DancePlayer from './DancePlayer';
+
+import React from 'react';
 
 import {get_game_level_data} from '../gamesAPI';
 
@@ -38,6 +41,8 @@ function BlockBoard(props) {
             <p> Game Board </p>
             {props.game !== null && !props.game.solved && <button className='btn btn-success' onClick={sloved_game}> Solve me!</button>}
             {props.game !== null && props.game.solved && <button className='btn btn-danger' onClick={restart_game}> Restart level</button>}
+            <DancePlayer/>
+
         </div>
     );
 }

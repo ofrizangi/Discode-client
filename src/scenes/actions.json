@@ -1,0 +1,13 @@
+[
+{ "action":"littleJump", "Duration":5000, "dirction": "horizontal" ,  "velocity":-160 },
+{ "action":"helfTurn", "Duration":5000, "dirction": "vertical",  "velocity":-160 },
+{ "action":"bigJump", "Duration":5000, "dirction": null,  "velocity":0 },
+{ "action":"helfTurnWithHands", "Duration":5000, "dirction":null ,  "velocity":0 },
+{ "action":"bendingDownToRight", "Duration":5000, "dirction":null ,  "velocity":0 },
+{ "action":"bendingDownToLeft", "Duration":5000, "dirction":null ,  "velocity":0 },
+{ "action":"bendingDownToRightAndLeft", "Duration":5000, "dirction":null ,  "velocity":0 },
+{ "action":"handsToRight", "Duration":5000, "dirction":"horizontal" ,  "velocity":160 },
+{ "action":"handsToLeft", "Duration":5000, "dirction":"horizontal" ,  "velocity":-160 },
+{ "action":"spinOnOnHand", "Duration":5000, "dirction":null ,  "velocity":0 }
+
+]
