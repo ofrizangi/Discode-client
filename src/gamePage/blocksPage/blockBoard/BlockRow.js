@@ -5,7 +5,6 @@ import BlockBoardConst from './BlockBoardConst';
 
 import { getArgument, getDescriptionList, getArgumentIndex } from '../arguments/argumentsProvider';
 
-import React from 'react';
 
 function BlockRow(props) {
 

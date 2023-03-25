@@ -10,24 +10,28 @@ import React from 'react';
 function GamePage(props) {
 
     // contains the data of this specific game level
-    const [game, setGame] = useState(null)
+    const [gameLevel, setGameLevel] = useState(null)
 
     useEffect(() => {
         async function set_game(){
-            const my_game = await get_game_level_data()
-            setGame(my_game)
+            const my_level = await get_game_level_data()
+            setGameLevel(my_level)
         }
         set_game()
     }, []);
+
+    useEffect(() => {
+        console.log("yay game changed", gameLevel)
+    }, [gameLevel]);
 
     
     return (
         <div>
             <h1> Game page </h1>
-            { game !== null &&
+            { gameLevel !== null &&
                 <div className="row d-none d-md-flex">
-                    <div className='col-5'> <BlockPage solution={game.solution} max_number_of_rows={game.max_number_of_rows} ></BlockPage> </div>
-                    <div className="col-7"> <GameBoard game={game} setGame={setGame}/> </div>
+                    <div className='col-5'> <BlockPage gameLevel={gameLevel}></BlockPage> </div>
+                    <div className="col-7"> <GameBoard game={gameLevel} setGame={setGameLevel}/> </div>
                 </div>
             }
         </div>

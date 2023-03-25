@@ -1,50 +1,62 @@
 
+
 import * as Constants from '../../constants';
 
-import { getLevel } from '../../levelsPage/LevelProvider';
-import { getToken } from '../../userManagment/authorization';
-import { getGame } from '../../mainPage/GameProvider';
+import { translate_blocks } from '../CodeCreator';
 import DancePlayer from './DancePlayer';
 
-import React from 'react';
+import {React, useState} from 'react';
 
-import {get_game_level_data} from '../gamesAPI';
+import {sloved_game, restart_game} from '../gamesAPI';
 
-function BlockBoard(props) {
+import CodeModal from '../../alerts/CodeModal'
+import CompilationError from '../../alerts/CompilationError';
 
-    async function sloved_game() {
-        const requestOptions = {
-            method: 'PATCH',
-            headers: { 'Authorization': 'Bearer ' + getToken() },
-        };
-        const response = await fetch(`${Constants.SERVER_API}/${getGame()}/levels/solve/${getLevel()}`, requestOptions)
-        if(response.ok){
-            const my_game = await get_game_level_data() //getting the data from here so it would do populate
-            await props.setGame(my_game)
+function GameBoard(props) {
+
+
+    const [modalOpen, setModelOpen] = useState(false)
+    const [compilationOpen, setCompilationOpen] = useState(false)
+
+    const [text, setText] = useState("")
+
+    async function solve() {
+        const my_game = await sloved_game()
+        await props.setGame(my_game)
+    }
+
+
+    async function get_code(){
+        const code = await translate_blocks()
+        setText(code)
+        if(code.includes(Constants.COMPILATION_ERROR)){
+            alert(code)
+        }
+        else {
+            setModelOpen(true)
+            console.log(code)
+            if(!code.includes(Constants.COMPILATION_ERROR)){
+                await solve()
+            }
         }
     }
 
-    async function restart_game() {
-        const requestOptions = {
-            method: 'PATCH',
-            headers: { 'Authorization': 'Bearer ' + getToken() },
-        };
-        const response = await fetch(`${Constants.SERVER_API}/${getGame()}/levels/restart/${getLevel()}`, requestOptions)
-        if(response.ok){
-            const my_game = await response.json();
-            await props.setGame(my_game)
-        }
+    async function restart() {
+        const my_game = await restart_game()
+        await props.setGame(my_game)
     }
 
     return (
         <div>
             <p> Game Board </p>
-            {props.game !== null && !props.game.solved && <button className='btn btn-success' onClick={sloved_game}> Solve me!</button>}
-            {props.game !== null && props.game.solved && <button className='btn btn-danger' onClick={restart_game}> Restart level</button>}
-            <DancePlayer/>
+            <DancePlayer/>            
+            {props.game !== null && <button className='btn btn-success' onClick={get_code}> Run game</button>}
+            {props.game !== null && <button className='btn btn-danger' onClick={restart}> Restart level</button>}
+            {modalOpen && <CodeModal text={text} modalOpen={modalOpen} setModalOpen={setModelOpen} />}
+            {compilationOpen && <CompilationError text={text}/>}
 
         </div>
     );
 }
 
-export default BlockBoard;
+export default GameBoard;

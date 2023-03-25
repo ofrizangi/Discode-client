@@ -12,20 +12,27 @@ function SelectArgument(props) {
     const setCommands = props.setCommands
     const command_index = commands.findIndex(value => value._id === row._id)
 
-
     const [selected, setSelected] = useState(row.arguments[index])
 
     useEffect(() => {
         setSelected(commands[command_index].arguments[index])
     }, [commands, command_index, index]);
 
+
     function set_argument(event){
         setSelected(event.target.value)
         // const command_index = commands.findIndex(value => value._id === row._id)
         commands[command_index].arguments[index] = event.target.value
         setCommands(commands)
-        
-        post_argument(row._id, index, event.target.value )
+
+        if(row._id === null){
+            setTimeout(() => {
+                post_argument(row._id, index, event.target.value)
+              }, 1000);
+        }
+        else {
+            post_argument(row._id, index, event.target.value)
+        }
     }
 
     return (

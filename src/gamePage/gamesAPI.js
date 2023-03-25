@@ -30,6 +30,32 @@ const gamesAPI = () => {
         }
     }
 
+    async function sloved_game() {
+        const requestOptions = {
+            method: 'PATCH',
+            headers: { 'Authorization': 'Bearer ' + getToken() },
+        };
+        const response = await fetch(`${Constants.SERVER_API}/${getGame()}/levels/solve/${getLevel()}`, requestOptions)
+        if(response.ok){
+            return await get_game_level_data() //getting the data from here so it would do populate
+        }
+    }
+
+    async function restart_game() {
+        const requestOptions = {
+            method: 'PATCH',
+            headers: { 'Authorization': 'Bearer ' + getToken() },
+        };
+        const response = await fetch(`${Constants.SERVER_API}/${getGame()}/levels/restart/${getLevel()}`, requestOptions)
+        if(response.ok){
+            return await response.json();
+        }
+    }
+
+
+    /*
+    currently unrelevent because a change in implementation
+
     async function get_game_blocks(){
         const requestOptions = {
             method: 'GET',
@@ -40,6 +66,7 @@ const gamesAPI = () => {
             return await response.json();
         }
     }
+    */
 
     async function post_command(block, dest_index){
         const requestOptions = {
@@ -103,18 +130,20 @@ const gamesAPI = () => {
 
     return {
         get_game_level_data,
-        get_game_blocks,
         swap_command_api,
         post_command,
         delete_command_api,
         post_inner_command,
         delete_inner_command_api,
         swap_inner_command_api,
-        get_level_commands
+        get_level_commands,
+        sloved_game,
+        restart_game
     };
 
 
 }
 
 
-export const {get_game_level_data, get_game_blocks, swap_command_api, post_command, delete_command_api, post_inner_command, delete_inner_command_api, swap_inner_command_api, get_level_commands} = gamesAPI();
+export const {get_game_level_data, swap_command_api, post_command, delete_command_api, post_inner_command, delete_inner_command_api,
+            swap_inner_command_api, get_level_commands, sloved_game, restart_game} = gamesAPI();
