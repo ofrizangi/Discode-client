@@ -1,11 +1,12 @@
 import Phaser from 'phaser'
 import actions from './actions.json';
 import { getToken } from "../userManagment/authorization";
-
+import {getActionsList} from './writeActions';
 
 const PLAYER_KEY = 'player'
 const BACKGROUND_KEY = 'background'
 const LINE = "line"
+const LINE_A = "line2"
 
    
 export default class GameScene extends Phaser.Scene
@@ -26,6 +27,7 @@ export default class GameScene extends Phaser.Scene
 		this.load.image(BACKGROUND_KEY, 'assets/textures/background-dance-robot.png')
 
 		this.load.image(LINE, 'assets/textures/line.png')
+		this.load.image(LINE_A, 'assets/textures/line_a.png')
 
 		this.load.spritesheet(PLAYER_KEY, 'assets/animations/player.png',{
 			frameWidth: 110,
@@ -45,34 +47,47 @@ export default class GameScene extends Phaser.Scene
 		
 		this.physics.add.collider(this.player, line)
 
-		this.runGame()
+		this.time_actions = new Map([
+			['jump with hand', 800],
+			['jump without hand', 800],
+			["swing hands left", 600],
+			['swing hands right', 600],
+			['turn right 45', 1500],
+			['turn left 45', 1500],
+			['turn left 180', 1500],
+			['turn right 180', 1500],
+			['turn right 360', 1500],
+			['cartwheel', 1500],
+			['stomp to left', 800],
+			['stomp to right', 800],
+			['wiggle left', 300],
+			[ 'wiggle right', 300],
+			['shrink', 800],
+			['slide left', 600],
+			['slide right', 600],
+			])
+		this.getActions()
+		//this.runGame()
 	}
 	
 	createLine()
 	{
 		const lines = this.physics.add.staticGroup()
-        // setScale - ground is 400*32, we need 800*64 - we need this platform to span the full width of our game.
-        // refreshBody - The call to refreshBody() is required because we have scaled a static physics body, so we have to tell the physics world about the changes we made.
-		lines.create(300, 340, LINE).refreshBody()
 
-		// platforms.create(600, 400, GROUND_KEY).
-		// platforms.create(50, 400, GROUND_KEY)
-		// platforms.create(750, 220, GROUND_KEY)
+
+		lines.create(300, 340, LINE)
+		lines.create(110, 250, LINE_A)
+		lines.create(490, 250, LINE_A)
+
         return lines
 	}
 
-    // createLine(){
-	// 	const line = this.add.sprite(300, 340, LINE)
-	// 	this.physics.add.existing(line, true)
-      
-	// 	return line
-	// }
+
 
 	createPlayer()
 	{
 		
         const player = this.physics.add.sprite(300, 240, PLAYER_KEY)
-		player.setBounce(0.2)
 
         // the player won't be able to run outside of this area - according configrition
 	    player.setCollideWorldBounds(true)
@@ -80,157 +95,161 @@ export default class GameScene extends Phaser.Scene
 
 		this.anims.create({
 			key: 'stop',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 62, end: 62}),
-			frameRate: 10,
-			repeat: -1
+			frames: [ { key: PLAYER_KEY, frame: 0 } ],
+			frameRate: 20
 		})
 
 		this.anims.create({
-			key: 'littleJump',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 0, end: 7}),
-			frameRate: 10,
-			repeat: -1
-		})
-		this.anims.create({
-			key: 'helfTurn',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 8, end: 15}),
-			frameRate: 10,
-			repeat: -1
-		})
-
-		this.anims.create({
-			key: 'bigJump',
+			key: 'jump with hand',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 16, end: 23}),
-			frameRate: 10,
-			repeat: -1
-		})
-
-		this.anims.create({
-			key: 'helfTurnWithHands',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 24, end: 31}),
-			frameRate: 10,
-			repeat: -1
+			duration: 800,
+			repeat: 0,
 		})
 		this.anims.create({
-			key: 'bendingDownToRight',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 32, end: 34}),
-			frameRate: 5,
-			repeat: -1
+			key: 'jump without hand',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [ 16, 17,20, 21,22,23 ] }),
+			duration: 800,
+			repeat: 0
 		})
 		this.anims.create({
-			key: 'bendingDownToLeft',
+			key: 'swing hands left',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 35, end: 38}),
-			frameRate: 5,
-			repeat: -1
-		})
-		this.anims.create({
-			key: 'bendingDownToRightAndLeft',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 32, end: 39}),
-			frameRate: 5,
-			repeat: -1
-		})
-		this.anims.create({
-			key: 'handsToRight',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 40, end: 43}),
-			frameRate: 5,
-			repeat: -1
-		})
-		this.anims.create({
-			key: 'handsToLeft',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 44, end: 47}),
-			frameRate: 5,
-			repeat: -1
-		})
-		this.anims.create({
-			key: 'handsToLeftAndRight',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 40, end: 47}),
-			frameRate: 5,
-			repeat: -1
-		})
-		this.anims.create({
-			key: 'spinOnOnHand',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 48, end: 55}),
-			frameRate: 5,
-			repeat: -1
-		})
-		this.anims.create({
-			key: 'handAndFootToLeft',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 56, end: 58}),
-			frameRate: 5,
-			repeat: -1
-		})
-		this.anims.create({
-			key: 'handAndFootToRight',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 60, end: 62}),
-			frameRate: 5,
-			repeat: -1
-		})
-		this.anims.create({
-			key: 'handAndFootToRightAndLeft',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 56, end: 63}),
-			frameRate: 5,
-			repeat: -1
-		})
-		this.anims.create({
-			key: 'turnToLeft',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 64, end: 71}),
-			frameRate: 5,
-			repeat: -1
-		})
-		this.anims.create({
-			key: 'turnToRight',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 71, end: 64}),
-			frameRate: 5,
-			repeat: -1
-		})
-		this.anims.create({
-			key: 'roundWithFunnyFace',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 72, end: 79}),
-			frameRate: 5,
-			repeat: -1
-		})
-		this.anims.create({
-			key: 'noIdea',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 80, end: 87}),
-			frameRate: 5,
-			repeat: -1
-		})
+			duration: 600,
+			repeat: 0
 
+		})
+		this.anims.create({
+			key: 'swing hands hight',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [32,33,34,38] }),
+			duration: 600,
+			repeat: 0
+
+		})
+		this.anims.create({
+			key: 'turn right 45',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [ 8,9,10,11,10,9,8] }),
+			duration: 1500,
+			repeat: 0
+		})
+		this.anims.create({
+			key: 'turn left 45',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, {frames: [ 12,13,14,15,14,13,12]}),
+			duration: 1500,
+			repeat: 0
+		})
+		
+		this.anims.create({
+			key: 'turn left 180',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [71, 64,65,66,67,66,65,64,71] }),
+			duration: 1500,
+			repeat: 0
+		})
+		this.anims.create({
+			key: 'turn right 180',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [ 71,70,69,68,67,68,69,70,71] }),
+			duration: 1500,
+			repeat: 0
+		})
+		this.anims.create({
+			key: 'turn right 360',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [ 71,70,69,68,67,66,65,64,71]}),
+			duration: 1500,
+			repeat: 0
+		})
+		this.anims.create({
+			key: 'turn left 360',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 64, end: 71}),
+			duration: 1500,
+			repeat: 0
+		})
+		this.anims.create({
+			key: 'cartwheel',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 48, end: 55}),
+			duration: 1500,
+			repeat: 1
+		})
+		this.anims.create({
+			key: 'stomp to left',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 56, end: 58}),
+			duration: 800,
+			repeat: 2
+		})
+		this.anims.create({
+			key: 'stomp to right',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 60, end: 62}),
+			duration: 800,
+			repeat: 2
+		})
+		this.anims.create({
+			key: 'wiggle left',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 72, end: 73}),
+			duration: 300,
+			repeat: 2
+		})
+		this.anims.create({
+			key: 'wiggle right',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 76, end: 77}),
+			duration: 300,
+			repeat: 2
+		})
+		this.anims.create({
+			key: 'shrink',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 80, end: 87}),
+			duration: 800,
+			repeat: 0
+		})
+		this.anims.create({
+			key: 'slide left',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 40, end: 43}),
+			duration: 600,
+			repeat: 0
+		})
+		this.anims.create({
+			key: 'slide right',
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 44, end: 47}),
+			duration: 600,
+			repeat: 0
+		})
         return player
 	}
 
 
-	newAction(action, time, dirction, velocity){
+	newAction(action, time){
 		setTimeout(() => {
-			this.player.setVelocityX(0)
-			this.player.setVelocityY(0)
-			if(dirction === "horizontal"){
-				this.player.setVelocityX(velocity)
-			} else if (dirction === "vertical"){
-				this.player.setVelocityY(velocity)
+			if(action === "slide left"){
+				this.player.setVelocityX(40)
 			}
-			console.log(this.player.body.velocity)
+			else if(action === "slide right" ){
+				this.player.setVelocityX(-40)
+			}
+			else{
+				this.player.setVelocityX(0)
+			}
+			// console.log(this.player.body.velocity)
 			this.player.anims.play(action, true)
 
-			console.log(time);
+			// console.log(time);
 		  }, time);
 	}   
+ 
+	runGame(actionsList){
 
-	runGame(){
 
 		var duration = 0
-		for (var action  of actions) {
-			this.newAction(action.action, duration, action.dirction, action.velocity)
-			duration = duration + action.Duration
+		for (var action  of actionsList) {
+			this.newAction(action, duration)
+			console.log(this.time_actions.get(action))
+			duration = duration + this.time_actions.get(action)
 	   }
+	    this.hitBomb(this.player, duration )
 
-	   this.hitBomb(this.player,duration )
 
-
-	}
+	}	
 
     update()
 	{
+		//this.player.anims.play("jumpWithHand", true)
+
 		// console.log(this.player.body.velocity)
 	}
    
@@ -241,23 +260,29 @@ export default class GameScene extends Phaser.Scene
         
 		setTimeout(() => {
 			this.physics.pause()
-			// player.setTint(0xff0000)
+			this.paused = true;
+
+			player.setTint(0xff0000)
 			player.anims.play('stop')
 			console.log(time);
+			
 
 		  }, time);
 	}
 
 	async getActions(){
-		const requestOptions = {
-			method: 'GET',
-			headers: { 'Authorization': 'Bearer ' + getToken() },
-		};
+		// const requestOptions = {
+		// 	method: 'GET',
+		// 	headers: { 'Authorization': 'Bearer ' + getToken() },
+		// };
 		// const response = await fetch(`${Constants.SERVER_API}/games/getAll`, requestOptions)
 		// if (response.ok){
 		// 	return await response.json();
 		// }
+
+		//this.runGame(getActionsList())
+		this.runGame(actions)
+
 	}
 	
-    
 }
