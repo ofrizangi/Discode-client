@@ -20,10 +20,6 @@ function GamePage(props) {
         set_game()
     }, []);
 
-    useEffect(() => {
-        console.log("yay game changed", gameLevel)
-    }, [gameLevel]);
-
     
     return (
         <div>

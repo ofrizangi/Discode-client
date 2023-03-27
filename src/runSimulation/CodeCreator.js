@@ -1,4 +1,4 @@
-import {get_level_commands, get_game_level_data} from './gamesAPI'
+import {get_level_commands, get_game_level_data} from '../gamePage/gamesAPI'
 import { DancerGenerator } from '../codeGenerators/dancerGenerator'
 import { getGame } from '../mainPage/GameProvider'
 
@@ -25,16 +25,7 @@ const CodeCreator = () => {
     }
 
 
-    function check_runtime_errors(code){
-        try {
-            eval(code)
-        }
-        catch(e){
-            if(e.message === "iteration is not defined"){
-                console.log("Compilation error - if iteration must be inside repeat block")
-            }
-        }
-    }
+
 
 
     function check_compilation_errors(commands){

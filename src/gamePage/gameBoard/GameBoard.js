@@ -2,23 +2,22 @@
 
 import * as Constants from '../../constants';
 
-import { translate_blocks } from '../CodeCreator';
-import DancePlayer from './DancePlayer';
-
-import {React, useState} from 'react';
+import { translate_blocks } from '../../runSimulation/CodeCreator';
+import DancePlayer from './games/DancePlayer';
+import {React,useState} from 'react';
 
 import {sloved_game, restart_game} from '../gamesAPI';
 
-import CodeModal from '../../alerts/CodeModal'
-import CompilationError from '../../alerts/CompilationError';
+import CompilationErrorMessage from '../../alerts/CompilationErrorMessage';
+import {runCode} from '../../runSimulation/codeRun';
+
 
 function GameBoard(props) {
 
 
-    const [modalOpen, setModelOpen] = useState(false)
     const [compilationOpen, setCompilationOpen] = useState(false)
-
     const [text, setText] = useState("")
+
 
     async function solve() {
         const my_game = await sloved_game()
@@ -33,8 +32,8 @@ function GameBoard(props) {
             alert(code)
         }
         else {
-            setModelOpen(true)
-            console.log(code)
+            runCode(code)
+            
             if(!code.includes(Constants.COMPILATION_ERROR)){
                 await solve()
             }
@@ -47,13 +46,13 @@ function GameBoard(props) {
     }
 
     return (
-        <div>
+        <div id="gameBoard">
             <p> Game Board </p>
             <DancePlayer/>            
             {props.game !== null && <button className='btn btn-success' onClick={get_code}> Run game</button>}
             {props.game !== null && <button className='btn btn-danger' onClick={restart}> Restart level</button>}
-            {modalOpen && <CodeModal text={text} modalOpen={modalOpen} setModalOpen={setModelOpen} />}
-            {compilationOpen && <CompilationError text={text}/>}
+            <div id="model"></div>
+            {compilationOpen && <CompilationErrorMessage text={text}/>}
 
         </div>
     );

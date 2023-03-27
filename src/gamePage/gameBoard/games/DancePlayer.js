@@ -1,10 +1,12 @@
 import React from 'react';
 import Phaser from 'phaser';
 
-import DancePlayerScene from '../../scenes/DancePlayerScene';
+import DancePlayerScene from '../../../scenes/dancePlayer/DancePlayerScene';
+// import setGame from '../../runSimulation/codeRun'
 
+const {setGame} =  require('../../../runSimulation/codeRun')
 
-function DancePlayer() {
+function DancePlayer(props) {
 
     const config = {
         type: Phaser.AUTO,
@@ -30,6 +32,9 @@ function DancePlayer() {
             return;
           }
           phaserGameRef.current = new Phaser.Game(config);
+          // phaserGameRef.current.scene.pause('game-scene')
+          setGame(phaserGameRef.current.scene)
+
           return () => {
             phaserGameRef.current.destroy(true);
             phaserGameRef.current = null;
@@ -40,6 +45,10 @@ function DancePlayer() {
 
 
       const game = usePhaserGame(config)
+      // const game = new Phaser.Game(config);
+      // game.scene.add('DancePlayerScene', DancePlayerScene, true);
+      // setGame(game.scene)
+      
 
     
     return (

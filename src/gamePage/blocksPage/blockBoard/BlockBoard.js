@@ -21,7 +21,7 @@ function BlockBoard(props) {
 
     return (
         <div className="board clickable-board">
-            {console.log("current solution", solution, get_solution())}
+            {/* {console.log("current solution", solution, get_solution())} */}
                 <Droppable droppableId={Constants.DROPPABLE_BOARD_ID + props.row_id} >
                     {(provided, snapshot) => (
                         <div  ref={provided.innerRef} {...provided.droppableProps}>

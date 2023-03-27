@@ -10,6 +10,7 @@
     "bootstrap-icons": "^1.10.3",
     "framer-motion": "^10.9.1",
     "jwt-decode": "^3.1.2",
+    "phaser": "^3.54.0",
     "phaser3-project-template": "^1.0.9",
     "pixi.js": "^7.1.4",
     "prop-types": "^15.8.1",

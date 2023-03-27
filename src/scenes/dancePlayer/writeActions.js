@@ -1,13 +1,14 @@
+// import ActiveDancerPlayerSence from './ActiveDancerPlayerSence'
 
 const doActions = () => {
 
   var actionsList = []
-
+  // var game;
   const writeActions = function() {
     let actionName = arguments[0];
     // console.log(arguments.callee.name )
     for (const string of arguments[1]) {
-      actionName +=string
+      actionName = actionName + " " + string
     }
     actionsList.push(actionName)
     // console.log(arguments.length)
@@ -27,12 +28,7 @@ const doActions = () => {
   const getActionsList = function(){return actionsList }
   const restartList = function(){actionsList = []}
 
-  // jump("whithHand", "by45");
-  // cartwheel()
-  // slide("right")
-  // console.log(actionsList)
-  // restartList()
-  // console.log(actionsList)
+
 
   return {
   jump,
@@ -48,4 +44,4 @@ const doActions = () => {
   };
 
 }
-export const {jump,swing,cartwheel,stomp,wiggle,shrink,slide,turn, getActionsList, restartList} = doActions();
+module.exports = doActions();

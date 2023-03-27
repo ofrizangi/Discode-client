@@ -9,3 +9,4 @@
 5. npm install pixi.js
 6. npm install react-beautiful-dnd
 7. npm install phaser3-project-template
+8. npm install react react-dom

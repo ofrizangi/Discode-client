@@ -34,7 +34,7 @@ const createArgumentProvider = () => {
 
     function getArgumentIndex (index , description_list){
         const partitial_arr = description_list.slice(0, index)
-        console.log(partitial_arr)
+        // console.log(partitial_arr)
         const filter_arr = partitial_arr.filter(value => value === Constants.ARGUMENTS_IDENTIFIER)
         return filter_arr.length
 

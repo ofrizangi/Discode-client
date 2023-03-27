@@ -2,7 +2,7 @@ import { Modal } from "bootstrap";
 import { useState } from "react";
 
 
-function CompilationError(props) {
+function CompilationErrorMessage(props) {
 
     return (
         <div className="alert alert-danger" role="alert">
@@ -12,4 +12,4 @@ function CompilationError(props) {
 
 }
 
-export default CompilationError;
+export default CompilationErrorMessage;

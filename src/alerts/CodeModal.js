@@ -1,8 +1,8 @@
 
-import React from "react";
 import Modal from "react-bootstrap/Modal";
 import ModalDialog from "react-bootstrap/ModalDialog";
 import Draggable from "react-draggable";
+import React from 'react';
 
 import './alerts.css'
 
@@ -18,11 +18,21 @@ class DraggableModalDialog extends React.Component {
 
 class CodeModal extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: true
+    };
+  }
+
   render() {
+
     return (
       <Modal
-        show={this.props.modalOpen}
-        onHide={() => this.props.setModalOpen(false)}
+        show={this.state.open}
+        onHide={() => this.setState({
+          open: false
+        })}
         dialogAs={DraggableModalDialog}
       >
         <Modal.Header closeButton className="grab">

@@ -1,7 +1,5 @@
 import Phaser from 'phaser'
-import actions from './actions.json';
-import { getToken } from "../userManagment/authorization";
-import {getActionsList} from './writeActions';
+
 
 const PLAYER_KEY = 'player'
 const BACKGROUND_KEY = 'background'
@@ -16,7 +14,7 @@ export default class GameScene extends Phaser.Scene
 		super('game-scene')
         this.player = undefined
         this.gameOver = false
-		// this.action = this.getActions()
+		
 
 	}
 
@@ -33,7 +31,6 @@ export default class GameScene extends Phaser.Scene
 			frameWidth: 110,
 			frameHeight: 128			
 			})
-        // this.load.spritesheet(PLAYER_KEY, 'assets/animations/brawler48x48.png', { frameWidth: 48, frameHeight: 48 });
 	}
 
     create()
@@ -46,12 +43,11 @@ export default class GameScene extends Phaser.Scene
         this.player = this.createPlayer()
 		
 		this.physics.add.collider(this.player, line)
-
 		this.time_actions = new Map([
-			['jump with hand', 800],
-			['jump without hand', 800],
-			["swing hands left", 600],
-			['swing hands right', 600],
+			['jump with hands', 800],
+			['jump without hands', 800],
+			["swing left", 600],
+			['swing right', 600],
 			['turn right 45', 1500],
 			['turn left 45', 1500],
 			['turn left 180', 1500],
@@ -60,16 +56,35 @@ export default class GameScene extends Phaser.Scene
 			['cartwheel', 1500],
 			['stomp to left', 800],
 			['stomp to right', 800],
-			['wiggle left', 300],
-			[ 'wiggle right', 300],
+			['wiggle left', 500],
+			[ 'wiggle right', 500],
 			['shrink', 800],
 			['slide left', 600],
 			['slide right', 600],
 			])
-		this.getActions()
-		//this.runGame()
+
+		this.input.on('pointerup', function (pointer) {
+
+            this.scene.start('ActiveDancerPlayerSence', {list:["aaa"]});
+
+        }, this);
+
+		this.events.on('pause', function (data) {
+			console.log(data)
+            console.log('Scene A paused');
+        })
+
+		this.events.on('resume', (scene, data) => {
+			console.log(data)
+            console.log('Scene A resumed');
+			this.runGame(data.list)
+			this.function  = data.function
+
+		});
+		this.scene.pause();
 	}
 	
+
 	createLine()
 	{
 		const lines = this.physics.add.staticGroup()
@@ -100,26 +115,26 @@ export default class GameScene extends Phaser.Scene
 		})
 
 		this.anims.create({
-			key: 'jump with hand',
+			key: 'jump with hands',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 16, end: 23}),
 			duration: 800,
 			repeat: 0,
 		})
 		this.anims.create({
-			key: 'jump without hand',
+			key: 'jump without hands',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [ 16, 17,20, 21,22,23 ] }),
 			duration: 800,
 			repeat: 0
 		})
 		this.anims.create({
-			key: 'swing hands left',
+			key: 'swing left',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 35, end: 38}),
 			duration: 600,
 			repeat: 0
 
 		})
 		this.anims.create({
-			key: 'swing hands hight',
+			key: 'swing right',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [32,33,34,38] }),
 			duration: 600,
 			repeat: 0
@@ -182,15 +197,15 @@ export default class GameScene extends Phaser.Scene
 		})
 		this.anims.create({
 			key: 'wiggle left',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 72, end: 73}),
-			duration: 300,
-			repeat: 2
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [ 72,73,74,73,72]}),
+			duration: 500,
+			repeat: 0
 		})
 		this.anims.create({
 			key: 'wiggle right',
-			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 76, end: 77}),
-			duration: 300,
-			repeat: 2
+			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [ 76,77,78,77,76]}),
+			duration: 500,
+			repeat: 0
 		})
 		this.anims.create({
 			key: 'shrink',
@@ -227,30 +242,23 @@ export default class GameScene extends Phaser.Scene
 			}
 			// console.log(this.player.body.velocity)
 			this.player.anims.play(action, true)
-
-			// console.log(time);
 		  }, time);
 	}   
  
 	runGame(actionsList){
 
-
 		var duration = 0
 		for (var action  of actionsList) {
 			this.newAction(action, duration)
-			console.log(this.time_actions.get(action))
 			duration = duration + this.time_actions.get(action)
 	   }
 	    this.hitBomb(this.player, duration )
-
-
 	}	
 
-    update()
-	{
-		//this.player.anims.play("jumpWithHand", true)
 
-		// console.log(this.player.body.velocity)
+    update()
+	{	
+		//console.log("update")
 	}
    
     
@@ -261,28 +269,15 @@ export default class GameScene extends Phaser.Scene
 		setTimeout(() => {
 			this.physics.pause()
 			this.paused = true;
+			//player.setTint(0xff0000)
+			// player.anims.play('stop')
+			// console.log(time);
+			this.scene.pause();
+			this.gameOver = true
+			this.function()
 
-			player.setTint(0xff0000)
-			player.anims.play('stop')
-			console.log(time);
-			
 
-		  }, time);
-	}
-
-	async getActions(){
-		// const requestOptions = {
-		// 	method: 'GET',
-		// 	headers: { 'Authorization': 'Bearer ' + getToken() },
-		// };
-		// const response = await fetch(`${Constants.SERVER_API}/games/getAll`, requestOptions)
-		// if (response.ok){
-		// 	return await response.json();
-		// }
-
-		//this.runGame(getActionsList())
-		this.runGame(actions)
-
+		  }, time+1000);
 	}
 	
 }

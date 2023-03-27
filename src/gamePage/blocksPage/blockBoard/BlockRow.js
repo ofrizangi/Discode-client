@@ -34,7 +34,7 @@ function BlockRow(props) {
             {(provided, snapshot) => (
                 <div id={row._id} className="block" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} 
                     style={{ ...provided.draggableProps.style, backgroundColor: block.color,}} onClick={set_outer_block}>
-                    {console.log(block._id)}
+                    {/* {console.log(block._id)} */}
                     {desctiption_list.map((item, index) => { return item !== Constants.ARGUMENTS_IDENTIFIER ? 
                                                         <span key={index}> {item} </span> : 
                                                         (<span key={index}> {getArgument(block.arguments_type, getArgumentIndex(index, desctiption_list), row, props.commands, props.setCommands)} </span> )})}

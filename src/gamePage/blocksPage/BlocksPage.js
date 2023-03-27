@@ -16,7 +16,7 @@ function BlocksPage(props) {
     const blocks = props.gameLevel.blocks
     const max_row_number = props.gameLevel.max_number_of_rows
     const [solution , setSolution ] = useState(props.gameLevel.solution)
-    console.log("solsolsol" , solution)
+    // console.log("solsolsol" , solution)
     const [commands , setCommands ] = useState(null)
 
     // droppableBlock is the current outer block we are putting inside blocks
@@ -54,7 +54,7 @@ function BlocksPage(props) {
         commands[commands.length - 1].arguments = new_command.arguments
         setCommands(commands)
 
-        console.log("sol and com" , solution, commands)
+        // console.log("sol and com" , solution, commands)
     }
 
     async function add_new_inner_command(outer_command_index , src_index , dest_index){
@@ -122,7 +122,7 @@ function BlocksPage(props) {
             }
         }
 
-        console.log(draggable_block)
+        // console.log(draggable_block)
         const src_index = draggable_block.source.index
         const dest_index = draggable_block.destination === null ? null : draggable_block.destination.index
 
@@ -171,9 +171,9 @@ function BlocksPage(props) {
     
     return (
         <div>
-            {console.log(droppableBlock)}
+            {/* {console.log(droppableBlock)}
             {console.log("commands" , commands)}
-            {console.log("solution" , solution)}
+            {console.log("solution" , solution)} */}
             {commands !== null &&
             <DragDropContext onDragEnd={(param) => dragEndHandler(param)} >
                 <div className="row d-none d-md-flex">
