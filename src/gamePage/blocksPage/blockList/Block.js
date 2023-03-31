@@ -16,7 +16,7 @@ function Block(props) {
         <Draggable draggableId={Constants.DRAGGABLE_BLOCK_ID + props.index} index={props.index} >
             {(provided, snapshot) => (
                 <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} 
-                    style={{ ...provided.draggableProps.style, backgroundColor: block.color,}}>
+                    style={{ ...provided.draggableProps.style, backgroundColor: block.color,}} className="block">
                     {desctiption_list.map((item, index) => { return item !== Constants.ARGUMENTS_IDENTIFIER ? 
                                                     <span key={index}> {item} </span> : 
                                                     (<span key={index}> {getConstArgument(block.arguments_type, getArgumentIndex(index, desctiption_list))} </span> )})}

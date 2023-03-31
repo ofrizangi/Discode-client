@@ -35,8 +35,8 @@ function BlockRowConst(props) {
                                                 (<span key={index}> {getConstArgument(block.arguments_type, getArgumentIndex(index, desctiption_list), row)} </span> )})}
             {/* only if the block is complex and row_id is not null we will check the if-else condition */}
             {(block.complex && row._id !== null) && 
-                (props.droppableBlock === row._id ? <BlockBoard solution={get_inner_blocks(row._id)} setDroppableBlock={props.setDroppableBlock} row_id={row._id} droppableBlock = {props.droppableBlock} commands={props.commands} setCommands={props.setCommands}/> 
-                                                                : <BlockBoardConst solution={get_inner_blocks(row._id)} setDroppableBlock={props.setDroppableBlock} droppableBlock = {props.droppableBlock} commands={props.commands} setCommands={props.setCommands}/>)}
+               (props.droppableBlock === row._id ? <BlockBoard solution={get_inner_blocks(row._id)} setDroppableBlock={props.setDroppableBlock} row_id={row._id} droppableBlock = {props.droppableBlock} commands={props.commands} setCommands={props.setCommands}/>
+                                                        : <BlockBoardConst solution={get_inner_blocks(row._id)} setDroppableBlock={props.setDroppableBlock} droppableBlock = {props.droppableBlock} commands={props.commands} setCommands={props.setCommands}/>)}
         </div>
     );
 }

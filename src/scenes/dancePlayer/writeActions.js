@@ -6,13 +6,10 @@ const doActions = () => {
   // var game;
   const writeActions = function() {
     let actionName = arguments[0];
-    // console.log(arguments.callee.name )
     for (const string of arguments[1]) {
       actionName = actionName + " " + string
     }
     actionsList.push(actionName)
-    // console.log(arguments.length)
-    // console.log(actionName);
 
   }
 

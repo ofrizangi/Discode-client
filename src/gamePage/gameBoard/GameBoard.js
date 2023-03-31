@@ -9,7 +9,7 @@ import {React,useState} from 'react';
 import {sloved_game, restart_game} from '../gamesAPI';
 
 import CompilationErrorMessage from '../../alerts/CompilationErrorMessage';
-import {runCode} from '../../runSimulation/codeRun';
+import {runCode} from '../../runSimulation/CodeRunner';
 
 
 function GameBoard(props) {

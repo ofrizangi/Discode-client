@@ -4,7 +4,7 @@ import Phaser from 'phaser';
 import DancePlayerScene from '../../../scenes/dancePlayer/DancePlayerScene';
 // import setGame from '../../runSimulation/codeRun'
 
-const {setGame} =  require('../../../runSimulation/codeRun')
+const {setGame} =  require('../../../runSimulation/CodeRunner')
 
 function DancePlayer(props) {
 
@@ -17,8 +17,7 @@ function DancePlayer(props) {
         physics: {
             default: 'arcade',
             arcade: {
-                gravity: { y: 300 },
-                debug: true
+                gravity: { y: 300 }
             }
         },
         scene: [DancePlayerScene]

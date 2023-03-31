@@ -26,8 +26,8 @@ function GamePage(props) {
             <h1> Game page </h1>
             { gameLevel !== null &&
                 <div className="row d-none d-md-flex">
-                    <div className='col-5'> <BlockPage gameLevel={gameLevel}></BlockPage> </div>
-                    <div className="col-7"> <GameBoard game={gameLevel} setGame={setGameLevel}/> </div>
+                    <div className='col-6'> <BlockPage gameLevel={gameLevel}></BlockPage> </div>
+                    <div className="col-6"> <GameBoard game={gameLevel} setGame={setGameLevel}/> </div>
                 </div>
             }
         </div>

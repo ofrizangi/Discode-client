@@ -177,9 +177,9 @@ function BlocksPage(props) {
             {commands !== null &&
             <DragDropContext onDragEnd={(param) => dragEndHandler(param)} >
                 <div className="row d-none d-md-flex">
-                    <div className="col-6"> <BlockList blocks={blocks}/> </div>
-                    {droppableBlock === null ? <div className="col-6"> <BlockBoard solution={solution} setDroppableBlock={setDroppableBlock} row_id={null} droppableBlock = {droppableBlock} commands={commands} setCommands={setCommands}/> </div> : 
-                                                <div className="col-6"> <BlockBoardConst solution={solution} setDroppableBlock={setDroppableBlock} droppableBlock = {droppableBlock} commands={commands} setCommands={setCommands}/> </div>}
+                    <div className="col-5"> <BlockList blocks={blocks}/> </div>
+                    {droppableBlock === null ? <div className="col-7"> <BlockBoard solution={solution} setDroppableBlock={setDroppableBlock} row_id={null} droppableBlock = {droppableBlock} commands={commands} setCommands={setCommands}/> </div> : 
+                                                <div className="col-7"> <BlockBoardConst solution={solution} setDroppableBlock={setDroppableBlock} droppableBlock = {droppableBlock} commands={commands} setCommands={setCommands}/> </div>}
                 </div>
             </DragDropContext>
             }

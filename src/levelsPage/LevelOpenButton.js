@@ -16,8 +16,8 @@ function LevelOpenButton(props) {
     return (
         <span>
             <button className='keyButton' onClick={goto_game}>
-                <img className="keyButton" src={key} alt="buttonpng"/>
-                {props.level.level_number}
+                <img src={key} alt="buttonpng" className='keyButton'/>
+                {props.level.description ? props.level.description : props.level.level_number}            
             </button>
         </span>
       );

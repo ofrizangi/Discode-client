@@ -38,7 +38,7 @@ function BlockRow(props) {
                     {desctiption_list.map((item, index) => { return item !== Constants.ARGUMENTS_IDENTIFIER ? 
                                                         <span key={index}> {item} </span> : 
                                                         (<span key={index}> {getArgument(block.arguments_type, getArgumentIndex(index, desctiption_list), row, props.commands, props.setCommands)} </span> )})}
-                    {block.complex && row._id !== null && <BlockBoardConst solution={get_inner_blocks(row._id)} setDroppableBlock={props.setDroppableBlock} droppableBlock={props.droppableBlock} commands={props.commands} setCommands={props.setCommands}/>}
+                    {block.complex && <BlockBoardConst solution={get_inner_blocks(row._id)} setDroppableBlock={props.setDroppableBlock} droppableBlock={props.droppableBlock} commands={props.commands} setCommands={props.setCommands}/>}
 
                 </div>
             )}

@@ -1,5 +1,11 @@
 .keyButton {
+    border: none;
+    font-family: "Lucida Console", "Courier New", monospace;
     height: 200px;
     width: 200px;
-    border: none;
 }
+
+
+/* .spanButton {
+    margin-bottom: 10px;
+} */
