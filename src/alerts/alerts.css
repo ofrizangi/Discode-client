@@ -28,3 +28,9 @@
 .modalBody {
     white-space: pre-wrap;
 }
+#succeeded{
+    color: green;
+}
+#fails{
+    color: red;
+}

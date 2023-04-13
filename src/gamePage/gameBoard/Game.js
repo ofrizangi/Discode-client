@@ -1,18 +1,26 @@
 import React from 'react';
 import Phaser from 'phaser';
 
-import DancePlayerScene from '../../../scenes/dancePlayer/DancePlayerScene';
+import DancePlayerScene from '../../scenes/DancePlayerScene';
+import MazeScene from '../../scenes/MazeScene';
+
 // import setGame from '../../runSimulation/codeRun'
 
-const {setGame} =  require('../../../runSimulation/CodeRunner')
+const {setGame} =  require('../../runSimulation/CodeRunner')
 
-function DancePlayer(props) {
+function Game(props) {
+
+  const gameSences = new Map([
+    ['dancer', DancePlayerScene],
+    ['maze', MazeScene],
+    ])
+
 
     const config = {
         type: Phaser.AUTO,
         width: 600,
         height: 500,
-        title: 'DancePlyer',
+        title: 'Game',
         pixleArt: false,
         physics: {
             default: 'arcade',
@@ -20,9 +28,8 @@ function DancePlayer(props) {
                 gravity: { y: 300 }
             }
         },
-        scene: [DancePlayerScene]
     }
-    // game.destroy()
+   
     
     function usePhaserGame(config) {
         const phaserGameRef = React.useRef(null);
@@ -31,7 +38,9 @@ function DancePlayer(props) {
             return;
           }
           phaserGameRef.current = new Phaser.Game(config);
-          // phaserGameRef.current.scene.pause('game-scene')
+
+          phaserGameRef.current.scene.add(props.game_name, gameSences.get(props.game_name));
+          phaserGameRef.current.scene.start(props.game_name);
           setGame(phaserGameRef.current.scene)
 
           return () => {
@@ -44,9 +53,7 @@ function DancePlayer(props) {
 
 
       const game = usePhaserGame(config)
-      // const game = new Phaser.Game(config);
-      // game.scene.add('DancePlayerScene', DancePlayerScene, true);
-      // setGame(game.scene)
+
       
 
     
@@ -56,6 +63,6 @@ function DancePlayer(props) {
         </div>
     ) 
 }
-export default DancePlayer;
+export default Game;
 
 

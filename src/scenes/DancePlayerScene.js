@@ -7,11 +7,11 @@ const LINE = "line"
 const LINE_A = "line2"
 
    
-export default class GameScene extends Phaser.Scene
+export default class DancePlayerScene extends Phaser.Scene
 {
     constructor()
 	{
-		super('game-scene')
+		super('dancer')
         this.player = undefined
         this.gameOver = false
 		
@@ -53,14 +53,15 @@ export default class GameScene extends Phaser.Scene
 			['turn left 180', 1500],
 			['turn right 180', 1500],
 			['turn right 360', 1500],
+			['turn left 360', 1500],
 			['cartwheel', 1500],
-			['stomp to left', 800],
-			['stomp to right', 800],
+			['stomp left', 800],
+			['stomp right', 800],
 			['wiggle left', 500],
 			[ 'wiggle right', 500],
 			['shrink', 800],
-			['slide left', 600],
-			['slide right', 600],
+			['slide left', 1000],
+			['slide right', 1000],
 			])
 
 		this.input.on('pointerup', function (pointer) {
@@ -127,52 +128,52 @@ export default class GameScene extends Phaser.Scene
 			repeat: 0
 		})
 		this.anims.create({
-			key: 'swing left',
+			key: 'swing right',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 35, end: 38}),
 			duration: 600,
 			repeat: 0
 
 		})
 		this.anims.create({
-			key: 'swing right',
+			key: 'swing left',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [32,33,34,38] }),
 			duration: 600,
 			repeat: 0
 
 		})
 		this.anims.create({
-			key: 'turn right 45',
+			key: 'turn left 45',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [ 8,9,10,11,10,9,8] }),
 			duration: 1500,
 			repeat: 0
 		})
 		this.anims.create({
-			key: 'turn left 45',
+			key: 'turn right 45',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, {frames: [ 12,13,14,15,14,13,12]}),
 			duration: 1500,
 			repeat: 0
 		})
 		
 		this.anims.create({
-			key: 'turn left 180',
+			key: 'turn right 180',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [71, 64,65,66,67,66,65,64,71] }),
 			duration: 1500,
 			repeat: 0
 		})
 		this.anims.create({
-			key: 'turn right 180',
+			key: 'turn left 180',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [ 71,70,69,68,67,68,69,70,71] }),
 			duration: 1500,
 			repeat: 0
 		})
 		this.anims.create({
-			key: 'turn right 360',
+			key: 'turn left 360',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [ 71,70,69,68,67,66,65,64,71]}),
 			duration: 1500,
 			repeat: 0
 		})
 		this.anims.create({
-			key: 'turn left 360',
+			key: 'turn right 360',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 64, end: 71}),
 			duration: 1500,
 			repeat: 0
@@ -184,25 +185,25 @@ export default class GameScene extends Phaser.Scene
 			repeat: 1
 		})
 		this.anims.create({
-			key: 'stomp to left',
+			key: 'stomp right',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 56, end: 58}),
 			duration: 800,
 			repeat: 2
 		})
 		this.anims.create({
-			key: 'stomp to right',
+			key: 'stomp left',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 60, end: 62}),
 			duration: 800,
 			repeat: 2
 		})
 		this.anims.create({
-			key: 'wiggle left',
+			key: 'wiggle right',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [ 72,73,74,73,72]}),
 			duration: 500,
 			repeat: 0
 		})
 		this.anims.create({
-			key: 'wiggle right',
+			key: 'wiggle left',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [ 76,77,78,77,76]}),
 			duration: 500,
 			repeat: 0
@@ -232,33 +233,33 @@ export default class GameScene extends Phaser.Scene
 	newAction(action, time){
 		setTimeout(() => {
 			if(action === "slide left"){
-				this.player.setVelocityX(40)
+				this.player.setVelocityX(-40)
 			}
 			else if(action === "slide right" ){
-				this.player.setVelocityX(-40)
+				this.player.setVelocityX(40)
+
 			}
 			else{
 				this.player.setVelocityX(0)
 			}
-			// console.log(this.player.body.velocity)
-			this.player.anims.play(action, true)
+			this.player.anims.play(action)
 		  }, time);
 	}   
  
 	runGame(actionsList){
-
+		this.physics.resume()
 		var duration = 0
 		for (var action  of actionsList) {
 			this.newAction(action, duration)
 			duration = duration + this.time_actions.get(action)
 	   }
-	    this.hitBomb(this.player, duration )
+	    this.hitBomb(this.player, duration)
 	}	
 
 
     update()
-	{	
-		//console.log("update")
+	{	//this.player.setVelocityX(40)
+		//console.log(this.player.body.velocity)
 	}
    
     
@@ -268,16 +269,19 @@ export default class GameScene extends Phaser.Scene
         
 		setTimeout(() => {
 			this.physics.pause()
-			this.paused = true;
+			// this.paused = true;
 			//player.setTint(0xff0000)
 			// player.anims.play('stop')
 			// console.log(time);
 			this.scene.pause();
 			this.gameOver = true
+			console.log(time)
 			this.function()
 
 
-		  }, time+1000);
+
+		  }, time);
 	}
+	
 	
 }

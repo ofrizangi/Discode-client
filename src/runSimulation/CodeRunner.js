@@ -1,20 +1,71 @@
 
 import CodeModal from '../alerts/CodeModal'
 import { createRoot } from 'react-dom/client';
-
-const {jump,swing,cartwheel,stomp,wiggle,shrink,slide,turn,restartList, getActionsList} =  require('../scenes/dancePlayer/writeActions')
+// import {root} from '../index'
+import { get_game_level_data } from '../gamePage/gamesAPI';
+const {jump,swing,cartwheel,stomp,wiggle,shrink,slide,turn,restartList, getActionsList} =  require('./writeActions')
 
 
 const run = () => {
   var game;
   var code_;
+  var gameBoard;
+  var actionList;
+  var expected_solution_
 
-  const runCode = function(code){
+  // const compareArrays = function(solution, expected_solution) {
+  //   return JSON.stringify(solution) === JSON.stringify(expected_solution);
+  // };
+
+  const compareArrays = function(solution, expected_solution) {
+    var len_solution = solution.length;
+    var len_expected_solution = expected_solution.length;
+    if(len_expected_solution === 0){
+      return {
+        'compare': true,
+        'message': `Nice idea, well done\n`
+    }
+    }
+    if(len_solution > len_expected_solution){
+      return {
+        'compare': false,
+        'message': `Your solution contains ${len_solution - len_expected_solution} more operations than expected\n`
+      };
+    }
+    else if(len_expected_solution > len_solution){
+      return {
+        'compare': false,
+        'message': `Your solution contains ${len_expected_solution - len_solution} less operations than expected\n`
+      };
+    } 
+    else {
+      for (var i = 0; i < len_solution; i++) {
+        if (solution[i] !== expected_solution[i]) {    
+          return {
+            'compare': false,
+            'message': `action number ${i+1} is not corrcet\n`
+          };
+        }
+      }
+    }
+    return {
+      'compare': true,
+      'message': `Well done\n`
+    };
+  }
+
+  const runCode = function(code, expected_solution, game_name){
+      console.log(expected_solution)
       restartList()
       eval(code)
       console.log("listttt" , getActionsList())
-      runSim()
+      actionList =  getActionsList()
+      expected_solution_ = expected_solution
+      
+
+      runSim(game_name)
       code_ = code
+      
   }
 
   function check_runtime_errors(code){
@@ -29,19 +80,29 @@ const run = () => {
   }
 
   const ShowModel = function(){
+
+    setTimeout(() => { 
+          //  root.render(<CodeModal text={code_} />);
+      let { compare, message } = compareArrays(actionList, expected_solution_)
+      // var compare, message = compareArrays(actionList, expected_solution_)
+      console.log(compare, message)
       const gameBoard = createRoot(document.getElementById('model') );
-      const model = <CodeModal text={code_} />
+      const model = <CodeModal text={code_} message = {message} compare={compare}/>
       gameBoard.render(model);
+		  },1000);
+
+      
   }
   const setGame = function(newGame){game = newGame}
-  const runSim = function() {
-    game.resume('game-scene', {list:getActionsList(), function:ShowModel}) 
+  const runSim = function(game_name) {
+    game.resume(game_name, {list:actionList, function:ShowModel})
     //console.log(game.isActive('game-scene'))
   }
 
   return {
       runCode,
       setGame,
+      
   };
 
 }

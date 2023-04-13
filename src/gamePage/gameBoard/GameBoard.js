@@ -3,13 +3,13 @@
 import * as Constants from '../../constants';
 
 import { translate_blocks } from '../../runSimulation/CodeCreator';
-import DancePlayer from './games/DancePlayer';
+import Game from './Game';
 import {React,useState} from 'react';
 
 import {sloved_game, restart_game} from '../gamesAPI';
 
 import CompilationErrorMessage from '../../alerts/CompilationErrorMessage';
-import {runCode} from '../../runSimulation/CodeRunner';
+import { runCode} from '../../runSimulation/CodeRunner';
 
 
 function GameBoard(props) {
@@ -32,8 +32,8 @@ function GameBoard(props) {
             alert(code)
         }
         else {
-            runCode(code)
-            
+            runCode(code, props.game.expected_solution, props.game.game_name)
+          
             if(!code.includes(Constants.COMPILATION_ERROR)){
                 await solve()
             }
@@ -48,10 +48,10 @@ function GameBoard(props) {
     return (
         <div id="gameBoard">
             <p> Game Board </p>
-            <DancePlayer/>            
+            <Game game_name = {props.game.game_name}/>
             {props.game !== null && <button className='btn btn-success' onClick={get_code}> Run game</button>}
             {props.game !== null && <button className='btn btn-danger' onClick={restart}> Restart level</button>}
-            <div id="model"></div>
+
             {compilationOpen && <CompilationErrorMessage text={text}/>}
 
         </div>

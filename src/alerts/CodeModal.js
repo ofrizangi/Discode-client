@@ -37,8 +37,13 @@ class CodeModal extends React.Component {
       >
         <Modal.Header closeButton className="grab">
           <Modal.Title>Your solution </Modal.Title>
+          
         </Modal.Header>
-          <Modal.Body className="modalBody">{this.props.text}</Modal.Body>
+          <Modal.Body className="modalBody">
+           
+            {this.props.compare ? <h3 id="succeeded">{this.props.message}</h3> : <h3 id="fails">{this.props.message}</h3>}
+            <p>{this.props.text}</p>
+            </Modal.Body>
           {/* <Modal.Footer>Footer</Modal.Footer> */}
       </Modal>
     );
