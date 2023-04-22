@@ -2,6 +2,7 @@
 import CodeModal from '../alerts/CodeModal'
 import { createRoot } from 'react-dom/client';
 // import {root} from '../index'
+
 import { get_game_level_data } from '../gamePage/gamesAPI';
 const {jump,swing,cartwheel,stomp,wiggle,shrink,slide,turn,restartList, getActionsList} =  require('./writeActions')
 
@@ -12,7 +13,9 @@ const run = () => {
   var gameBoard;
   var actionList;
   var expected_solution_
-
+  var compareSolution
+  var back_to_levels_
+  var next_level_
   // const compareArrays = function(solution, expected_solution) {
   //   return JSON.stringify(solution) === JSON.stringify(expected_solution);
   // };
@@ -54,18 +57,19 @@ const run = () => {
     };
   }
 
-  const runCode = function(code, expected_solution, game_name){
+  const runCode = function(code, expected_solution, game_name,back_to_levels, next_level){
       console.log(expected_solution)
       restartList()
       eval(code)
       console.log("listttt" , getActionsList())
       actionList =  getActionsList()
       expected_solution_ = expected_solution
-      
-
+      compareSolution = compareArrays(actionList, expected_solution_)
+      back_to_levels_ = back_to_levels
+      next_level_=next_level
       runSim(game_name)
       code_ = code
-      
+      return compareSolution.compare;   
   }
 
   function check_runtime_errors(code){
@@ -79,15 +83,17 @@ const run = () => {
     }
   }
 
+
+
   const ShowModel = function(){
 
     setTimeout(() => { 
           //  root.render(<CodeModal text={code_} />);
-      let { compare, message } = compareArrays(actionList, expected_solution_)
+      // let { compare, message } = compareArrays(actionList, expected_solution_)
       // var compare, message = compareArrays(actionList, expected_solution_)
-      console.log(compare, message)
+      //console.log(compare, message)
       const gameBoard = createRoot(document.getElementById('model') );
-      const model = <CodeModal text={code_} message = {message} compare={compare}/>
+      const model = <CodeModal text={code_} message = {compareSolution.message} compare={compareSolution.compare} back={back_to_levels_} next_level={next_level_}/>
       gameBoard.render(model);
 		  },1000);
 

@@ -6,6 +6,7 @@ import { setLevel } from "../levelsPage/LevelProvider";
 import { useState, useEffect } from 'react';
 import GameButton from './GameButton'
 import React from 'react';
+import './games.css';
 
 function Games(props) {
 
@@ -45,11 +46,12 @@ function Games(props) {
                 </li>
             </ul>
             <h1> Welcome to Discode Game page </h1>
-
-            {games.map((game_name) => {
-                    return <GameButton key={game_name} game_name={game_name}/>
+            <div className='games'>
+            {games.map((game) => {
+                    return <GameButton key={game.game_name} game_name={game.game_name} game_img={game.game_img}/>
                 })
             }
+            </div>
         </div>
       );
   }

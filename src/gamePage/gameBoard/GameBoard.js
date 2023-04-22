@@ -7,9 +7,11 @@ import Game from './Game';
 import {React,useState} from 'react';
 
 import {sloved_game, restart_game} from '../gamesAPI';
+import {setLevel} from '../../levelsPage/LevelProvider'
 
 import CompilationErrorMessage from '../../alerts/CompilationErrorMessage';
 import { runCode} from '../../runSimulation/CodeRunner';
+import { useNavigate } from 'react-router-dom'
 
 
 function GameBoard(props) {
@@ -17,11 +19,24 @@ function GameBoard(props) {
 
     const [compilationOpen, setCompilationOpen] = useState(false)
     const [text, setText] = useState("")
+    const navigate = useNavigate();
 
+    console.log(props.game.level_number)
 
     async function solve() {
         const my_game = await sloved_game()
         await props.setGame(my_game)
+    }
+
+    async function back_to_levels(){
+        navigate('/levels')
+
+    }
+
+    async function next_level(){
+        setLevel(props.game.level_number+1)
+        navigate(0)
+        //navigate('/game')
     }
 
 
@@ -32,11 +47,13 @@ function GameBoard(props) {
             alert(code)
         }
         else {
-            runCode(code, props.game.expected_solution, props.game.game_name)
-          
-            if(!code.includes(Constants.COMPILATION_ERROR)){
+            if (runCode(code, props.game.expected_solution, props.game.game_name, back_to_levels, next_level)){
+                if(!code.includes(Constants.COMPILATION_ERROR)){
                 await solve()
+                }
             }
+          
+            
         }
     }
 

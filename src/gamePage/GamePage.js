@@ -13,6 +13,7 @@ function GamePage(props) {
     useEffect(() => {
         async function set_game(){
             const my_level = await get_game_level_data()
+            console.log("GamePage", my_level)
             setGameLevel(my_level)
         }
         set_game()
@@ -27,7 +28,7 @@ function GamePage(props) {
                 <div className="row d-none d-md-flex">
                     <div className='col-6'>
                         <BlockPage gameLevel={gameLevel}></BlockPage>
-                        {gameLevel.level_number !== -1 ?  <video className="gdriveVideo" preload="auto"  width="300" height="250" controls>
+                        {gameLevel.game_name === "dancer" && gameLevel.level_number !== -1 ?  <video className="gdriveVideo" preload="auto"  width="300" height="250" controls>
                         <source src={gameLevel.video_src} type='video/mp4'/>
                         </video> : <div/>}        
                     </div>

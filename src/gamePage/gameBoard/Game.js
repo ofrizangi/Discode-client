@@ -10,24 +10,27 @@ const {setGame} =  require('../../runSimulation/CodeRunner')
 
 function Game(props) {
 
-  const gameSences = new Map([
-    ['dancer', DancePlayerScene],
-    ['maze', MazeScene],
+  const gameSences1 = new Map([
+    ['dancer', {"scene":DancePlayerScene, width:600, height:500}],
+    ['maze', {"scene":MazeScene, width:450, height:526}],
     ])
 
+    console.log(gameSences1.get(props.game_name.scene))
 
     const config = {
         type: Phaser.AUTO,
-        width: 600,
-        height: 500,
+        width: gameSences1.get(props.game_name).width,
+        height:gameSences1.get(props.game_name).height,
         title: 'Game',
         pixleArt: false,
         physics: {
             default: 'arcade',
             arcade: {
-                gravity: { y: 300 }
+                //gravity: { y: 300 },
+                debug: true
             }
         },
+        scene: [gameSences1.get(props.game_name).scene]
     }
    
     
@@ -38,9 +41,12 @@ function Game(props) {
             return;
           }
           phaserGameRef.current = new Phaser.Game(config);
+          // phaserGameRef.current.canvas.width =440
+          // phaserGameRef.current.canvas.height =440
 
-          phaserGameRef.current.scene.add(props.game_name, gameSences.get(props.game_name));
+          //phaserGameRef.current.scene.add(props.game_name, gameSences1.get(props.game_name).scene);
           phaserGameRef.current.scene.start(props.game_name);
+
           setGame(phaserGameRef.current.scene)
 
           return () => {

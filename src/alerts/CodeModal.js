@@ -23,9 +23,37 @@ class CodeModal extends React.Component {
     this.state = {
       open: true
     };
+    this.showModal = this.showModal.bind(this);
+    this.hideModal = this.hideModal.bind(this);
+  };
+
+  showModal = () => {
+    this.setState({ open: true });
+  };
+  
+  hideModal = () => {
+    this.setState({ open: false });
   }
+    
+  nextLevel = () => {
+    this.hideModal()
+    this.props.next_level()
+
+  };
+
+  backToLevels = () => {
+    this.hideModal()
+    this.props.back()
+  };
+  
+
+  
+
 
   render() {
+
+
+
 
     return (
       <Modal
@@ -44,6 +72,12 @@ class CodeModal extends React.Component {
             {this.props.compare ? <h3 id="succeeded">{this.props.message}</h3> : <h3 id="fails">{this.props.message}</h3>}
             <p>{this.props.text}</p>
             </Modal.Body>
+            <Modal.Footer id='buttons-footer'>
+              <button  type="button" className="btn btn-success" onClick={this.hideModal}>Retry</button>
+              <button type="button" className="btn btn-success" onClick={this.nextLevel}>Next</button>
+              <button type="button" className="btn btn-success" onClick={this.backToLevels}>Levels</button>
+
+            </Modal.Footer>
           {/* <Modal.Footer>Footer</Modal.Footer> */}
       </Modal>
     );
