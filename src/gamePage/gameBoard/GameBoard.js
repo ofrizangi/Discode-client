@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom'
 function GameBoard(props) {
 
 
-    const [compilationOpen, setCompilationOpen] = useState(false)
+    // const [compilationOpen, setCompilationOpen] = useState(false)
     const [text, setText] = useState("")
     const navigate = useNavigate();
 
@@ -30,7 +30,6 @@ function GameBoard(props) {
 
     async function back_to_levels(){
         navigate('/levels')
-
     }
 
     async function next_level(){
@@ -49,11 +48,9 @@ function GameBoard(props) {
         else {
             if (runCode(code, props.game.expected_solution, props.game.game_name, back_to_levels, next_level)){
                 if(!code.includes(Constants.COMPILATION_ERROR)){
-                await solve()
+                    await solve()
                 }
             }
-          
-            
         }
     }
 
@@ -69,7 +66,7 @@ function GameBoard(props) {
             {props.game !== null && <button className='btn btn-success' onClick={get_code}> Run game</button>}
             {props.game !== null && <button className='btn btn-danger' onClick={restart}> Restart level</button>}
 
-            {compilationOpen && <CompilationErrorMessage text={text}/>}
+            {/* {compilationOpen && <CompilationErrorMessage text={text}/>} */}
 
         </div>
     );

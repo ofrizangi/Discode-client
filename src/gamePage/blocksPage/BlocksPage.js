@@ -21,6 +21,8 @@ function BlocksPage(props) {
 
     // droppableBlock is the current outer block we are putting inside blocks
     const [droppableBlock , setDroppableBlock] = useState(null)
+    const [droppableListNumber , setDroppableListNumber] = useState(null)
+
 
 
     useEffect(() => {
@@ -36,12 +38,21 @@ function BlocksPage(props) {
     }, [props.gameLevel.solution]);
 
 
+    function create_arguments_array(block){
+        var argumnets_array = [Array(block.arguments_type.length).fill(null)]
+        for(let i=1; i <block.complex; i++ ){
+            argumnets_array.push(Array(block.arguments_type.length).fill(null))
+        }
+        return argumnets_array
+    }
+
     /*
     functions handling adding commands
     */
     async function add_new_command(src_index ,dest_index){
         const id = null
-        commands.push({"_id" : id, "block": blocks.at(src_index), "arguments": [], "outer_block" : droppableBlock, "inner_blocks" : []} )
+        const block = blocks.at(src_index)
+        commands.push({"_id" : id, "block": block, "arguments": create_arguments_array(block), "outer_block" : droppableBlock, "outer_block_list_number":null , "inner_blocks" : Array(block.complex).fill([])} )
         solution.splice(dest_index, 0, id)
         setSolution(solution)
         setCommands(commands)
@@ -51,22 +62,21 @@ function BlocksPage(props) {
         setSolution(solution)
 
         commands[commands.length - 1]._id = new_command._id
-        commands[commands.length - 1].arguments = new_command.arguments
+        commands[commands.length - 1].inner_blocks = new_command.inner_blocks
         setCommands(commands)
-
-        // console.log("sol and com" , solution, commands)
     }
 
-    async function add_new_inner_command(outer_command_index , src_index , dest_index){
+    async function add_new_inner_command(outer_command_index , list_number, src_index , dest_index){
         const id = null
-        commands.push({"_id" : id , "block": blocks.at(src_index), "arguments": [], "outer_block" : droppableBlock, "inner_blocks" : []} )
-        commands[outer_command_index].inner_blocks.splice(dest_index, 0, id)
+        const block = blocks.at(src_index)
+        commands.push({"_id" : id, "block": block, "arguments": create_arguments_array(block), "outer_block" : droppableBlock, "outer_block_list_number":list_number, "inner_blocks" : Array(block.complex).fill([])} )
+        commands[outer_command_index].inner_blocks[list_number].splice(dest_index, 0, id)
         setCommands(commands)
 
-        const new_command = await post_inner_command(blocks.at(src_index), dest_index, droppableBlock)
-        commands[outer_command_index].inner_blocks[dest_index] = new_command._id
+        const new_command = await post_inner_command(blocks.at(src_index), dest_index, droppableBlock, list_number)
+        commands[outer_command_index].inner_blocks[list_number][dest_index] = new_command._id
         commands[commands.length - 1]._id = new_command._id
-        commands[commands.length - 1].arguments = new_command.arguments
+        commands[commands.length - 1].inner_blocks = new_command.inner_blocks
         setCommands(commands)
     }
 
@@ -79,15 +89,18 @@ function BlocksPage(props) {
         const inner_commands = commands[index].inner_blocks
         commands.splice(index, 1)
         for(let i=0; i < inner_commands.length; i++ ){
-            delete_inner_commands(inner_commands[i])
+            for(let j=0; j<inner_commands[i].length; j++){
+                delete_inner_commands(inner_commands[i][j])
+            }
         }
     }
 
-    async function remove_inner_commands(outer_command_index , src_index){
-        const deleted_command = commands[outer_command_index].inner_blocks.splice(src_index, 1)[0]
+    async function remove_inner_commands(outer_command_index , list_number, src_index){
+        const deleted_command = commands[outer_command_index].inner_blocks[list_number].splice(src_index, 1)[0]
         delete_inner_commands(deleted_command)
         setCommands(commands)
-        await delete_inner_command_api(src_index, droppableBlock)
+        console.log(commands)
+        await delete_inner_command_api(src_index, droppableBlock, list_number)
     }
 
     async function remove_commands(src_index){
@@ -100,10 +113,10 @@ function BlocksPage(props) {
 
 
     /* functions handling swaping commands*/
-    async function swap_inner_commands(outer_command_index , src_index , dest_index){
-        commands[outer_command_index].inner_blocks.splice(dest_index, 0, commands[outer_command_index].inner_blocks.splice(src_index, 1)[0]) // second_argument => number of element to remove, third_argument => elements to add, returns the removed items
+    async function swap_inner_commands(outer_command_index , list_number, src_index , dest_index){
+        commands[outer_command_index].inner_blocks[list_number].splice(dest_index, 0, commands[outer_command_index].inner_blocks[list_number].splice(src_index, 1)[0]) // second_argument => number of element to remove, third_argument => elements to add, returns the removed items
         setCommands(commands)
-        await swap_inner_command_api(src_index, dest_index, droppableBlock)
+        await swap_inner_command_api(src_index, dest_index, droppableBlock, list_number)
     }
 
     async function swap_commands(src_index , dest_index){
@@ -122,7 +135,6 @@ function BlocksPage(props) {
             }
         }
 
-        // console.log(draggable_block)
         const src_index = draggable_block.source.index
         const dest_index = draggable_block.destination === null ? null : draggable_block.destination.index
 
@@ -132,17 +144,23 @@ function BlocksPage(props) {
 
             if (dest_index === null) {
                 if (draggable_block.draggableId.includes(Constants.DRAGGABLE_ROW_ID)) {
-                    await remove_inner_commands(outer_command_index, src_index)
+                    const src_string = draggable_block.source.droppableId
+                    const list_number = Number(src_string.charAt(src_string.length -1))
+                    await remove_inner_commands(outer_command_index, list_number, src_index)
                 }
-            }
-            else if (draggable_block.draggableId.includes(Constants.DRAGGABLE_BLOCK_ID) ){
+                return
+            }   
+            
+            const destination_string = draggable_block.destination.droppableId
+            const list_number = Number(destination_string.charAt(destination_string.length -1))
+            if (draggable_block.draggableId.includes(Constants.DRAGGABLE_BLOCK_ID) ){
                 // checking if we dragged the block to another list and not the same one
                 if(draggable_block.source.droppableId !== draggable_block.destination.droppableId) {
-                    await add_new_inner_command(outer_command_index, src_index, dest_index)
+                    await add_new_inner_command(outer_command_index, list_number, src_index, dest_index)
                 }
             }
             else {
-                await swap_inner_commands(outer_command_index, src_index, dest_index)
+                await swap_inner_commands(outer_command_index, list_number, src_index, dest_index)
             }
         }
         // handling outer command
@@ -171,15 +189,12 @@ function BlocksPage(props) {
     
     return (
         <div>
-            {/* {console.log(droppableBlock)}
-            {console.log("commands" , commands)}
-            {console.log("solution" , solution)} */}
             {commands !== null &&
             <DragDropContext onDragEnd={(param) => dragEndHandler(param)} >
                 <div className="row d-none d-md-flex">
                     <div className="col-5"> <BlockList blocks={blocks}/> </div>
-                    {droppableBlock === null ? <div className="col-7"> <BlockBoard solution={solution} setDroppableBlock={setDroppableBlock} row_id={null} droppableBlock = {droppableBlock} commands={commands} setCommands={setCommands}/> </div> : 
-                                                <div className="col-7"> <BlockBoardConst solution={solution} setDroppableBlock={setDroppableBlock} droppableBlock = {droppableBlock} commands={commands} setCommands={setCommands}/> </div>}
+                    {droppableBlock === null ? <div className="col-7"> <BlockBoard solution={solution} list_num={null} setDroppableBlock={setDroppableBlock} row_id={null} droppableListNumber={droppableListNumber} setDroppableListNumber={setDroppableListNumber} droppableBlock = {droppableBlock} commands={commands} setCommands={setCommands}/> </div> : 
+                                                <div className="col-7"> <BlockBoardConst solution={solution} setDroppableBlock={setDroppableBlock} droppableBlock = {droppableBlock} commands={commands} setCommands={setCommands} droppableListNumber={droppableListNumber} setDroppableListNumber={setDroppableListNumber} list_num={null} outer_block_id={null}/> </div>}
                 </div>
             </DragDropContext>
             }

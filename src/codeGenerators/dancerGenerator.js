@@ -4,45 +4,44 @@ import BaseGenerator from './baseGenerator'
 export class DancerGenerator extends BaseGenerator {
 
 
-    jump(block){
-        const hands = block.arguments[0]
+    jump(block, line_number){
+        const hands = block.arguments[line_number][0]
         return `jump('${hands}');`
     }
 
-    swing(block){
-        const direction = block.arguments[0]
+    swing(block, line_number){
+        const direction = block.arguments[line_number][0]
         return `swing('${direction}');`
     }
 
-    cartwheel(block){
+    cartwheel(block, line_number){
         return "cartwheel();"
     }
 
 
-    stomp(block){
-        const direction = block.arguments[0]
+    stomp(block, line_number){
+        const direction = block.arguments[line_number][0]
         return `stomp('${direction}');`
     }
 
 
-    wiggle(block){
-        const direction = block.arguments[0]
+    wiggle(block, line_number){
+        const direction = block.arguments[line_number][0]
         return `wiggle('${direction}');`
     }
 
-    shrink(block){
+    shrink(block, line_number){
         return "shrink();"
-
     }
 
-    slide(block){
-        const direction = block.arguments[0]
+    slide(block, line_number){
+        const direction = block.arguments[line_number][0]
         return `slide('${direction}');`
     }
 
-    turn(block){
-        const direction = block.arguments[0]
-        const angle = block.arguments[1]
+    turn(block, line_number){
+        const direction = block.arguments[line_number][0]
+        const angle = block.arguments[line_number][1]
         return `turn('${direction}' , '${angle}');`
     }
 

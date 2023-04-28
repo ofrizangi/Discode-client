@@ -61,7 +61,6 @@ const run = () => {
       console.log(expected_solution)
       restartList()
       eval(code)
-      console.log("listttt" , getActionsList())
       actionList =  getActionsList()
       expected_solution_ = expected_solution
       compareSolution = compareArrays(actionList, expected_solution_)

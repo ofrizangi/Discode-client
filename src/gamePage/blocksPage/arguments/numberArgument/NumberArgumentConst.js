@@ -3,7 +3,7 @@ import './../arguments.css'
 
 function NumberArgumentConst(props) {
 
-    const value = props.row !== undefined ? props.row.arguments[props.index] : ""
+    const value = props.row !== undefined ? props.row.arguments[props.list_number][props.index] : ""
 
     return (
         <span>

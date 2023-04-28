@@ -2,41 +2,36 @@
 import BlockBoard from './BlockBoard';
 import BlockBoardConst from './BlockBoardConst';
 
-import * as Constants from '../../../constants';
+import DescriptionConst from '../descriptions/DescriptionConst';
 
-import { getConstArgument, getDescriptionList, getArgumentIndex } from '../arguments/argumentsProvider';
 
 function BlockRowConst(props) {
 
     const row = props.row
     const block = row.block
     
-    const desctiption_list = getDescriptionList(block.description)
 
-    function set_outer_block(event){
-        const clicked_element = event.target
-        const clicked_element_id = clicked_element.getAttribute("id")
-        console.log("clicked element" , clicked_element_id)
-        if(clicked_element_id === row._id || clicked_element === null){
-            props.setDroppableBlock(row.outer_block)
-        }
-    }
-
-    function get_inner_blocks(row_id){
+    function get_inner_blocks(row_id, list_num){
         const index = props.commands.findIndex(element => element._id === row_id)
-        return props.commands[index].inner_blocks
+        return props.commands[index].inner_blocks[list_num]
     }
-
 
     return (
-        <div id={row._id} className="block" style={{backgroundColor: block.color}} onClick={set_outer_block}>  
-            {desctiption_list.map((item, index) => { return item !== Constants.ARGUMENTS_IDENTIFIER ? 
-                                                <span key={index}> {item} </span> : 
-                                                (<span key={index}> {getConstArgument(block.arguments_type, getArgumentIndex(index, desctiption_list), row)} </span> )})}
-            {/* only if the block is complex and row_id is not null we will check the if-else condition */}
-            {(block.complex && row._id !== null) && 
-               (props.droppableBlock === row._id ? <BlockBoard solution={get_inner_blocks(row._id)} setDroppableBlock={props.setDroppableBlock} row_id={row._id} droppableBlock = {props.droppableBlock} commands={props.commands} setCommands={props.setCommands}/>
-                                                        : <BlockBoardConst solution={get_inner_blocks(row._id)} setDroppableBlock={props.setDroppableBlock} droppableBlock = {props.droppableBlock} commands={props.commands} setCommands={props.setCommands}/>)}
+        <div id={row._id} className="block" style={{backgroundColor: block.color}}>
+            {block.complex === 0 ?          
+                <DescriptionConst block={block} row={row} list_num={0} commands={props.commands} setCommands={props.setCommands}></DescriptionConst> 
+                :
+                Array(block.complex).fill(null).map((list_value, list_num) => (
+                    <div key={list_num}>
+                        <DescriptionConst block={block} row={row} list_num={list_num} commands={props.commands} setCommands={props.setCommands}></DescriptionConst> 
+                        { row._id !== null &&  
+                            ((props.droppableBlock === row._id && props.droppableListNumber === list_num) ? <BlockBoard solution={get_inner_blocks(row._id, list_num)} list_num={list_num} setDroppableBlock={props.setDroppableBlock} row_id={row._id} droppableBlock = {props.droppableBlock} commands={props.commands} setCommands={props.setCommands} droppableListNumber={props.droppableListNumber} setDroppableListNumber={props.setDroppableListNumber} />
+                                                    : <BlockBoardConst solution={get_inner_blocks(row._id, list_num)} setDroppableBlock={props.setDroppableBlock} droppableBlock = {props.droppableBlock} commands={props.commands} setCommands={props.setCommands} droppableListNumber={props.droppableListNumber} setDroppableListNumber={props.setDroppableListNumber} list_num={list_num} outer_block_id={row._id}/>) 
+                        }
+                    </div>
+                ))
+            }
+
         </div>
     );
 }

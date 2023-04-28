@@ -27,7 +27,7 @@ function Game(props) {
             default: 'arcade',
             arcade: {
                 //gravity: { y: 300 },
-                debug: true
+                // debug: true
             }
         },
         scene: [gameSences1.get(props.game_name).scene]

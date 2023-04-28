@@ -8,23 +8,23 @@ import SelectArgumentConst from "./selectArgument/SelectArgumentConst";
 
 const createArgumentProvider = () => {
 
-    const getArgument=(arguments_type, index, row, commands, setCommands) =>{
-        const type = arguments_type[index]
+    const getArgument=(arguments_type, list_number, index, row, commands, setCommands) =>{
+        const type = arguments_type[list_number][index]
         if(Array.isArray(type)){
-            return <SelectArgument options={type} row={row} index={index} commands={commands} setCommands={setCommands}/>
+            return <SelectArgument options={type} row={row} list_number={list_number} index={index} commands={commands} setCommands={setCommands}/>
         }
         if(type === Constants.NUMBER_ARGUMENT){
-            return <NumberArgument row={row} index={index} commands={commands} setCommands={setCommands}/>
+            return <NumberArgument row={row} list_number={list_number} index={index} commands={commands} setCommands={setCommands}/>
         }
     }
 
-    const getConstArgument=(arguments_type, index, row) =>{
-        const type = arguments_type[index]
+    const getConstArgument=(arguments_type, list_number, index, row) =>{
+        const type = arguments_type[list_number][index]
         if(Array.isArray(type)){
-            return <SelectArgumentConst options={type} index={index} row={row}/>
+            return <SelectArgumentConst options={type} index={index} row={row} list_number={list_number}/>
         }
         if(type === Constants.NUMBER_ARGUMENT){
-            return <NumberArgumentConst row={row} index={index}/>
+            return <NumberArgumentConst row={row} list_number={list_number} index={index}/>
         }
     }
 
@@ -34,7 +34,6 @@ const createArgumentProvider = () => {
 
     function getArgumentIndex (index , description_list){
         const partitial_arr = description_list.slice(0, index)
-        // console.log(partitial_arr)
         const filter_arr = partitial_arr.filter(value => value === Constants.ARGUMENTS_IDENTIFIER)
         return filter_arr.length
 

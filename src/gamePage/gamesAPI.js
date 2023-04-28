@@ -80,11 +80,11 @@ const gamesAPI = () => {
         }
     }
 
-    async function post_inner_command(block, dest_index, outer_row_id){
+    async function post_inner_command(block, dest_index, outer_row_id, list_number){
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' , 'Authorization': 'Bearer ' + getToken() },
-            body: JSON.stringify({block_id : block._id, dest_index : dest_index, outer_row_id: outer_row_id}),
+            body: JSON.stringify({block_id : block._id, dest_index : dest_index, outer_row_id: outer_row_id, list_number:list_number}),
         };
         const response = await fetch(`${Constants.SERVER_API}/${getGame()}/levels/${getLevel()}/postInnerCommand`, requestOptions)
         if(response.ok){
@@ -101,11 +101,11 @@ const gamesAPI = () => {
         await fetch(`${Constants.SERVER_API}/${getGame()}/levels/${getLevel()}/swapCommand`, requestOptions)
     }
 
-    async function swap_inner_command_api(src_index, dest_index, outer_row_id){
+    async function swap_inner_command_api(src_index, dest_index, outer_row_id, list_number){
         const requestOptions = {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' , 'Authorization': 'Bearer ' + getToken() },
-            body: JSON.stringify({src_index : src_index , dest_index : dest_index, outer_row_id: outer_row_id}),
+            body: JSON.stringify({src_index : src_index , dest_index : dest_index, outer_row_id: outer_row_id, list_number: list_number}),
         };
         await fetch(`${Constants.SERVER_API}/${getGame()}/levels/${getLevel()}/swapInnerCommand`, requestOptions)
     }
@@ -118,11 +118,11 @@ const gamesAPI = () => {
         await fetch(`${Constants.SERVER_API}/${getGame()}/levels/${getLevel()}/deleteCommand/${index}`, requestOptions)
     }
 
-    async function delete_inner_command_api(index, outer_row_id){
+    async function delete_inner_command_api(index, outer_row_id, list_number){
         const requestOptions = {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' , 'Authorization': 'Bearer ' + getToken() },
-            body: JSON.stringify({outer_row_id : outer_row_id}),
+            body: JSON.stringify({outer_row_id : outer_row_id, list_number: list_number}),
         };
         await fetch(`${Constants.SERVER_API}/${getGame()}/levels/${getLevel()}/deleteInnerCommand/${index}`, requestOptions)
     }
