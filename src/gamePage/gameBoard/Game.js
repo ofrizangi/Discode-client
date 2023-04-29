@@ -12,7 +12,7 @@ function Game(props) {
 
   const gameSences1 = new Map([
     ['dancer', {"scene":DancePlayerScene, width:600, height:500}],
-    ['maze', {"scene":MazeScene, width:450, height:526}],
+    ['maze', {"scene":MazeScene, width:477, height:475.2+35+70}],
     ])
 
     console.log(gameSences1.get(props.game_name.scene))

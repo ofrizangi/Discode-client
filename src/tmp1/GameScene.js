@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import ScoreLabel from './ui/SorceLabel'
+import ScoreLabel from '../scenes/ui/SorceLabel'
 import BombSpawner from './BombSpawner'
 
 

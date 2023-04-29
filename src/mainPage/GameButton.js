@@ -12,7 +12,7 @@ function LevelOpenButton(props) {
     }
 
     return (
-        <button classNam='column' onClick={goto_game_levels}>
+        <button className='column' onClick={goto_game_levels}>
             <img src={props.game_img} alt={props.game_name}/>
             <div>{props.game_name}</div>
         </button> 
