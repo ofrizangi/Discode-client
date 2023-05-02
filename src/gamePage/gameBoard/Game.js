@@ -2,23 +2,21 @@ import React from 'react';
 import Phaser from 'phaser';
 
 import DancePlayerScene from '../../scenes/DancePlayerScene';
-import MazeScene from '../../scenes/MazeScene';
+import StarsQuestScene from '../../scenes/StarsQuestScene';
 
-// import setGame from '../../runSimulation/codeRun'
 
-const {setGame} =  require('../../runSimulation/CodeRunner')
 
 function Game(props) {
 
   const gameSences1 = new Map([
     ['dancer', {"scene":DancePlayerScene, width:600, height:500}],
-    ['maze', {"scene":MazeScene, width:477, height:475.2+35+70}],
+    ['starsQuest', {"scene":StarsQuestScene, width:477, height:475.2+35+70}],
     ])
 
-    console.log(gameSences1.get(props.game_name.scene))
 
     const config = {
         type: Phaser.AUTO,
+
         width: gameSences1.get(props.game_name).width,
         height:gameSences1.get(props.game_name).height,
         title: 'Game',
@@ -27,7 +25,7 @@ function Game(props) {
             default: 'arcade',
             arcade: {
                 //gravity: { y: 300 },
-                // debug: true
+                debug: true
             }
         },
         scene: [gameSences1.get(props.game_name).scene]
@@ -41,13 +39,11 @@ function Game(props) {
             return;
           }
           phaserGameRef.current = new Phaser.Game(config);
-          // phaserGameRef.current.canvas.width =440
-          // phaserGameRef.current.canvas.height =440
+        
 
-          //phaserGameRef.current.scene.add(props.game_name, gameSences1.get(props.game_name).scene);
-          phaserGameRef.current.scene.start(props.game_name);
+          phaserGameRef.current.scene.start(props.game_name, props.data);
 
-          setGame(phaserGameRef.current.scene)
+          props.setGameSence(phaserGameRef.current.scene)
 
           return () => {
             phaserGameRef.current.destroy(true);

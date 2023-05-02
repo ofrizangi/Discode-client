@@ -1,11 +1,14 @@
 import {get_level_commands, get_game_level_data} from '../gamePage/gamesAPI'
-import { DancerGenerator } from '../codeGenerators/dancerGenerator'
+import { DancerGenerator } from './codeGenerators/dancerGenerator'
+import { StarsQuestGenerator } from './codeGenerators/starsQuestGenerator'
+
 import { getGame } from '../mainPage/GameProvider'
 
 const CodeCreator = () => {
 
     const game_generators = {
-        "dancer" : new DancerGenerator()
+        "dancer" : new DancerGenerator(),
+        "starsQuest": new StarsQuestGenerator()
     }
 
     async function translate_blocks(){

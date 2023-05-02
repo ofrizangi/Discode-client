@@ -79,7 +79,7 @@ export default class DancePlayerScene extends Phaser.Scene
 			console.log(data)
             console.log('Scene A resumed');
 			this.runGame(data.list)
-			this.function  = data.function
+			this.runner = data.runner
 
 		});
 		this.scene.pause();
@@ -269,14 +269,11 @@ export default class DancePlayerScene extends Phaser.Scene
         
 		setTimeout(() => {
 			this.physics.pause()
-			// this.paused = true;
-			//player.setTint(0xff0000)
-			// player.anims.play('stop')
-			// console.log(time);
 			this.scene.pause();
 			this.gameOver = true
 			console.log(time)
-			this.function()
+			this.runner.showModel()
+
 
 
 

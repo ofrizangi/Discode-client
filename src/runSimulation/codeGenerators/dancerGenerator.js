@@ -39,10 +39,10 @@ export class DancerGenerator extends BaseGenerator {
         return `slide('${direction}');`
     }
 
-    turn(block, line_number){
+    turn_by(block, line_number){
         const direction = block.arguments[line_number][0]
         const angle = block.arguments[line_number][1]
-        return `turn('${direction}' , '${angle}');`
+        return `turn_by('${direction}' , '${angle}');`
     }
 
 

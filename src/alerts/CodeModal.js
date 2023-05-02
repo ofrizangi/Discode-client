@@ -74,8 +74,9 @@ class CodeModal extends React.Component {
             </Modal.Body>
             <Modal.Footer id='buttons-footer'>
               <button  type="button" className="btn btn-success" onClick={this.hideModal}>Retry</button>
-              <button type="button" className="btn btn-success" onClick={this.nextLevel}>Next</button>
               <button type="button" className="btn btn-success" onClick={this.backToLevels}>Levels</button>
+              {this.props.compare ?  <button type="button" className="btn btn-success" onClick={this.nextLevel}>Next</button> :               <button type="button" className="btn btn-success" onClick={this.nextLevel} disabled>Next</button>
+}
 
             </Modal.Footer>
           {/* <Modal.Footer>Footer</Modal.Footer> */}

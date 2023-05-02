@@ -11,11 +11,11 @@ const STAR = 'star'
 const BOMB = 'bomb'
 const NO_ENTRY = 'no_entry'
    
-export default class MazeScene extends Phaser.Scene
+export default class StarsQuestScene extends Phaser.Scene
 {
     constructor()
 	{
-		super('maze')
+		super('starsQuest')
 		this.board = undefined
 		this.player = undefined
 		this.stars = undefined
@@ -34,53 +34,84 @@ export default class MazeScene extends Phaser.Scene
 			[5,Phaser.Display.Color.GetColor(32,178,170)],
 			[6,Phaser.Display.Color.GetColor(0,255,127)]
 		])
+		
+		this.timeDrive = new Map([
+			[0,2054.4],
+			[90,2054.2],
+			[180,2054.4],
+			[270,2054.2]
+		])
+		this.angles = new Map([
+			["right",90],
+			["left",-90],
+		])
 
-		this.dataStars = [
-			{id:2 ,x:1, y:0},
-			{id:6 ,x:1, y:1},
-			{id:1 ,x:2, y:2},
-			{id:4 ,x:3, y:3},
-			{id:3 ,x:4, y:0},
-			{id:2 ,x:5, y:3},
-			{id:5 ,x:5, y:4},
-			{id:1 ,x:4, y:5},
-			{id:3 ,x:2, y:3},
-			{id:6 ,x:3, y:0},
-		];
-		this.dataBombs = [
-			{id:-10,x:0, y:2},
-			{id:-10,x:1, y:2},
-			{id:-10,x:3, y:1},
-		]
-		this.no_entry = [
-			{x:2, y:4},
-			{x:1, y:5},
-			{x:5, y:5},
-		]
-		
-		
-		
-
+		// this.dataStars = [
+		// 	{id:2 ,x:1, y:0},
+		// 	{id:6 ,x:1, y:1},
+		// 	{id:1 ,x:2, y:2},
+		// 	{id:4 ,x:3, y:3},
+		// 	{id:3 ,x:4, y:0},
+		// 	{id:2 ,x:5, y:3},
+		// 	{id:5 ,x:5, y:4},
+		// 	{id:1 ,x:4, y:5},
+		// 	{id:3 ,x:2, y:3},
+		// 	{id:6 ,x:3, y:0},
+		// ];
+		// this.dataBombs = [
+		// 	{id:-10,x:0, y:2},
+		// 	{id:-10,x:1, y:2},
+		// 	{id:-10,x:3, y:1},
+		// ]
+		// this.no_entry = [
+		// 	{x:2, y:4},
+		// 	{x:1, y:5},
+		// 	{x:5, y:5},
+		// ]
+		// // this.actionList = [
+		// // 	{name:"drive",numberSteps:4},
+		// // 	{name:"turnRight"},
+		// // 	{name:"drive",numberSteps:3},
+		// // 	{name:"turnRight"},
+		// // 	{name:"drive",numberSteps:4},
+		// // 	{name:"stop"}
+		// // ]
+		// this.actionList = [
+		// 	{name:"drive",numberSteps:3},
+		// 	{name:"turn", dirction:"right"},
+		// 	{name:"drive",numberSteps:3},
+		// 	{name:"turn", dirction:"right"},
+		// 	{name:"drive",numberSteps:1},
+		// 	{name:"turn", dirction:"left"},
+		// 	{name:"drive",numberSteps:2},
+		// 	{name:"stop"}
+		// ]
 	}
 
 	preload()
 	{
 		this.load.image(CAR, 'assets/animations/car1.png')
-		this.load.image(BACKGROUND,'assets/textures/maze/block.png')
-		this.load.image(STAR,'assets/textures/maze/star1.png')
-		this.load.image(BOMB,'assets/textures/maze/bomb.png')
-		this.load.image(NO_ENTRY,'assets/textures/maze/no_entry.png')
+		this.load.image(BACKGROUND,'assets/textures/StarsQuest/block.png')
+		this.load.image(STAR,'assets/textures/StarsQuest/star.png')
+		this.load.image(BOMB,'assets/textures/StarsQuest/bomb.png')
+		this.load.image(NO_ENTRY,'assets/textures/StarsQuest/no_entry.png')
 
     }
-    create()
+    create(data)
 	{  
+		console.log(arguments.length)
+		console.log(data)
+		this.dataStars = data[0]
+		this.dataBombs = data[1]
+		this.no_entry = data[2]
+
 		// new TileSprite(scene, x, y, width, height, textureKey [, frameKey])
 		//width =265*0.3 =79.5 height=264*0.3=79.2
 		
 		this.board = this.add.tileSprite(0,35,265*6,264*6,BACKGROUND).setScale(0.3).setOrigin(0,0)
 
 		this.player = this.createPlayer()
-		console.log(this.player)
+		// console.log(this.player)
 		this.stars = this.createObjects(this.dataStars, STAR, true, this.typeStars)
 		this.bombs = this.createObjects(this.dataBombs,BOMB, false)
 		this.no_entrys = this.createNoEntey()
@@ -94,20 +125,23 @@ export default class MazeScene extends Phaser.Scene
 
         this.cursors = this.input.keyboard.createCursorKeys()
 
-		this.runGame()
+		//this.runGame(this.actionList)
+		console.log(this)
 		this.events.on('pause', function (data) {
 			console.log(data)
             console.log('Scene A paused');
         })
 
+
 		this.events.on('resume', (scene, data) => {
 			console.log(data)
             console.log('Scene A resumed');
-			//this.runGame(data.list)
-			//this.function  = data.function
+			this.runGame(data.list)
+			// this.function  = data.function
+			this.runner = data.runner
 
 		});
-		//this.scene.pause();
+		this.scene.pause();
 
 
 	}
@@ -168,9 +202,9 @@ export default class MazeScene extends Phaser.Scene
 		const style = { fontSize: '32px', fill: '#FFFAFA' }
 		var text = this.add.text(x,y, "Legend:", style);
 		for (let i = 1; i <= 6; i++){
-			console.log(i)
+			// console.log(i)
 			let x_ = 39.75 +  (i-1)*79.5
-			console.log(x_,y)
+			// console.log(x_,y)
 
 			let star = this.add.image(x_, y+35, STAR)
 			star.setScale(0.1+i*0.03)
@@ -196,60 +230,94 @@ export default class MazeScene extends Phaser.Scene
 	}
 
 	//width =265*0.3 =79.5 height=264*0.3=79.2
-	driveRight(player){
-		// for (let i = 0; i < 79; i++)
-		// {
-		// 	this.player.x+=1			
-		// }
-		// this.player.x+=0.5
-		// this.player.x+=79.5
-		// this.player.x+=79.5
-		// this.player.x+=79.5
-		player.setVelocityX(40)
-	}
-	driveLeft(player){
 
-		player.setVelocityX(-40)
+
+ 
+
+	drive(player){
+		if(player.angle === 0){
+			console.log("player.angle === 0")
+
+			player.setVelocityY(0)
+			player.setVelocityX(40)
+		}
+		else if(player.angle === 90){
+			console.log("player.angle === 90")
+
+			player.setVelocityX(0)
+			player.setVelocityY(40)
+		}
+		else if(player.angle === -180){
+			console.log("player.angle === -180")
+			player.setVelocityY(0)
+			player.setVelocityX(-40)
+		}
+		else if(player.angle === -90){
+			console.log("player.angle === -90")
+
+			player.setVelocityX(0)
+			player.setVelocityY(-40)
+		}
+		// console.log(player)
 	}
+
+	turn(player, dirction){
+		player.angle += this.angles.get(dirction)
+		console.log(player.angle)
+	}
+
+	// turnLeft(player){
+	// 	console.log("turn left")
+	// 	player.angle-=90
+	// }
+
+
 	stop(player){
-
-		player.setVelocityX(0)
-	}
-	stop(player){
-
+		player.setVelocityY(0)
 		player.setVelocityX(0)
 	}
 	
-
-	newAction(func, time){
+	newAction(func, time, dirction){
 		setTimeout(() => {
-			this.player.setVelocityX(0)
-			this.player.setVelocityY(0)
-			func(this.player)
-			console.log("x",this.player.x)
+			this[func](this.player,dirction)
 		  }, time);
 	} 
 	
 
-	runGame(actionsList){
-		//119.25
-		this.newAction(this.driveRight,0)
-		this.newAction(this.stop,2054)
-		//this.newAction(this.driveLeft,1000)
-		// for (let i = 0; i < 5; i++)
-		// {
-		// 	this.driveRight()
-			
-		// }
 
+	runGame(actionsList){
 		//this.physics.resume()
-		// 	var duration = 0
-		// 	for (var action  of actionsList) {
-		// 		this.newAction(action, duration)
-		// 		duration = duration + this.time_actions.get(action)
-		//    }
-		//     this.hitBomb(this.player, duration)
+		var duration = 0
+		for (var action  of actionsList) {
+			if (action.name === "drive"){
+				this.newAction(action.name,duration)
+				duration = duration + this.timeDrive.get(this.player.angle)*action.numberSteps
+			}
+			else {
+				this.newAction(action.name,duration, action.dirction)
+				duration = duration + 5
+			}
+		}
+		this.newAction("stop", duration)
+		this.hitBomb(this.player, duration)
+
 	}	
+	async hitBomb(player, time)
+	{
+        
+		setTimeout(() => {
+			console.log("hitbomb")
+			this.physics.pause()
+			this.scene.pause();
+			this.gameOver = true
+			console.log(time)
+			this.runner.showModel()
+
+
+
+		  }, time);
+	}
+
 
 
 

@@ -10,8 +10,9 @@ import {sloved_game, restart_game} from '../gamesAPI';
 import {setLevel} from '../../levelsPage/LevelProvider'
 
 import CompilationErrorMessage from '../../alerts/CompilationErrorMessage';
-import { runCode} from '../../runSimulation/CodeRunner';
 import { useNavigate } from 'react-router-dom'
+import { DancerRunner } from '../../runSimulation/codeRunner/daceRunner';
+import { StarsQuestRunner } from '../../runSimulation/codeRunner/starsQuestRunner';
 
 
 function GameBoard(props) {
@@ -19,9 +20,10 @@ function GameBoard(props) {
 
     // const [compilationOpen, setCompilationOpen] = useState(false)
     const [text, setText] = useState("")
+    const [gameSence, setGameSence] = useState()
+
     const navigate = useNavigate();
 
-    console.log(props.game.level_number)
 
     async function solve() {
         const my_game = await sloved_game()
@@ -46,8 +48,19 @@ function GameBoard(props) {
             alert(code)
         }
         else {
-            if (runCode(code, props.game.expected_solution, props.game.game_name, back_to_levels, next_level)){
+            var runner;
+            if (props.game.game_name === "dancer"){
+                runner= new DancerRunner(code, props.game.expected_solution, back_to_levels, next_level, gameSence)
+
+            }
+            else if(props.game.game_name === "starsQuest"){
+                runner = new StarsQuestRunner(code,props.game.expected_solution, back_to_levels, next_level, gameSence)
+            }
+            console.log(runner)
+            if(runner.runcode()){
+                            
                 if(!code.includes(Constants.COMPILATION_ERROR)){
+
                     await solve()
                 }
             }
@@ -62,7 +75,7 @@ function GameBoard(props) {
     return (
         <div id="gameBoard">
             <p> Game Board </p>
-            <Game game_name = {props.game.game_name}/>
+            <Game game_name = {props.game.game_name} data = {props.game.data} setGameSence = {setGameSence}/>
             {props.game !== null && <button className='btn btn-success' onClick={get_code}> Run game</button>}
             {props.game !== null && <button className='btn btn-danger' onClick={restart}> Restart level</button>}
 
