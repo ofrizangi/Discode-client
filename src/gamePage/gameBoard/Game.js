@@ -52,17 +52,10 @@ function Game(props) {
         }, [] /* only run once; config ref elided on purpose */);
         return phaserGameRef.current;
       }
-
-
       const game = usePhaserGame(config)
 
-      
-
-    
     return (
-        <div id="game-content">
-
-        </div>
+        <div id="game-content"> </div>
     ) 
 }
 export default Game;

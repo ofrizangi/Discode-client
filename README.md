@@ -10,3 +10,4 @@
 6. npm install react-beautiful-dnd
 7. npm install phaser3-project-template
 8. npm install react react-dom
+9. npm install @monaco-editor/react

@@ -8,6 +8,7 @@ import GameButton from './GameButton'
 import React from 'react';
 import './games.css';
 
+
 function Games(props) {
 
     const [games, setGames] = useState([])
@@ -48,7 +49,7 @@ function Games(props) {
             <h1> Welcome to Discode Game page </h1>
             <div className='games'>
             {games.map((game) => {
-                    return <GameButton key={game.game_name} game_name={game.game_name} game_img={game.game_img}/>
+                    return <GameButton key={game.game_name} game_name={game.game_name}/>
                 })
             }
             </div>

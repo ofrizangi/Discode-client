@@ -6,7 +6,7 @@ import BlockList from './blockList/BlockList';
 import BlockBoard from './blockBoard/BlockBoard';
 import BlockBoardConst from './blockBoard/BlockBoardConst';
 import {swap_command_api, post_command, delete_command_api, post_inner_command, 
-    delete_inner_command_api, swap_inner_command_api, get_level_commands } from '../gamesAPI';
+    delete_inner_command_api, swap_inner_command_api } from '../gamesAPI';
 
 import { DragDropContext } from 'react-beautiful-dnd';
 import React from 'react';
@@ -15,33 +15,20 @@ function BlocksPage(props) {
 
     const blocks = props.gameLevel.blocks
     const max_row_number = props.gameLevel.max_number_of_rows
-    const [solution , setSolution ] = useState(props.gameLevel.solution)
-    // console.log("solsolsol" , solution)
-    const [commands , setCommands ] = useState(null)
+    const solution = props.solution
+    const setSolution = props.setSolution
+    const commands = props.commands
+    const setCommands = props.setCommands
 
     // droppableBlock is the current outer block we are putting inside blocks
     const [droppableBlock , setDroppableBlock] = useState(null)
     const [droppableListNumber , setDroppableListNumber] = useState(null)
 
 
-
-    useEffect(() => {
-        async function set_commands(){
-            const level_commands = await get_level_commands();
-            setCommands(level_commands)
-        }
-        set_commands()
-    }, []);
-    
-    useEffect(() => {
-        setSolution(props.gameLevel.solution)
-    }, [props.gameLevel.solution]);
-
-
     function create_arguments_array(block){
-        var argumnets_array = [Array(block.arguments_type.length).fill(null)]
-        for(let i=1; i <block.complex; i++ ){
-            argumnets_array.push(Array(block.arguments_type.length).fill(null))
+        var argumnets_array = [Array(block.arguments_type[0].length).fill(null)]
+        for(let i=1; i<block.complex; i++ ){
+            argumnets_array.push(Array(block.arguments_type[i].length).fill(null))
         }
         return argumnets_array
     }

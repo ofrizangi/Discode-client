@@ -46,14 +46,7 @@ class CodeModal extends React.Component {
     this.props.back()
   };
   
-
-  
-
-
   render() {
-
-
-
 
     return (
       <Modal

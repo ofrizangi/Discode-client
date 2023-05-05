@@ -11,10 +11,7 @@ const CodeCreator = () => {
         "starsQuest": new StarsQuestGenerator()
     }
 
-    async function translate_blocks(){
-        const commands = await get_level_commands()
-        const data = await get_game_level_data()
-        const solution = data.solution
+    async function translate_blocks(commands, solution){
         const generator = game_generators[getGame()]
 
         const compilation_error = check_compilation_errors(commands)
