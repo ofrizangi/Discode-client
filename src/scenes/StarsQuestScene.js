@@ -1,9 +1,8 @@
 import { color } from 'framer-motion'
 import Phaser from 'phaser'
 import ScoreLabel from './ui/SorceLabel'
-import { string } from 'prop-types'
+import { object, string } from 'prop-types'
 import { checkMaxIfStatementsInShader } from 'pixi.js'
-
 
 const BACKGROUND = 'background'
 const CAR = "car"
@@ -45,47 +44,6 @@ export default class StarsQuestScene extends Phaser.Scene
 			["right",90],
 			["left",-90],
 		])
-
-		// this.dataStars = [
-		// 	{id:2 ,x:1, y:0},
-		// 	{id:6 ,x:1, y:1},
-		// 	{id:1 ,x:2, y:2},
-		// 	{id:4 ,x:3, y:3},
-		// 	{id:3 ,x:4, y:0},
-		// 	{id:2 ,x:5, y:3},
-		// 	{id:5 ,x:5, y:4},
-		// 	{id:1 ,x:4, y:5},
-		// 	{id:3 ,x:2, y:3},
-		// 	{id:6 ,x:3, y:0},
-		// ];
-		// this.dataBombs = [
-		// 	{id:-10,x:0, y:2},
-		// 	{id:-10,x:1, y:2},
-		// 	{id:-10,x:3, y:1},
-		// ]
-		// this.no_entry = [
-		// 	{x:2, y:4},
-		// 	{x:1, y:5},
-		// 	{x:5, y:5},
-		// ]
-		// // this.actionList = [
-		// // 	{name:"drive",numberSteps:4},
-		// // 	{name:"turnRight"},
-		// // 	{name:"drive",numberSteps:3},
-		// // 	{name:"turnRight"},
-		// // 	{name:"drive",numberSteps:4},
-		// // 	{name:"stop"}
-		// // ]
-		// this.actionList = [
-		// 	{name:"drive",numberSteps:3},
-		// 	{name:"turn", dirction:"right"},
-		// 	{name:"drive",numberSteps:3},
-		// 	{name:"turn", dirction:"right"},
-		// 	{name:"drive",numberSteps:1},
-		// 	{name:"turn", dirction:"left"},
-		// 	{name:"drive",numberSteps:2},
-		// 	{name:"stop"}
-		// ]
 	}
 
 	preload()
@@ -99,11 +57,10 @@ export default class StarsQuestScene extends Phaser.Scene
     }
     create(data)
 	{  
-		console.log(arguments.length)
-		console.log(data)
-		this.dataStars = data[0]
-		this.dataBombs = data[1]
-		this.no_entry = data[2]
+		// console.log(arguments.length)
+		console.log("create")
+		this.boars_data = data
+
 
 		// new TileSprite(scene, x, y, width, height, textureKey [, frameKey])
 		//width =265*0.3 =79.5 height=264*0.3=79.2
@@ -111,10 +68,11 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.board = this.add.tileSprite(0,35,265*6,264*6,BACKGROUND).setScale(0.3).setOrigin(0,0)
 
 		this.player = this.createPlayer()
-		// console.log(this.player)
-		this.stars = this.createObjects(this.dataStars, STAR, true, this.typeStars)
-		this.bombs = this.createObjects(this.dataBombs,BOMB, false)
-		this.no_entrys = this.createNoEntey()
+
+		var objects = this.createObjects()
+		this.stars = objects.stars
+		this.bobms = objects.bobms
+		this.no_entrys = objects.noEntey
 
 		this.scoreLabel = this.createScoreLabel(0, 0, 0)
 		this.legend = this.createLegend(0, 515)
@@ -124,7 +82,7 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.physics.add.overlap(this.player, this.bombs, this.collectScore, null, this)
 
         this.cursors = this.input.keyboard.createCursorKeys()
-
+		console.log("create2")
 		//this.runGame(this.actionList)
 		console.log(this)
 		this.events.on('pause', function (data) {
@@ -152,30 +110,37 @@ export default class StarsQuestScene extends Phaser.Scene
 	    player.setCollideWorldBounds(true)
 		return player
 	}
-	createObjects(data, key, flag, type)
+
+	create_child(i,j ,key, data_child){
+		return this.add.sprite(39.75 + j*79.5, 39.6 +35+i*79.2, key).setName(data_child)
+	}
+
+	createObjects()
 	{
+		const stars = this.physics.add.group()
+		const bobms = this.physics.add.group()
+		const noEntey = this.physics.add.staticGroup()
 
-		const objects = this.physics.add.group({
-			key: key,
-			repeat: data.length - 1,
-		})
-
-		let i = 0;
-		objects.children.iterate((child) => {
-			let data_child = data[i]
-			if (flag){
-				child.setScale(0.1+data_child.id*0.03)
-				child.setTint(type.get(data_child.id))
+		for (let i = 0; i <6; i++){
+			for (let j = 0; j <6; j++){
+				let data_child = this.boars_data[i][j]
+				if(data_child == "*"){
+					noEntey.create(39.75 +  j*79.5, 39.6 + 35 + i*79.2, NO_ENTRY).setScale(0.03).refreshBody()
+				}
+				else if(data_child > 0){
+					let new_child = this.create_child(i,j ,STAR, data_child)
+					new_child.setScale(0.1+data_child*0.03)
+					new_child.setTint(this.typeStars.get(data_child))
+					stars.add(new_child)
+				}
+				else if (data_child < 0){
+					let new_child = this.create_child(i,j ,BOMB, data_child)
+					new_child.setScale(0.1)
+					bobms.add(new_child)
+				}
 			}
-			else {
-				child.setScale(0.1)
-			}
-			child.x = 39.75 +  data_child.x*79.5
-			child.y = 39.6 +35+data_child.y*79.2
-			child.setName(data_child.id)
-			i++;
-		})
-		return objects
+		}
+		return {stars: stars, bobms: bobms, noEntey: noEntey}
 	}
 
 	
@@ -183,7 +148,9 @@ export default class StarsQuestScene extends Phaser.Scene
 	collectScore(player, object)
 	{
         // The two parameters passed to disableBody() tells Phaser to disable and hide the GameObject.
-		object.disableBody(true, true)
+		//object.disableBody(true, true)
+		object.visible = false
+		object.body.enable = false
 		this.scoreLabel.add(object.name)
 	}
 
@@ -215,24 +182,10 @@ export default class StarsQuestScene extends Phaser.Scene
 
 	}
 
-	createNoEntey()
-	{
-		const noEntey = this.physics.add.staticGroup()
-        for (let i = 0; i < this.no_entry.length; i++)
-		{
-		let x = 39.75 +  this.no_entry[i].x*79.5
-		let y = 39.6 + 35 + this.no_entry[i].y*79.2
-		noEntey.create(x, y, NO_ENTRY).setScale(0.03).refreshBody()
-		}
-
-	return noEntey
-
-	}
 
 	//width =265*0.3 =79.5 height=264*0.3=79.2
 
 
- 
 
 	drive(player){
 		if(player.angle === 0){

@@ -58,7 +58,7 @@ function GameBoard(props) {
 
             }
             else if(props.game.game_name === "starsQuest"){
-                runner = new StarsQuestRunner(code,props.game.expected_solution, back_to_levels, next_level, gameSence)
+                runner = new StarsQuestRunner(code,props.game.expected_solution, back_to_levels, next_level, gameSence,props.game.data)
             }
             console.log(runner)
             if(runner.runcode()){
