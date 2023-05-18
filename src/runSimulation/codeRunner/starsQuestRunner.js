@@ -2,8 +2,8 @@ import BaseRunner from "./baseRunner";
 
 export class StarsQuestRunner extends BaseRunner{
 
-    constructor(code, expected_solution,back_to_levels, next_level, gameSence,board){
-        super(code, expected_solution,back_to_levels, next_level, gameSence)
+    constructor(code,back_to_levels, next_level, gameSence,board,  blocks, leftSideView){
+        super(code,back_to_levels, next_level, gameSence, blocks, leftSideView)
         this.board = this.replace_to_names(board)
         this.score = this.add_wall(board)
         console.log(this.board)
@@ -82,6 +82,10 @@ export class StarsQuestRunner extends BaseRunner{
     }
 
     runcode(){
+
+        const blocks = this.blocks
+		const validate_arguments = this.leftSideView === "editor" ? this.validate_arguments : function(){}
+
         var actionsList = []
         var x = 1
         var y = 1
@@ -120,14 +124,19 @@ export class StarsQuestRunner extends BaseRunner{
             return dict_row[angle][direction](y)
         };
             
-        const writeDrive = function(numberSteps) {actionsList.push({name:"drive",numberSteps:numberSteps})}
+        // const writeDrive = function(numberSteps) {actionsList.push({name:"drive",numberSteps:numberSteps})}
        
-        const writeTurn = function(dirction_) {actionsList.push({name:"turn", dirction:dirction_})}
+        // const writeTurn = function(dirction_) {actionsList.push({name:"turn", dirction:dirction_})}
+
+        const writeActions = function() {
+            validate_arguments(blocks, arguments[0], arguments[1])
+			actionsList.push({name: arguments[0] , arg : arguments[1] })
+        }
         
         const drive =  function(numberSteps){
             x = get_next_optional_col("front")
             y = get_next_optional_row("front")
-            writeDrive(numberSteps)
+            writeActions("drive", numberSteps)
         };
 
         const turn = function(dirction){
@@ -137,14 +146,40 @@ export class StarsQuestRunner extends BaseRunner{
             else{
                 angle = (angle -90+360)%360
             }
-            writeTurn(dirction)
+            writeActions("turn" , dirction)
         };
 
-        console.log(this.code)
-        eval(this.code)
-        this.compareSolution = this.checkSolution()
-        this.runSim("starsQuest", actionsList)
-        return this.compareSolution.compare; 
+        try {
+			eval(this.code)
+			this.actionsList = actionsList
+			this.compareSolution = this.checkSolution()
+			this.gameSence.resume("starsQuest", {list:actionsList, runner:this})
+			return this.compareSolution.compare;
+        }
+        catch(message){
+			alert(this.check_errors(message))
+        }
     }
 
 }
+
+
+// const writeActions = function() {
+//     validate_arguments(blocks, arguments[0], arguments[1])
+//     actionsList.push({name: arguments[0] , arg : arguments[1] })
+// }
+
+// const drive =  function(numberSteps){writeActions("drive", numberSteps)};
+// const turn = function(dirction){writeActions("turn" , dirction)};
+
+
+// try {
+//     eval(this.code)
+//     this.actionsList = actionsList
+//     this.compareSolution = this.checkSolution()
+//     this.gameSence.resume("starsQuest", {list:actionsList, runner:this})
+//     return this.compareSolution.compare;
+// }
+// catch(message){
+//     alert(this.check_errors(message))
+// }

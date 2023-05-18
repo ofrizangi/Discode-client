@@ -51,9 +51,7 @@ class CodeModal extends React.Component {
     return (
       <Modal
         show={this.state.open}
-        onHide={() => this.setState({
-          open: false
-        })}
+        onHide={() => this.setState({open: false})}
         dialogAs={DraggableModalDialog}
       >
         <Modal.Header closeButton className="grab">
@@ -68,7 +66,8 @@ class CodeModal extends React.Component {
             <Modal.Footer id='buttons-footer'>
               <button  type="button" className="btn btn-success" onClick={this.hideModal}>Retry</button>
               <button type="button" className="btn btn-success" onClick={this.backToLevels}>Levels</button>
-              {this.props.compare ?  <button type="button" className="btn btn-success" onClick={this.nextLevel}>Next</button> :               <button type="button" className="btn btn-success" onClick={this.nextLevel} disabled>Next</button>
+              {this.props.compare ?  <button type="button" className="btn btn-success" onClick={this.nextLevel}>Next</button> :               
+			  	<button type="button" className="btn btn-success" onClick={this.nextLevel} disabled>Next</button>
 }
 
             </Modal.Footer>

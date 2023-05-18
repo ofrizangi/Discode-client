@@ -127,6 +127,15 @@ const gamesAPI = () => {
         await fetch(`${Constants.SERVER_API}/${getGame()}/levels/${getLevel()}/deleteInnerCommand/${index}`, requestOptions)
     }
 
+    async function post_code_api(code){
+        const requestOptions = {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' , 'Authorization': 'Bearer ' + getToken() },
+            body: JSON.stringify({code : code}),
+        };
+        await fetch(`${Constants.SERVER_API}/${getGame()}/levels/postCode/${getLevel()}`, requestOptions)
+    }
+
 
     return {
         get_game_level_data,
@@ -138,7 +147,8 @@ const gamesAPI = () => {
         swap_inner_command_api,
         get_level_commands,
         sloved_game,
-        restart_game
+        restart_game,
+        post_code_api
     };
 
 
@@ -146,4 +156,4 @@ const gamesAPI = () => {
 
 
 export const {get_game_level_data, swap_command_api, post_command, delete_command_api, post_inner_command, delete_inner_command_api,
-            swap_inner_command_api, get_level_commands, sloved_game, restart_game} = gamesAPI();
+            swap_inner_command_api, get_level_commands, sloved_game, restart_game, post_code_api} = gamesAPI();

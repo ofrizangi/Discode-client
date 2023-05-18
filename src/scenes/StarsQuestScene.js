@@ -244,10 +244,10 @@ export default class StarsQuestScene extends Phaser.Scene
 		for (var action  of actionsList) {
 			if (action.name === "drive"){
 				this.newAction(action.name,duration)
-				duration = duration + this.timeDrive.get(this.player.angle)*action.numberSteps
+				duration = duration + this.timeDrive.get(this.player.angle)*action.arg
 			}
 			else {
-				this.newAction(action.name,duration, action.dirction)
+				this.newAction(action.name,duration, action.arg)
 				duration = duration + 5
 			}
 		}

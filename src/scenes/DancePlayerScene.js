@@ -48,12 +48,12 @@ export default class DancePlayerScene extends Phaser.Scene
 			['jump without hands', 800],
 			["swing left", 600],
 			['swing right', 600],
-			['turn right 45', 1500],
-			['turn left 45', 1500],
-			['turn left 180', 1500],
-			['turn right 180', 1500],
-			['turn right 360', 1500],
-			['turn left 360', 1500],
+			['turn_by right 45', 1500],
+			['turn_by left 45', 1500],
+			['turn_by left 180', 1500],
+			['turn_by right 180', 1500],
+			['turn_by right 360', 1500],
+			['turn_by left 360', 1500],
 			['cartwheel', 1500],
 			['stomp left', 800],
 			['stomp right', 800],
@@ -142,38 +142,38 @@ export default class DancePlayerScene extends Phaser.Scene
 
 		})
 		this.anims.create({
-			key: 'turn left 45',
+			key: 'turn_by left 45',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [ 8,9,10,11,10,9,8] }),
 			duration: 1500,
 			repeat: 0
 		})
 		this.anims.create({
-			key: 'turn right 45',
+			key: 'turn_by right 45',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, {frames: [ 12,13,14,15,14,13,12]}),
 			duration: 1500,
 			repeat: 0
 		})
 		
 		this.anims.create({
-			key: 'turn right 180',
+			key: 'turn_by right 180',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [71, 64,65,66,67,66,65,64,71] }),
 			duration: 1500,
 			repeat: 0
 		})
 		this.anims.create({
-			key: 'turn left 180',
+			key: 'turn_by left 180',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [ 71,70,69,68,67,68,69,70,71] }),
 			duration: 1500,
 			repeat: 0
 		})
 		this.anims.create({
-			key: 'turn left 360',
+			key: 'turn_by left 360',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { frames: [ 71,70,69,68,67,66,65,64,71]}),
 			duration: 1500,
 			repeat: 0
 		})
 		this.anims.create({
-			key: 'turn right 360',
+			key: 'turn_by right 360',
 			frames: this.anims.generateFrameNumbers(PLAYER_KEY, { start: 64, end: 71}),
 			duration: 1500,
 			repeat: 0
@@ -273,10 +273,6 @@ export default class DancePlayerScene extends Phaser.Scene
 			this.gameOver = true
 			console.log(time)
 			this.runner.showModel()
-
-
-
-
 		  }, time);
 	}
 	

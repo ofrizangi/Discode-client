@@ -1,0 +1,30 @@
+.console-window {
+    background: #000;
+    border: 3px groove #ccc;
+    color: #ccc;
+    display: block;
+    padding: 5px;
+    min-height: 200pt;
+    margin: 40pt;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+
+.mission-window {
+    border: 3px groove #ccc;
+    display: block;
+    padding: 5px;
+    min-height: 100pt;
+    margin: 30pt;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.success-message{
+    color: green;
+}
+
+.fail-message{
+    color: red;
+}

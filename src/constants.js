@@ -11,4 +11,4 @@ export const DRAGGABLE_ROW_ID = 'draggable_row'
 export const ARGUMENTS_IDENTIFIER = "<arg>"
 export const NUMBER_ARGUMENT = "int"
 
-export const COMPILATION_ERROR = "Complation error"
+export const COMPILATION_ERROR = "Error"

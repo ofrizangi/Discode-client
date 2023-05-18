@@ -3,12 +3,13 @@ import { useState, useEffect } from 'react';
 import { get_game_level_data, get_level_commands } from './gamesAPI';
 import GameBoard from './gameBoard/GameBoard';
 import BlockPage from './blocksPage/BlocksPage';
-import CodeEditorWindow from './codeEditorPage/CodeEditorWindow';
-
-
+import CodeEditorPage from './codeEditorPage/CodeEditorPage';
 import React from 'react';
 import './game.css'
 import { getGame } from '../mainPage/GameProvider';
+import OutputWindow from './codeEditorPage/OutputWindow';
+import CodeEditorWindow from './codeEditorPage/CodeEditorWindow';
+
 function GamePage(props) {
 
     // contains the data of this specific game level
@@ -41,31 +42,32 @@ function GamePage(props) {
     
     return (
         <div>
-            <h1> Game page </h1>
             { gameLevel !== null &&
                 <div className="row d-none d-md-flex">
                     <div className='col-6'>
-                        { gameLevel.blocks !== [] &&
+                        { gameLevel.blocks.length !== 0 && (
                             <div className="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" className="btn-check" name="btnradio" id="blocks" autocomplete="off" checked />
-                                <label id="blocks" className="btn btn-outline-primary" for="blocks" onClick={(event)=>{setLeftSideView(event.currentTarget.id)}}>Blocks</label>
+                                <input type="radio" className="btn-check" name="btnradio" id="blocks" autoComplete="off" defaultChecked />
+                                <label id="blocks" className="btn btn-outline-primary" htmlFor="blocks" onClick={(event)=>{setLeftSideView(event.currentTarget.id)}}>Blocks</label>
                         
-                                <input type="radio" className="btn-check" name="btnradio" id="editor" autocomplete="off" />
-                                <label id="editor" className="btn btn-outline-primary" for="editor" onClick={(event)=>{setLeftSideView(event.currentTarget.id)}}>Editor</label>
-                            </div>
+                                <input type="radio" className="btn-check" name="btnradio" id="editor" autoComplete="off" />
+                                <label id="editor" className="btn btn-outline-primary" htmlFor="editor" onClick={(event)=>{setLeftSideView(event.currentTarget.id)}}>Editor</label>
+                            </div>)
                         }
 
-                        {leftSideView === 'blocks' ?  
+                        { getGame() === "coder" ? <CodeEditorWindow code={code} setCode={setCode} ></CodeEditorWindow> :
+                            leftSideView === 'blocks' ?  
                             (commands !== null && solution!==null && <BlockPage gameLevel={gameLevel} commands={commands} setCommands={setCommands} solution={solution} setSolution={setSolution}></BlockPage>) : 
-                            (code !== null && <CodeEditorWindow code={code} setCode={setCode}></CodeEditorWindow>)}
+                            (code !== null && <CodeEditorPage code={code} setCode={setCode} gameLevel={gameLevel} commands={commands} solution={solution}></CodeEditorPage>)
+                        }
 
-                        
-                        {gameLevel.video !== undefined ? <video className="gdriveVideo" preload="auto"  width="300" height="250" controls>
-                        <source src={gameLevel.video_src} type='video/mp4'/>
-                        </video> : <div/>}   
+                        { gameLevel.video !== undefined ? <video className="gdriveVideo" preload="auto"  width="300" height="250" controls>
+                        <source src={gameLevel.video_src} type='video/mp4'/></video> : <div/>
+                        }   
                     </div>
                     <div className="col-6">
-                         <GameBoard game={gameLevel} setGame={setGameLevel} commands={commands} solution={solution}/>
+                        {getGame() === "coder" ? <OutputWindow code={code} game={gameLevel} setGame={setGameLevel}></OutputWindow> :
+                         <GameBoard game={gameLevel} setGame={setGameLevel} commands={commands} solution={solution} code={code} leftSideView={leftSideView}/> }
                     </div>
                     <div id="model"></div>
                 </div>

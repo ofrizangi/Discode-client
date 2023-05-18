@@ -31,18 +31,18 @@ const CodeCreator = () => {
             if(row.block.complex === 0){
                 for(let i=0; i<row.arguments[0].length; i++){
                     if(row.arguments[0][i] === null){
-                        return `Complation error - ${row.block._id} is missing arguments`
+                        return `Error - ${row.block._id} is missing arguments`
                     }
                 }
             }
             else {
                 for(let line_number=0; line_number<row.block.complex; line_number++){
                     if(row.inner_blocks[line_number].length === 0){
-                        return `Complation error - ${row.block._id} must contain inside other blocks`
+                        return `Error - ${row.block._id} must contain inside other blocks`
                     }
                     for(let i=0; i<row.arguments[line_number].length; i++){
                         if(row.arguments[line_number][i] === null){
-                            return `Complation error - ${row.block._id} is missing arguments`
+                            return `Error - ${row.block._id} is missing arguments`
                         }
                     }
                 }
@@ -72,8 +72,9 @@ const CodeCreator = () => {
 
 
     return {
-        translate_blocks
+        translate_blocks,
+        rec_translate_blocks
     };
 }
 
-export const {translate_blocks} = CodeCreator();
+export const {translate_blocks, rec_translate_blocks} = CodeCreator();

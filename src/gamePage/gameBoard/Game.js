@@ -55,8 +55,10 @@ function Game(props) {
       const game = usePhaserGame(config)
 
     return (
+		<>
         <div id="game-content"> </div>
-    ) 
+		</>
+    );
 }
 export default Game;
 

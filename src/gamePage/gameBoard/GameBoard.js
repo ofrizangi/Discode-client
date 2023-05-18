@@ -6,14 +6,14 @@ import { translate_blocks } from '../../runSimulation/CodeCreator';
 import Game from './Game';
 import {React,useState} from 'react';
 
-import {sloved_game, restart_game, get_game_level_data} from '../gamesAPI';
+import {sloved_game, restart_game, get_game_level_data, post_code_api} from '../gamesAPI';
 import {setLevel} from '../../levelsPage/LevelProvider'
 
 import CompilationErrorMessage from '../../alerts/CompilationErrorMessage';
 import { useNavigate } from 'react-router-dom'
-import { DancerRunner } from '../../runSimulation/codeRunner/daceRunner';
+import { DancerRunner } from '../../runSimulation/codeRunner/danceRunner';
 import { StarsQuestRunner } from '../../runSimulation/codeRunner/starsQuestRunner';
-import { getGame } from '../../mainPage/GameProvider';
+
 
 
 function GameBoard(props) {
@@ -25,6 +25,8 @@ function GameBoard(props) {
     const solution = props.solution
     const commands = props.commands
     const setGame = props.setGame
+    const editor_code = props.code
+    const leftSideView = props.leftSideView
 
 
     const navigate = useNavigate();
@@ -45,28 +47,21 @@ function GameBoard(props) {
         setGame(levelData)
     }
 
-
-    async function get_code(){
-        const code = await translate_blocks(commands, solution)
+    async function get_code() {
+        const code = leftSideView === "blocks" ? await translate_blocks(commands, solution) : editor_code
         if(code.includes(Constants.COMPILATION_ERROR)){
             alert(code)
         }
         else {
             var runner;
             if (props.game.game_name === "dancer"){
-                runner= new DancerRunner(code, props.game.expected_solution, back_to_levels, next_level, gameSence)
-
+                runner= new DancerRunner(props.game.expected_solution,code, back_to_levels, next_level, gameSence, props.game.blocks, leftSideView)
             }
             else if(props.game.game_name === "starsQuest"){
-                runner = new StarsQuestRunner(code,props.game.expected_solution, back_to_levels, next_level, gameSence,props.game.data)
+                runner = new StarsQuestRunner(code, back_to_levels, next_level, gameSence,props.game.data, props.game.blocks, leftSideView)
             }
-            console.log(runner)
-            if(runner.runcode()){
-                            
-                if(!code.includes(Constants.COMPILATION_ERROR)){
-
-                    await solve()
-                }
+            if (runner.runcode()){     
+                await solve()
             }
         }
     }
@@ -79,9 +74,9 @@ function GameBoard(props) {
     return (
         <div id="gameBoard">
             <p> Game Board </p>
-            {getGame() !== "coder" && <Game game_name = {props.game.game_name} data = {props.game.data} setGameSence = {setGameSence}/>}
             {props.game !== null && <button className='btn btn-success' onClick={get_code}> Run game</button>}
             {props.game !== null && <button className='btn btn-danger' onClick={restart}> Restart level</button>}
+            <Game game_name = {props.game.game_name} data = {props.game.data} setGameSence = {setGameSence}/>
 
             {/* {compilationOpen && <CompilationErrorMessage text={text}/>} */}
 
