@@ -5,7 +5,7 @@ import * as Constants from '../../constants';
 
 export default class BaseRunner {
 
-    constructor(code,back_to_levels, next_level, gameSence, blocks, leftSideView){
+    constructor(code,back_to_levels, next_level, gameSence, blocks, leftSideView,expected_solution, solve_in_server_function){
         this.back_to_levels = back_to_levels
         this.next_level = next_level
         this.actionsList = []
@@ -14,6 +14,8 @@ export default class BaseRunner {
 		this.blocks = blocks
 		this.leftSideView = leftSideView
 		this.code = this.leftSideView === 'editor' ? this.get_main_function_call() + ";" + code : code
+		this.expected_solution = expected_solution
+		this.solve_in_server_function = solve_in_server_function
     }
 
 
@@ -64,22 +66,24 @@ export default class BaseRunner {
 			}
 		}
 	}
-  
-  
-    showModel(){
-      setTimeout(() => { 
+
+	checkSolution(score){}
+
+
+    showModel(score, message_from_sence){
+		console.log(message_from_sence, score)
+		const information_on_soultion = this.checkSolution(score, message_from_sence);
+		if (information_on_soultion.compare)
+		{
+			this.solve_in_server_function()
+		}
+      setTimeout(() => {
         const gameBoard = createRoot(document.getElementById('model') );
-        console.log(this)
-        const model = <CodeModal text={this.leftSideView === "blocks" ? this.code : ""} message = {this.compareSolution.message} compare={this.compareSolution.compare} back={this.back_to_levels} next_level={this.next_level}/>
+        const model = <CodeModal text={this.leftSideView === "blocks" ? this.code : ""} message = {information_on_soultion.message} compare={information_on_soultion.compare} back={this.back_to_levels} next_level={this.next_level}/>
         gameBoard.render(model);
         },1000);   
     }
     
-    runSim(game_name, actionsList) {
-      	this.gameSence.resume(game_name, {list:actionsList, runner:this})
-    }
-
-
 
 	async if_infinite_code(){
         var bb = new Blob([ this.get_blocks_game_empty_functions() + this.code + "postMessage('done')"], {

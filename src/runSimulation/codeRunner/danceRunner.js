@@ -2,12 +2,12 @@ import BaseRunner from "./baseRunner";
 
 export class DancerRunner extends BaseRunner{
 
-	constructor(expected_solution,code,back_to_levels, next_level, gameSence, blocks, leftSideView){
-		super(code,back_to_levels, next_level, gameSence, blocks, leftSideView)
-		this.expected_solution = expected_solution
-	}
+	// constructor(expected_solution,code,back_to_levels, next_level, gameSence, blocks, leftSideView){
+	// 	super(code,back_to_levels, next_level, gameSence, blocks, leftSideView)
+		
+	// }
 
-    checkSolution() {
+    checkSolution(score) {
         var len_solution = this.actionsList.length;
         var len_expected_solution = this.expected_solution.length;
         if(len_expected_solution === 0){
@@ -76,9 +76,8 @@ export class DancerRunner extends BaseRunner{
 				eval(this.code)
 				this.actionsList= actionsList
 				console.log(actionsList)
-				this.compareSolution = this.checkSolution()
 				this.gameSence.resume("dancer", {list:actionsList, runner:this})
-				return this.compareSolution.compare;
+				
 			}
 			catch(message){
 				alert(this.check_errors(message))
@@ -87,5 +86,7 @@ export class DancerRunner extends BaseRunner{
 		}
 
     }
+
+    
 }
 

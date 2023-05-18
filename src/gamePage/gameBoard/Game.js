@@ -9,7 +9,7 @@ function Game(props) {
 
   const gameSences1 = new Map([
     ['dancer', {"scene":DancePlayerScene, width:600, height:500}],
-    ['starsQuest', {"scene":StarsQuestScene, width:477, height:475.2+35+70}],
+    ['starsQuest', {"scene":StarsQuestScene, width:477, height:475.2+35}],
     ])
 
 
@@ -19,6 +19,7 @@ function Game(props) {
         width: gameSences1.get(props.game_name).width,
         height:gameSences1.get(props.game_name).height,
         title: 'Game',
+        backgroundColor: '#FFFFFF',
         pixleArt: false,
         physics: {
             default: 'arcade',
@@ -34,19 +35,21 @@ function Game(props) {
     function usePhaserGame(config) {
         const phaserGameRef = React.useRef(null);
         React.useEffect(() => {
-			if (phaserGameRef.current) {
-				return;
-			}
-			phaserGameRef.current = new Phaser.Game(config);
-			
-			phaserGameRef.current.scene.start(props.game_name, props.data);
+          if (phaserGameRef.current) {
+            return;
+          }
+          phaserGameRef.current = new Phaser.Game(config);
 
-			props.setGameSence(phaserGameRef.current.scene)
+          {console.log(Object.values(props).slice(1,3))}
 
-			return () => {
-				phaserGameRef.current.destroy(true);
-				phaserGameRef.current = null;
-			};
+          phaserGameRef.current.scene.start(props.game_name, Object.values(props).slice(1,3));
+
+          props.setGameSence(phaserGameRef.current.scene)
+
+          return () => {
+            phaserGameRef.current.destroy(true);
+            phaserGameRef.current = null;
+          };
         }, [props.level] /* only run once; config ref elided on purpose */);
         return phaserGameRef.current;
     }

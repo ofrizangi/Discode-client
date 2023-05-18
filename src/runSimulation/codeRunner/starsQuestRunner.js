@@ -1,17 +1,19 @@
 import BaseRunner from "./baseRunner";
 
+import {post_best_score_api} from '../../gamePage/gamesAPI';
+
 export class StarsQuestRunner extends BaseRunner{
 
-    constructor(code,back_to_levels, next_level, gameSence,board,  blocks, leftSideView){
-        super(code,back_to_levels, next_level, gameSence, blocks, leftSideView)
+    constructor(code,back_to_levels, next_level, gameSence,board,  blocks, leftSideView,expected_solution, solve_in_server_function,best_score){
+        super(code,back_to_levels, next_level, gameSence, blocks, leftSideView,expected_solution, solve_in_server_function)
         this.board = this.replace_to_names(board)
         this.score = this.add_wall(board)
+        this.best_score = best_score
     }
 
     replace_to_names(board){
         let numbers_rows = board.length + 2
         let numbers_cols = board[0].length + 2
-        console.log(board)
         let arr = [];
         for (let i = 0; i < numbers_rows; i++) {
             arr[i] = [];
@@ -35,20 +37,16 @@ export class StarsQuestRunner extends BaseRunner{
                     }
                 }
             }
-        }  
-        console.log(arr)
+          }
         return arr
         }
 
-        add_wall(board){
-            console.log(board)
-            let numbers_rows = board.length + 2
-            let numbers_cols = board[0].length + 2
-            console.log(numbers_rows,numbers_cols)
-            console.log(board)
-            let arr = [];
-            for (let i = 0; i < numbers_rows; i++) {
-                arr[i] = [];
+    add_wall(board){
+        let numbers_rows = board.length + 2
+        let numbers_cols = board[0].length + 2
+        let arr = [];
+        for (let i = 0; i < numbers_rows; i++) {
+            arr[i] = [];
                 for (let j = 0; j < numbers_cols; j++) {
                     if (i === 0 || i === numbers_rows-1 || j===0 || j ===numbers_cols-1){
                         arr[i][j] = -1;
@@ -61,18 +59,38 @@ export class StarsQuestRunner extends BaseRunner{
                             arr[i][j] =  board[i-1][j-1]
                         }
                     }
-              }
+                }
             }
-        console.log(arr)
-        return arr
-        
+        return arr  
     }
 
-    checkSolution() {
-        return {
-            'compare': true,
-            'message': `Nice idea, well done\n`
-          }
+    checkSolution(score, message_from_sence) {
+        if (message_from_sence != undefined){
+            return {
+                'compare': false,
+                'message': message_from_sence  
+              }
+        }
+        else if (score < this.expected_solution){
+            return {
+                'compare': false,
+                'message':  `Nice try, your score is ${score}.\n Now we expect it to reach ${this.expected_solution} points\n`
+              }
+        }
+        else if(score >= this.expected_solution && score > this.best_score){
+            post_best_score_api(score)
+            return {
+                'compare': true,
+                'message':  `Well done, your score is ${score}.\n you broke your record, keep it up!\n`
+              }
+        }
+        else {
+            return {
+                'compare': true,
+                'message': `Well done, your score is  ${score}\n`
+              }
+        }
+
     }
 
     async runcode(){
@@ -133,9 +151,7 @@ export class StarsQuestRunner extends BaseRunner{
             try {
                 eval(this.code)
                 this.actionsList = actionsList
-                this.compareSolution = this.checkSolution()
                 this.gameSence.resume("starsQuest", {list:actionsList, runner:this})
-                return this.compareSolution.compare;
             }
             catch(message){
                 alert(this.check_errors(message))

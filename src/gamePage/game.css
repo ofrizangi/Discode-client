@@ -2,3 +2,13 @@
   display: flex;
   justify-content: center;
 }
+
+.star {
+  width: 100%;
+  height: 100%;
+}
+
+.bombs {
+  width: 40%;
+  height: 40%;
+}

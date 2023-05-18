@@ -9,7 +9,7 @@ const CAR = "car"
 const STAR = 'star'
 const BOMB = 'bomb'
 const NO_ENTRY = 'no_entry'
-   
+
 export default class StarsQuestScene extends Phaser.Scene
 {
     constructor()
@@ -35,14 +35,18 @@ export default class StarsQuestScene extends Phaser.Scene
 		])
 		
 		this.timeDrive = new Map([
-			[0,2054.4],
-			[90,2054.2],
+			[0,2000],
+			[90,2000],
 			[180,2054.4],
 			[270,2054.2]
 		])
 		this.angles = new Map([
 			["right",90],
 			["left",-90],
+		])
+		this.bombs_scale = new Map([
+			[-2,0.11],
+			[-4,0.14],
 		])
 	}
 
@@ -57,57 +61,84 @@ export default class StarsQuestScene extends Phaser.Scene
     }
     create(data)
 	{  
-		// console.log(arguments.length)
-		console.log("create")
-		this.boars_data = data
-
-
+		this.boars_data = data[0]
+		this.expected_solution =  data[1]
+		
 		// new TileSprite(scene, x, y, width, height, textureKey [, frameKey])
 		//width =265*0.3 =79.5 height=264*0.3=79.2
-		
 		this.board = this.add.tileSprite(0,35,265*6,264*6,BACKGROUND).setScale(0.3).setOrigin(0,0)
-
+		const borders = this.create_borders()
 		this.player = this.createPlayer()
 
 		var objects = this.createObjects()
 		this.stars = objects.stars
-		this.bobms = objects.bobms
+		this.bombs = objects.bobms
 		this.no_entrys = objects.noEntey
 
-		this.scoreLabel = this.createScoreLabel(0, 0, 0)
-		this.legend = this.createLegend(0, 515)
-
-        this.physics.add.collider(this.player, this.no_entrys)
+		this.scoreLabel = this.createScoreLabel(0, 0, 0,  data[1])
+		// this.legend = this.createLegend(0, 515)
+		this.physics.add.collider(this.player, borders, this.collide_wall,null, this )
+        this.physics.add.collider(this.player, this.no_entrys, this.collide_no_entrys, null, this)
         this.physics.add.overlap(this.player, this.stars, this.collectScore, null, this)
 		this.physics.add.overlap(this.player, this.bombs, this.collectScore, null, this)
 
         this.cursors = this.input.keyboard.createCursorKeys()
-		console.log("create2")
-		//this.runGame(this.actionList)
-		console.log(this)
-		this.events.on('pause', function (data) {
-			console.log(data)
-            console.log('Scene A paused');
+
+		this.events.once('pause', function (data) {
+			console.log('pause')
         })
 
 
-		this.events.on('resume', (scene, data) => {
-			console.log(data)
-            console.log('Scene A resumed');
+		this.events.once('resume', (scene, data) => {
+			this.gameOver = false
+			console.log("resume")
 			this.runGame(data.list)
-			// this.function  = data.function
 			this.runner = data.runner
-
 		});
+
 		this.scene.pause();
+
+	}
+	create_borders(){
+		var borderGroup = this.physics.add.group();
+
+		var x_lept_up = 0;
+		var y_lept_up = 35;
+		var x_right_down = 477+0.1;
+		var y_right_down = 475.2 + 35+0.1;
+	
+		var borderThickness = 0;
+		var borderColor = 0x000000;
+	
+		// Top border
+		var topLine = this.add.line(x_lept_up, 0, x_right_down, y_lept_up, x_lept_up, y_lept_up, borderColor).setOrigin(0).setLineWidth(borderThickness);
+		borderGroup.add(topLine);
+	
+		// Bottom border
+		var bottomLine = this.add.line(x_lept_up, 0, x_right_down, y_right_down, x_lept_up, y_right_down, borderColor).setOrigin(0).setLineWidth(borderThickness);
+		borderGroup.add(bottomLine);
+	
+		// // Left border
+		var leftLine = this.add.line(x_lept_up, 0, x_lept_up, y_right_down, x_lept_up, y_lept_up, borderColor).setOrigin(0).setLineWidth(borderThickness);
+		// borderGroup.add(leftLine);
+	
+		// Right border
+		var rightLine = this.add.line(x_lept_up, 0, x_right_down, y_right_down, x_right_down, y_lept_up, borderColor).setOrigin(0).setLineWidth(borderThickness);
+		borderGroup.add(rightLine);
+		this.physics.world.setBounds(x_lept_up, y_lept_up, x_right_down - x_lept_up, y_right_down - y_lept_up);
+		return borderGroup
+
 
 
 	}
-
 	createPlayer()
 	{
 		const player = this.physics.add.sprite(39.75, 39.6+35, CAR).setScale(0.03)
 	    player.setCollideWorldBounds(true)
+		player.setSize(player.width,player.width)
+		
+		player.body.onWorldBounds = true;
+
 		return player
 	}
 
@@ -135,7 +166,7 @@ export default class StarsQuestScene extends Phaser.Scene
 				}
 				else if (data_child < 0){
 					let new_child = this.create_child(i,j ,BOMB, data_child)
-					new_child.setScale(0.1)
+					new_child.setScale(this.bombs_scale.get(data_child))
 					bobms.add(new_child)
 				}
 			}
@@ -143,7 +174,25 @@ export default class StarsQuestScene extends Phaser.Scene
 		return {stars: stars, bobms: bobms, noEntey: noEntey}
 	}
 
+
+
 	
+	collide_wall()
+	{
+
+		this.scoreLabel.setScore(0)
+		this.hitBomb(this.player, 0, "Game Over - you collided with a wall\n")
+		console.log("warning! opps, you collid in wall\n")
+		
+	}
+
+	collide_no_entrys()
+	{
+		this.scoreLabel.setScore(0)
+		this.hitBomb(this.player, 0, "Game Over - you can't enter there\n")
+		console.log("warning! opps, you collid in no entry\n")
+		
+	}
 
 	collectScore(player, object)
 	{
@@ -154,10 +203,10 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.scoreLabel.add(object.name)
 	}
 
-	createScoreLabel(x, y, score)
+	createScoreLabel(x, y, score, expected_solution)
 	{
-		const style = { fontSize: '32px', fill: '#FFFAFA' }
-		const label = new ScoreLabel(this, x, y, score, style)
+		const style = { fontSize: '17px', fill: '#000000' }
+		const label = new ScoreLabel(this, x, y, score, expected_solution, style)
 
 		this.add.existing(label)
 
@@ -168,6 +217,7 @@ export default class StarsQuestScene extends Phaser.Scene
 	createLegend(x,y){
 		const style = { fontSize: '32px', fill: '#FFFAFA' }
 		var text = this.add.text(x,y, "Legend:", style);
+
 		for (let i = 1; i <= 6; i++){
 			// console.log(i)
 			let x_ = 39.75 +  (i-1)*79.5
@@ -179,50 +229,42 @@ export default class StarsQuestScene extends Phaser.Scene
 			let text_ = this.add.text(x_,y+35, i, {font: "16px Arial", fill: "#ffffff"}).setOrigin(0.5,0.5);
 		}
 
+	
+		let star1 = this.add.image( 39.75 +  0*79.5 , y+50, BOMB)
+		star1.setScale(this.bombs_scale.get(-2))
+		let star2 = this.add.image( 39.75 +  1*79.5 , y+50, BOMB)
+		star2.setScale(this.bombs_scale.get(-4))
+
+		let text1_ = this.add.text(39.75 +  0*79.5,y+10, -2, {font: "bold 20px Arial ", fill: "#000000"}).setOrigin(0.5,0.5);
+		let text2_ = this.add.text(39.75 +  1*79.5 ,y+10, -4, {font: "bold 20px Arial", fill: "#000000"}).setOrigin(0.5,0.5);
 
 	}
 
 
 	//width =265*0.3 =79.5 height=264*0.3=79.2
-
-
-
 	drive(player){
 		if(player.angle === 0){
-			console.log("player.angle === 0")
-
 			player.setVelocityY(0)
 			player.setVelocityX(40)
 		}
 		else if(player.angle === 90){
-			console.log("player.angle === 90")
-
 			player.setVelocityX(0)
 			player.setVelocityY(40)
 		}
 		else if(player.angle === -180){
-			console.log("player.angle === -180")
 			player.setVelocityY(0)
 			player.setVelocityX(-40)
 		}
 		else if(player.angle === -90){
-			console.log("player.angle === -90")
-
 			player.setVelocityX(0)
 			player.setVelocityY(-40)
 		}
-		// console.log(player)
 	}
 
 	turn(player, dirction){
 		player.angle += this.angles.get(dirction)
-		console.log(player.angle)
+		console.log(this.player.angle)
 	}
-
-	// turnLeft(player){
-	// 	console.log("turn left")
-	// 	player.angle-=90
-	// }
 
 
 	stop(player){
@@ -232,14 +274,18 @@ export default class StarsQuestScene extends Phaser.Scene
 	
 	newAction(func, time, dirction){
 		setTimeout(() => {
+			if (this.gameOver === false){
+			console.log(func)
 			this[func](this.player,dirction)
+			}
+			else{
+				this.stop(this.player)
+			}
 		  }, time);
 	} 
-	
 
 
 	runGame(actionsList){
-		//this.physics.resume()
 		var duration = 0
 		for (var action  of actionsList) {
 			if (action.name === "drive"){
@@ -253,20 +299,30 @@ export default class StarsQuestScene extends Phaser.Scene
 		}
 		this.newAction("stop", duration)
 		this.hitBomb(this.player, duration)
-
-	}	
-	async hitBomb(player, time)
-	{
-        
-		setTimeout(() => {
-			console.log("hitbomb")
-			this.physics.pause()
-			this.scene.pause();
-			this.gameOver = true
-			console.log(time)
-			this.runner.showModel()
-		  }, time);
 	}
 
 
+	endgame(){
+		console.log("end game")
+		this.time.delayedCall(1000, function() {
+		this.scene.restart();
+		this.player.angle = 0
+		// console.log(this.player.angle)
+		}, [], this);
+	  }
+
+
+	async hitBomb(player, time, message)
+	{
+       
+		setTimeout(() => {
+			if (this.gameOver === false){
+				this.gameOver = true
+				this.physics.pause()
+				this.endgame()
+				this.gameOver = true
+				this.runner.showModel(this.scoreLabel.getScore(),message)}
+		  }, time);
+		
+	}
 }

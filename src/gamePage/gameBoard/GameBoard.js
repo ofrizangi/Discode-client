@@ -13,8 +13,14 @@ import CompilationErrorMessage from '../../alerts/CompilationErrorMessage';
 import { useNavigate } from 'react-router-dom'
 import { DancerRunner } from '../../runSimulation/codeRunner/danceRunner';
 import { StarsQuestRunner } from '../../runSimulation/codeRunner/starsQuestRunner';
-
-
+import { getGame } from '../../mainPage/GameProvider';
+import 'bootstrap/dist/css/bootstrap.css';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover'
+import Button from 'react-bootstrap/Button';
+import '../game.css'
+import stars_information from '../../images/stars_information.png'
+import bombs_information from '../../images/bombs_information.png'
 
 function GameBoard(props) {
 
@@ -58,14 +64,15 @@ function GameBoard(props) {
         else {
             var runner;
             if (props.game.game_name === "dancer"){
-                runner= new DancerRunner(props.game.expected_solution,code, back_to_levels, next_level, gameSence, props.game.blocks, leftSideView)
+                runner= new DancerRunner(code, back_to_levels, next_level, gameSence, props.game.blocks, leftSideView, props.game.expected_solution,solve)
             }
             else if(props.game.game_name === "starsQuest"){
-                runner = new StarsQuestRunner(code, back_to_levels, next_level, gameSence,props.game.data, props.game.blocks, leftSideView)
+                runner = new StarsQuestRunner(code, back_to_levels, next_level, gameSence,props.game.data, props.game.blocks, leftSideView, props.game.expected_solution,solve, props.game.best_score)
             }
-            if (runner.runcode()){     
-                await solve()
-            }
+            // if (runner.runcode()){     
+            //     await solve()
+            // }
+            runner.runcode()
         }
     }
 
@@ -74,11 +81,33 @@ function GameBoard(props) {
         await props.setGame(my_game)
     }
 
+    
+    const popoverHoverFocus = (
+        <Popover id="popover-trigger-hover-focus" title="Popover bottom">
+            <div><strong>Legend</strong></div>
+            <img src={stars_information} className='star'></img>
+            <img src={bombs_information} className='bombs'></img>
+
+
+
+        </Popover>
+      );
+
     return (
         <div id="gameBoard">
             {props.game !== null && <button className='btn btn-success' onClick={get_code}> Run game</button>}
             {props.game !== null && <button className='btn btn-danger' onClick={restart}> Restart level</button>}
-            <Game game_name = {props.game.game_name} data = {props.game.data} level={props.game.level_number} setGameSence = {setGameSence}/>
+           
+            <Game game_name = {props.game.game_name} data = {props.game.data} level={props.game.level_number} expected_solution={props.game.expected_solution}  setGameSence = {setGameSence}/>
+            {props.game !== null && props.game.game_name === 'starsQuest' &&
+            <OverlayTrigger
+                trigger={['hover', 'focus']}
+                placement="bottom"
+                overlay={popoverHoverFocus}
+                >
+                <Button>Information</Button>
+                </OverlayTrigger>
+            }           
 
             {/* {compilationOpen && <CompilationErrorMessage text={text}/>} */}
 

@@ -136,6 +136,16 @@ const gamesAPI = () => {
         await fetch(`${process.env.REACT_APP_SERVER_API}/${getGame()}/levels/postCode/${getLevel()}`, requestOptions)
     }
 
+    async function post_best_score_api(best_score){
+        const requestOptions = {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' , 'Authorization': 'Bearer ' + getToken() },
+            body: JSON.stringify({best_score : best_score}),
+        };
+        await fetch(`${process.env.REACT_APP_SERVER_API}/${getGame()}/levels/postBestScore/${getLevel()}`, requestOptions)
+    }
+
+
 
     return {
         get_game_level_data,
@@ -148,7 +158,8 @@ const gamesAPI = () => {
         get_level_commands,
         sloved_game,
         restart_game,
-        post_code_api
+        post_code_api,
+        post_best_score_api
     };
 
 
@@ -156,4 +167,4 @@ const gamesAPI = () => {
 
 
 export const {get_game_level_data, swap_command_api, post_command, delete_command_api, post_inner_command, delete_inner_command_api,
-            swap_inner_command_api, get_level_commands, sloved_game, restart_game, post_code_api} = gamesAPI();
+            swap_inner_command_api, get_level_commands, sloved_game, restart_game, post_code_api,post_best_score_api} = gamesAPI();
