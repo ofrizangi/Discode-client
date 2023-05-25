@@ -265,14 +265,8 @@ export default class StarsQuestScene extends Phaser.Scene
 			this.gameOver = true
 			console.log(time)
 			this.runner.showModel()
-
-
-
 		  }, time);
 	}
-
-
-
 
 
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import './codeEditor.css'
 import { DancerGenerator } from "../../runSimulation/codeGenerators/dancerGenerator";
 import { StarsQuestGenerator } from "../../runSimulation/codeGenerators/starsQuestGenerator";
 

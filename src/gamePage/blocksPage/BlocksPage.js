@@ -1,6 +1,7 @@
 import * as Constants from '../../constants';
 
 import { useState, useEffect } from 'react';
+import './block.css'
 
 import BlockList from './blockList/BlockList';
 import BlockBoard from './blockBoard/BlockBoard';
@@ -19,11 +20,16 @@ function BlocksPage(props) {
     const setSolution = props.setSolution
     const commands = props.commands
     const setCommands = props.setCommands
+    const [lastId, setLastId] = useState(props.gameLevel.last_command_id)
 
     // droppableBlock is the current outer block we are putting inside blocks
     const [droppableBlock , setDroppableBlock] = useState(null)
     const [droppableListNumber , setDroppableListNumber] = useState(null)
 
+
+    useEffect(() => {
+        setLastId(props.gameLevel.last_command_id)
+    }, [props.gameLevel.last_command_id]);
 
     function create_arguments_array(block){
         var argumnets_array = [Array(block.arguments_type[0].length).fill(null)]
@@ -37,78 +43,82 @@ function BlocksPage(props) {
     functions handling adding commands
     */
     async function add_new_command(src_index ,dest_index){
-        const id = null
+        const id = lastId + 1
         const block = blocks.at(src_index)
-        commands.push({"_id" : id, "block": block, "arguments": create_arguments_array(block), "outer_block" : droppableBlock, "outer_block_list_number":null , "inner_blocks" : Array(block.complex).fill([])} )
-        solution.splice(dest_index, 0, id)
-        setSolution(solution)
-        setCommands(commands)
+        const new_commands = [...commands];
+        new_commands.push({"_id" : id, "block": block, "arguments": create_arguments_array(block), "outer_block" : droppableBlock, "outer_block_list_number":null , "inner_blocks" :  []})
+        for(let i=0; i< block.complex; i++){
+            new_commands[new_commands.length-1].inner_blocks[i]= []
+        }
+        await solution.splice(dest_index, 0, id)
+        await setCommands(new_commands)
+        setLastId(id)
 
-        const new_command = await post_command(blocks.at(src_index), dest_index)
-        solution[dest_index] = new_command._id
-        setSolution(solution)
-
-        commands[commands.length - 1]._id = new_command._id
-        commands[commands.length - 1].inner_blocks = new_command.inner_blocks
-        setCommands(commands)
+        await post_command(blocks.at(src_index), dest_index)
     }
 
     async function add_new_inner_command(outer_command_index , list_number, src_index , dest_index){
-        const id = null
+        const id = lastId + 1
         const block = blocks.at(src_index)
-        commands.push({"_id" : id, "block": block, "arguments": create_arguments_array(block), "outer_block" : droppableBlock, "outer_block_list_number":list_number, "inner_blocks" : Array(block.complex).fill([])} )
-        commands[outer_command_index].inner_blocks[list_number].splice(dest_index, 0, id)
-        setCommands(commands)
+        const new_commands = [...commands];
+        new_commands.push({"_id" : id, "block": block, "arguments": create_arguments_array(block), "outer_block" : droppableBlock, "outer_block_list_number":list_number, "inner_blocks" : []})
+        for(let i=0; i< block.complex; i++){
+            new_commands[new_commands.length-1].inner_blocks[i]= []
+        }
+        new_commands[outer_command_index].inner_blocks[list_number].splice(dest_index, 0, id)
+        await setCommands(new_commands)
+        setLastId(id)
 
-        const new_command = await post_inner_command(blocks.at(src_index), dest_index, droppableBlock, list_number)
-        commands[outer_command_index].inner_blocks[list_number][dest_index] = new_command._id
-        commands[commands.length - 1]._id = new_command._id
-        commands[commands.length - 1].inner_blocks = new_command.inner_blocks
-        setCommands(commands)
+        await post_inner_command(blocks.at(src_index), dest_index, droppableBlock, list_number)
+
     }
 
     /*
     functions handling deleting commands
     */
     //helper function to remove all the commands inside me
-    function delete_inner_commands(deleted_command_id){
+    function delete_inner_commands(deleted_command_id, commands){
         const index = commands.findIndex(element => element._id === deleted_command_id)
         const inner_commands = commands[index].inner_blocks
         commands.splice(index, 1)
         for(let i=0; i < inner_commands.length; i++ ){
             for(let j=0; j<inner_commands[i].length; j++){
-                delete_inner_commands(inner_commands[i][j])
+                delete_inner_commands(inner_commands[i][j] ,commands)
             }
         }
+        return commands
     }
 
     async function remove_inner_commands(outer_command_index , list_number, src_index){
-        const deleted_command = commands[outer_command_index].inner_blocks[list_number].splice(src_index, 1)[0]
-        delete_inner_commands(deleted_command)
-        setCommands(commands)
-        console.log(commands)
+        var new_commands = [...commands]
+        const deleted_command = new_commands[outer_command_index].inner_blocks[list_number].splice(src_index, 1)[0]
+        new_commands = await delete_inner_commands(deleted_command, new_commands)
+        await setCommands(new_commands)
         await delete_inner_command_api(src_index, droppableBlock, list_number)
     }
 
     async function remove_commands(src_index){
-        const deleted_command = solution.splice(src_index, 1)[0]
-        delete_inner_commands(deleted_command)
-        setCommands(commands)
-        setSolution(solution)
+        const new_solution = [...solution]
+        const deleted_command = new_solution.splice(src_index, 1)[0]
+        await setSolution(new_solution)
+        const new_commands = delete_inner_commands(deleted_command, [...commands])
+        setCommands(new_commands)
         await delete_command_api(src_index)
     }
 
 
     /* functions handling swaping commands*/
-    async function swap_inner_commands(outer_command_index , list_number, src_index , dest_index){
-        commands[outer_command_index].inner_blocks[list_number].splice(dest_index, 0, commands[outer_command_index].inner_blocks[list_number].splice(src_index, 1)[0]) // second_argument => number of element to remove, third_argument => elements to add, returns the removed items
-        setCommands(commands)
+    async function swap_inner_commands(outer_command_index , list_number, src_index , dest_index) {
+        const new_commands = [...commands]
+        new_commands[outer_command_index].inner_blocks[list_number].splice(dest_index, 0, commands[outer_command_index].inner_blocks[list_number].splice(src_index, 1)[0]) // second_argument => number of element to remove, third_argument => elements to add, returns the removed items
+        await setCommands([...new_commands])
         await swap_inner_command_api(src_index, dest_index, droppableBlock, list_number)
     }
 
     async function swap_commands(src_index , dest_index){
-        await solution.splice(dest_index, 0, solution.splice(src_index, 1)[0]) // second_argument => number of element to remove, third_argument => elements to add, returns the removed items
-        setSolution(solution)
+        const new_solution = [...solution]
+        new_solution.splice(dest_index, 0, new_solution.splice(src_index, 1)[0]) // second_argument => number of element to remove, third_argument => elements to add, returns the removed items
+        setSolution(new_solution)
         await swap_command_api(src_index, dest_index)
     }
 
@@ -176,6 +186,7 @@ function BlocksPage(props) {
     
     return (
         <div>
+            <p> {max_row_number - commands.length} blocks left </p>
             {commands !== null &&
             <DragDropContext onDragEnd={(param) => dragEndHandler(param)} >
                 <div className="row d-none d-md-flex">

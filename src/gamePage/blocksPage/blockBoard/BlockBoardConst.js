@@ -1,5 +1,6 @@
 import './blockBoard.css'
 import BlockRowConst from './BlockRowConst';
+import {React} from 'react';
 
 import {getHandeledClick, setHandeledClick} from './OnClickInfo'
 

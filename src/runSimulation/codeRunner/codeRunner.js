@@ -1,3 +1,5 @@
+import * as Constants from './../../constants';
+
 export class CodeRunner {
 
 	constructor(code, expected_solution, arguments_val) {
@@ -6,12 +8,13 @@ export class CodeRunner {
         this.arguments = arguments_val
         this.output = []
         this.error = ""
+        this.function_call = this.create_function_call()
 	}
 
     
-    run_code() {
-        var solution = this.code_runner(this.code)
-        this.output= solution[0]
+    async run_code() {
+        var solution = await this.code_runner(this.code)
+        this.output= this.add_space_to_console_arr(solution[0])
         this.error = solution[1]
         if(this.error !== ""){
             return false
@@ -33,133 +36,77 @@ export class CodeRunner {
     }
 
 
-    code_runner(code) {
 
-        var output = []
-        var error = ""
-        const str_code = this.create_function_call() + code
-
-        console.log(str_code)
-
-        console.stdlog = console.log.bind(console);
-
-        console.log = function(){
-            output = output.concat(Array.from(arguments))
-        }
-
-        try{
-            eval(str_code)
-        }
-        catch(e) {
-            error = e.message
-        }
-
-        console.log = console.stdlog
-        return [output, error]
+    runWorker(workerUrl) {
+        return new Promise(function(resolve, reject) {
+          var worker = new Worker(workerUrl);
+            worker.onmessage = function(event) {
+                // Worker has finished its execution
+                resolve(event.data);
+                worker.terminate();
+                clearTimeout(timeout);
+            };
+            worker.onerror = function(error) {
+                // Worker encountered an error
+                reject(error.message);
+                worker.terminate();
+                clearTimeout(timeout);
+            };
+            var timeout = setTimeout(function(){
+                reject(Constants.INFINITE_CODE);
+                worker.terminate();
+                worker = null;
+            }, 300);
+        });
     }
 
 
-    compare_solution(){
+    async code_runner(code) {
+        var output = []
+        var error = ""
+        var bb = new Blob([this.function_call + code + "postMessage('done')"], {
+            type: 'text/javascript'
+        });
+        var bbURL = URL.createObjectURL(bb);
+
+        try {
+            await this.runWorker(bbURL)
+
+            const str_code = this.function_call + code
+
+            console.stdlog = console.log.bind(console);
+
+            console.log = function(){
+                output = output.concat(Array.from(arguments))
+            }
+
+            eval(str_code)
+
+            console.log = console.stdlog
+        }
+        catch(e){
+            error = e
+        }
+        return [output, error]
+    }
+
+    async compare_solution(){
         if(this.expected_code === undefined){
             return true
         }
-        const expected_solution = this.code_runner(this.expected_code)[0]
-        if(JSON.stringify(expected_solution) === JSON.stringify(this.output)){
+        const solution = await this.code_runner(this.expected_code)
+        const expected_solution = this.add_space_to_console_arr(solution[0])
+        if (JSON.stringify(expected_solution) === JSON.stringify(this.output)){
             return true
         }
         return false
     }
 
+    add_space_to_console_arr(array) {
+        for (let i = 1; i < array.length; i += 2) {
+            array.splice(i, 0, ' ');
+        }
+        return array
+    }
+
 }
-
-
-            // setOutput([])
-        // setError("")
-        // console.stdlog = console.log.bind(console);
-
-        // console.log = function(){
-        //     setOutput((prev) => {
-        //         return prev.concat(Array.from(arguments))
-        //     })
-        //     console.stdlog.apply(console, arguments);
-        // }
-        // try{
-        //     eval(editor_code)
-        // }
-        // catch(e) {
-        //     setError(e.message)
-        // }
-
-        // console.log = console.stdlog
-        
-        // var bb = new Blob(["console.log('hello')"], {
-        //     type: 'text/javascript'
-        //   });
-        
-        //   // convert the blob into a pseudo URL
-        //   var bbURL = URL.createObjectURL(bb);
-        
-        //   // Prepare the worker to run the code
-        //   var worker = new Worker(bbURL);
-        
-        
-        // //   add a listener for messages from the Worker
-        //   worker.addEventListener('message', function(e){
-        //     var string = (e.data).toString();
-        //     alert(string)
-        //   }.bind(this));
-
-
-
-
-
-
-    //save me!!!!!!!!!
-            // var bb = new Blob(["console.log('hello')"], {
-        //     type: 'text/javascript'
-        //   });
-        
-        //   // convert the blob into a pseudo URL
-        //   var bbURL = URL.createObjectURL(bb);
-        
-        //   // Prepare the worker to run the code
-        //   var worker = new Worker(bbURL);
-        
-        
-        // //   add a listener for messages from the Worker
-        //   worker.addEventListener('message', function(e){
-        //     var string = (e.data).toString();
-        //     alert(string)
-        //   }.bind(this));
-
-
-
-        			// console.log("my obj" , this.prototype.toString())
-			
-
-			// var bb = new Blob(["let { obj } = workerData;", "obg.hello()"], {
-			// 	type: 'text/javascript'
-			//   });
-			
-			//   // convert the blob into a pseudo URL
-			//   var bbURL = URL.createObjectURL(bb);
-			
-			//   // Prepare the worker to run the code
-			//   var worker = new Worker(bbURL,  { workerData: { obj: this } });
-
-			//   worker.addEventListener('error', function(e){
-			// 	var string = (e.message).toString();
-			// 	alert(string)
-			//   });
-
-			//   worker.addEventListener('message', function(e){
-			// 	var string = (e.message).toString();
-			// 	console.log("nahhhhhhhhh" , string)
-			//   });
-
-
-			//   setTimeout(function(){
-			// 	console.log("hereeeeeeee")
-			// 	worker.terminate();
-			// 	worker = null;
-			//   }, 5000);

@@ -25,23 +25,7 @@ function SelectArgument(props) {
         // const command_index = commands.findIndex(value => value._id === row._id)
         commands[command_index].arguments[list_number][index] = event.target.value
         setCommands(commands)
-
-        const myInterval = setInterval(() => {
-            if(row._id !== null){
-                clearInterval(myInterval)
-                post_argument(row._id, index, list_number, event.target.value)
-            }
-          }, 100);
-
-
-        // if(row._id === null){
-        //     setTimeout(() => {
-        //         post_argument(row._id, index, list_number, event.target.value)
-        //       }, 1000);
-        // }
-        // else {
-        //     post_argument(row._id, index,list_number, event.target.value)
-        // }
+        post_argument(row._id, index, list_number, event.target.value)
     }
 
     return (

@@ -33,6 +33,9 @@ function GameBoard(props) {
 
 
     async function solve() {
+        if(leftSideView === 'editor'){
+            await post_code_api(editor_code)
+        }
         const my_game = await sloved_game()
         await setGame(my_game)
     }
@@ -73,10 +76,9 @@ function GameBoard(props) {
 
     return (
         <div id="gameBoard">
-            <p> Game Board </p>
             {props.game !== null && <button className='btn btn-success' onClick={get_code}> Run game</button>}
             {props.game !== null && <button className='btn btn-danger' onClick={restart}> Restart level</button>}
-            <Game game_name = {props.game.game_name} data = {props.game.data} setGameSence = {setGameSence}/>
+            <Game game_name = {props.game.game_name} data = {props.game.data} level={props.game.level_number} setGameSence = {setGameSence}/>
 
             {/* {compilationOpen && <CompilationErrorMessage text={text}/>} */}
 

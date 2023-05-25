@@ -42,12 +42,12 @@ export class DancerRunner extends BaseRunner{
     }
 
 
-    runcode(){
+    async runcode(){
+		console.log("validate!!!!!!!!!!!!!!!!!!!!!")
       	const blocks = this.blocks
 		const validate_arguments = this.leftSideView === "editor" ? this.validate_arguments : function(){}
 
-
-        var actionsList = []
+		var actionsList = []
         function writeActions() {
 			validate_arguments(blocks, arguments[0], arguments[1])
 			let actionName = arguments[0];
@@ -66,16 +66,26 @@ export class DancerRunner extends BaseRunner{
         const slide =  function(){writeActions("slide", arguments)};
         const turn_by = function(){writeActions("turn_by", arguments)};
 
-        try {
-			eval(this.code)
-			this.actionsList= actionsList
-			this.compareSolution = this.checkSolution()
-			this.gameSence.resume("dancer", {list:actionsList, runner:this})
-			return this.compareSolution.compare;
-        }
-        catch(message){
-			alert(this.check_errors(message))
-        }
+		const infinite_code = await this.if_infinite_code()
+
+		if(infinite_code){
+			alert("infinite code")
+		}
+		else {
+			try {
+				eval(this.code)
+				this.actionsList= actionsList
+				console.log(actionsList)
+				this.compareSolution = this.checkSolution()
+				this.gameSence.resume("dancer", {list:actionsList, runner:this})
+				return this.compareSolution.compare;
+			}
+			catch(message){
+				alert(this.check_errors(message))
+			}
+
+		}
+
     }
 }
 

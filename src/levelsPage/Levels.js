@@ -21,7 +21,7 @@ function Levels(props) {
                 method: 'GET',
                 headers: { 'Authorization': 'Bearer ' + getToken() },
             };
-            const response = await fetch(`${Constants.SERVER_API}/${getGame()}/levels/getAll`, requestOptions)
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API}/${getGame()}/levels/getAll`, requestOptions)
             if (response.ok){
                 const levelList = await response.json();
                 setLevels(levelList)

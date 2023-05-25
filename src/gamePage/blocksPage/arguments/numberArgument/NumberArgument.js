@@ -23,17 +23,9 @@ function NumberArgument(props) {
 
     function set_argument(event){
         setVal(event.target.value)
-        console.log(event.target.value)
         commands[command_index].arguments[list_number][index] = event.target.value
         setCommands(commands)
-        if(row._id === null){
-            setTimeout(() => {
-                post_argument(row._id, index, list_number, event.target.value)
-              }, 1000);
-        }
-        else {
-            post_argument(row._id, index, list_number, event.target.value)
-        }
+        post_argument(row._id, index, list_number, event.target.value)
     }
 
     return (

@@ -24,7 +24,7 @@ function Register(props) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user),
         };
-        const response = await fetch(`${Constants.SERVER_API}/users/register`, requestOptions);
+        const response = await fetch(`${process.env.REACT_APP_SERVER_API}/users/register`, requestOptions);
         if(response.ok){
             const token_json = await response.json()
             setToken(token_json.token)

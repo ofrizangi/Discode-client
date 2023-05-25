@@ -15,7 +15,7 @@ const argumentsAPI = () => {
             headers: { 'Content-Type': 'application/json' , 'Authorization': 'Bearer ' + getToken() },
             body: JSON.stringify({value : value, list_number:list_number}),
         };
-        const response = await fetch(`${Constants.SERVER_API}/${getGame()}/levels/${getLevel()}/rows/${row_id}/postArgument/${index}`, requestOptions)
+        const response = await fetch(`${process.env.REACT_APP_SERVER_API}/${getGame()}/levels/${getLevel()}/rows/${row_id}/postArgument/${index}`, requestOptions)
         if(response.ok){
             return await response.json()
         }

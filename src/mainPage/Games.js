@@ -27,7 +27,7 @@ function Games(props) {
                 method: 'GET',
                 headers: { 'Authorization': 'Bearer ' + getToken() },
             };
-            const response = await fetch(`${Constants.SERVER_API}/games/getAll`, requestOptions)
+            const response = await fetch(`${process.env.REACT_APP_SERVER_API}/games/getAll`, requestOptions)
             if (response.ok){
                 const gameList = await response.json();
                 setGames(gameList)

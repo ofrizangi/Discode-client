@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 
 import './codeEditor.css'
-import Commands from './Commands'
 import CodeEditorWindow from "./CodeEditorWindow";
 import { rec_translate_blocks } from "../../runSimulation/CodeCreator";
 import { DancerGenerator } from "../../runSimulation/codeGenerators/dancerGenerator";
@@ -11,7 +10,7 @@ function CodeEditorPage(props) {
 
     const code = props.code
     const setCode = props.setCode
-    const gameLevel = props.gameLevel
+    const blocks = props.gameLevel.blocks
     const game_generators = {
         "dancer" : new DancerGenerator(),
         "starsQuest": new StarsQuestGenerator()
@@ -20,22 +19,29 @@ function CodeEditorPage(props) {
     const commands = props.commands
     const solution = props.solution
 
+    useEffect(() => {
+        if(code === ""){
+            setCode(`function ${get_main_function_call()} {\n\n}`)
+        }
+    }, [code]);
+
+
+    function get_main_function_call(){
+        const game_blocks = blocks.filter(element => element.is_game_block)
+        const game_blocks_id = game_blocks.map(obj => obj._id)
+        return "main("+ game_blocks_id.join(',') + ")"
+    }
 
 
     function generate_code(){
-        setCode(rec_translate_blocks(commands, solution, generator, ""))
+        setCode(`function ${get_main_function_call()} {\n${rec_translate_blocks(commands, solution, generator, "\t")}\n}`)
     }
-
 
 
     return(
         <div className="row d-none d-md-flex">
-            <div className="col-3"> <Commands gameLevel={gameLevel}/> </div>
-            <div className="col-9">
-                <CodeEditorWindow code={code} setCode={setCode}> </CodeEditorWindow>
-                <button className='btn btn-success' onClick={generate_code}> generate blocks to code</button>
-            </div>
-             
+            <CodeEditorWindow code={code} setCode={setCode}> </CodeEditorWindow>
+            <button className='btn btn-success' onClick={generate_code}> generate blocks to code</button>             
         </div>
     )
 

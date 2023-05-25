@@ -21,7 +21,7 @@ function NewText(props) {
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getToken()},
             body: JSON.stringify(qustion),
         };
-        const response = await fetch(`${Constants.SERVER_API}/${getGame()}/forum/${props.req}`, requestOptions);
+        const response = await fetch(`${process.env.REACT_APP_SERVER_API}/${getGame()}/forum/${props.req}`, requestOptions);
         if(response.ok){
             props.get_questions_and_answers()
         }

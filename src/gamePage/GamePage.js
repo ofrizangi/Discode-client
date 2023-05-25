@@ -18,7 +18,7 @@ function GamePage(props) {
     const [solution , setSolution ] = useState(null)
     const [code, setCode] = useState(null)
     const [leftSideView, setLeftSideView] = useState(getGame() === "coder" ? "editor" : "blocks")
-    
+
     useEffect(() => {
         async function set_game(){
             const my_level = await get_game_level_data()
@@ -55,15 +55,16 @@ function GamePage(props) {
                             </div>)
                         }
 
-                        { getGame() === "coder" ? <CodeEditorWindow code={code} setCode={setCode} ></CodeEditorWindow> :
+                        { getGame() === "coder" ? code !== null && <CodeEditorWindow code={code} setCode={setCode} ></CodeEditorWindow> :
                             leftSideView === 'blocks' ?  
                             (commands !== null && solution!==null && <BlockPage gameLevel={gameLevel} commands={commands} setCommands={setCommands} solution={solution} setSolution={setSolution}></BlockPage>) : 
                             (code !== null && <CodeEditorPage code={code} setCode={setCode} gameLevel={gameLevel} commands={commands} solution={solution}></CodeEditorPage>)
                         }
 
-                        { gameLevel.video !== undefined ? <video className="gdriveVideo" preload="auto"  width="300" height="250" controls>
-                        <source src={gameLevel.video_src} type='video/mp4'/></video> : <div/>
-                        }   
+                        { gameLevel.video_src !== undefined && <video key={gameLevel.video_src} className="gdriveVideo" preload="auto" width="300" height="250" controls>
+                                                    <source src={gameLevel.video_src} type='video/mp4'/>
+                                                </video>
+                        }
                     </div>
                     <div className="col-6">
                         {getGame() === "coder" ? <OutputWindow code={code} game={gameLevel} setGame={setGameLevel}></OutputWindow> :
@@ -73,7 +74,7 @@ function GamePage(props) {
                 </div>
             }
         </div>
-      );
+    );
 }
   
 export default GamePage;

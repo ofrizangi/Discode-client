@@ -1,0 +1,9 @@
+.block {
+    padding-left: 10pt;
+    padding-bottom: 10pt;
+    padding-top: 5pt;
+    border-radius: 15px;
+    border: 2px solid #edf1e6;
+    font-family: sans-serif;
+    cursor: grabbing;
+}

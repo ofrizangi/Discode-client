@@ -21,7 +21,7 @@ function Login(props) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(user),
         };
-        const response = await fetch(`${Constants.SERVER_API}/users/login`, requestOptions);
+        const response = await fetch(`${process.env.REACT_APP_SERVER_API}/users/login`, requestOptions);
         if(response.ok){
             const json_token =  await response.json()
             setToken(json_token.token)

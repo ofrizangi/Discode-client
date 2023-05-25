@@ -36,6 +36,7 @@ class DraggableModalDialog extends React.Component {
 	
 	hideModal = () => {
 		this.setState({ open: false });
+		this.props.setRunCode(false);
 	}
 	
 	handleSubmit(event) {
@@ -43,7 +44,12 @@ class DraggableModalDialog extends React.Component {
 		this.setState({ open: false });
 		var args = []
 		for(let i=0 ; i<this.props.arguments_name.length; i++){
-			args.push(this.state[this.props.arguments_name[i]])
+			if(isNaN(this.state[this.props.arguments_name[i]])){
+				args.push(`'${this.state[this.props.arguments_name[i]].toString()}'`)
+			}
+			else {
+				args.push(this.state[this.props.arguments_name[i]])
+			}
 		}
 		this.props.setArgs(args)
 	}
@@ -52,7 +58,7 @@ class DraggableModalDialog extends React.Component {
 		return (
 		<Modal
 			show={this.state.open}
-			onHide={() => this.setState({open: false})}
+			onHide={this.hideModal}
 			dialogAs={DraggableModalDialog}>
 			<Modal.Header closeButton className="grab">
 				<Modal.Title> Insert code arguments: </Modal.Title>

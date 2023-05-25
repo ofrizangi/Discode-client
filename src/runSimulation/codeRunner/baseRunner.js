@@ -8,12 +8,30 @@ export default class BaseRunner {
     constructor(code,back_to_levels, next_level, gameSence, blocks, leftSideView){
         this.back_to_levels = back_to_levels
         this.next_level = next_level
-        this.code = code
         this.actionsList = []
         this.compareSolution = {}
         this.gameSence = gameSence
 		this.blocks = blocks
 		this.leftSideView = leftSideView
+		this.code = this.leftSideView === 'editor' ? this.get_main_function_call() + ";" + code : code
+    }
+
+
+	get_main_function_call(){
+        const game_blocks = this.blocks.filter(element => element.is_game_block)
+        const game_blocks_id = game_blocks.map(obj => obj._id)
+        return "main("+ game_blocks_id.join(',') + ")"
+    }
+
+	get_blocks_game_empty_functions(){
+        const game_blocks = this.blocks.filter(element => element.is_game_block)
+        const game_blocks_id = game_blocks.map(obj => obj._id)
+		var str = ""
+		for(let i=0; i< game_blocks_id.length; i++){
+			str += `function ${game_blocks_id[i]}(){}`
+		}
+		console.log(str)
+        return str
     }
 
     check_errors(error){
@@ -59,6 +77,47 @@ export default class BaseRunner {
     
     runSim(game_name, actionsList) {
       	this.gameSence.resume(game_name, {list:actionsList, runner:this})
+    }
+
+
+
+	async if_infinite_code(){
+        var bb = new Blob([ this.get_blocks_game_empty_functions() + this.code + "postMessage('done')"], {
+            type: 'text/javascript'
+        });
+		console.log(bb)
+        var bbURL = URL.createObjectURL(bb);
+
+        try {
+            await this.runWorker(bbURL)
+			return false
+		} catch(e) {
+			return true
+		}
+	}
+
+	runWorker(workerUrl) {
+        return new Promise(function(resolve, reject) {
+          	var worker = new Worker(workerUrl);
+            worker.onmessage = function(event) {
+                // Worker has finished its execution
+                resolve(event.data);
+                worker.terminate();
+                clearTimeout(timeout);
+            };
+            worker.onerror = function(error) {
+                // Worker encountered an error
+                resolve(error.message);
+                worker.terminate();
+                clearTimeout(timeout);
+            };
+            var timeout = setTimeout(function(){
+				worker.terminate();
+                worker = null;
+                reject(Constants.INFINITE_CODE);
+
+            }, 200);
+        });
     }
 
 }

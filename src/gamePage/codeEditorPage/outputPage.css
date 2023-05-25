@@ -28,3 +28,9 @@
 .fail-message{
     color: red;
 }
+
+
+.loading-gif {
+    width:30px;
+    height: 30px;
+}

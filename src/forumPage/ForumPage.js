@@ -17,7 +17,7 @@ function Forum(props) {
             method: 'GET',
             headers: { 'Authorization': 'Bearer ' + getToken() },
         };
-        const response = await fetch(`${Constants.SERVER_API}/${getGame()}/forum/getAll`, requestOptions)
+        const response = await fetch(`${process.env.REACT_APP_SERVER_API}/${getGame()}/forum/getAll`, requestOptions)
         if (response.ok){
             const forum = await response.json();
             setForum(forum)
@@ -25,9 +25,8 @@ function Forum(props) {
     }
 
     useEffect(() => {
-
-            get_questions_and_answers()
-        }, []);
+        get_questions_and_answers()
+    }, []);
 
 
 

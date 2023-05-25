@@ -5,7 +5,6 @@ import DancePlayerScene from '../../scenes/DancePlayerScene';
 import StarsQuestScene from '../../scenes/StarsQuestScene';
 
 
-
 function Game(props) {
 
   const gameSences1 = new Map([
@@ -35,24 +34,23 @@ function Game(props) {
     function usePhaserGame(config) {
         const phaserGameRef = React.useRef(null);
         React.useEffect(() => {
-          if (phaserGameRef.current) {
-            return;
-          }
-          phaserGameRef.current = new Phaser.Game(config);
-        
+			if (phaserGameRef.current) {
+				return;
+			}
+			phaserGameRef.current = new Phaser.Game(config);
+			
+			phaserGameRef.current.scene.start(props.game_name, props.data);
 
-          phaserGameRef.current.scene.start(props.game_name, props.data);
+			props.setGameSence(phaserGameRef.current.scene)
 
-          props.setGameSence(phaserGameRef.current.scene)
-
-          return () => {
-            phaserGameRef.current.destroy(true);
-            phaserGameRef.current = null;
-          };
-        }, [] /* only run once; config ref elided on purpose */);
+			return () => {
+				phaserGameRef.current.destroy(true);
+				phaserGameRef.current = null;
+			};
+        }, [props.level] /* only run once; config ref elided on purpose */);
         return phaserGameRef.current;
-      }
-      const game = usePhaserGame(config)
+    }
+	const game = usePhaserGame(config)
 
     return (
 		<>

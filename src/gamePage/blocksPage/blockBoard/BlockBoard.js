@@ -2,7 +2,7 @@ import * as Constants from '../../../constants';
 import './blockBoard.css'
 import { Droppable } from 'react-beautiful-dnd';
 import BlockRow from './BlockRow';
-import React from 'react';
+import {React} from 'react';
 
 import {getHandeledClick, setHandeledClick} from './OnClickInfo'
 
@@ -28,10 +28,9 @@ function BlockBoard(props) {
 
     return (
         <div className="board clickable-board" onClick={handle_on_click}>
-            {/* {console.log("current solution", solution, get_solution())} */}
                 <Droppable droppableId={Constants.DROPPABLE_BOARD_ID + props.row_id + props.list_num} >
                     {(provided, snapshot) => (
-                        <div  ref={provided.innerRef} {...provided.droppableProps}>
+                        <div ref={provided.innerRef} {...provided.droppableProps}>
                             {get_solution().map((row, index) => (
                                 <BlockRow key={index} row={row} index={index} id={props.id} setDroppableBlock={props.setDroppableBlock} droppableBlock = {props.droppableBlock} commands={props.commands} setCommands={props.setCommands} droppableListNumber={props.droppableListNumber} setDroppableListNumber={props.setDroppableListNumber}> </BlockRow>
                             ))}
