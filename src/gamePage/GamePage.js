@@ -32,7 +32,7 @@ function GamePage(props) {
             if(gameLevel !== null){
                 const level_commands = await get_level_commands();
                 setCommands(level_commands)
-                setSolution(gameLevel.solution)
+                setSolution(gameLevel.solution.map(row => row._id.id))
                 setCode(gameLevel.editor_code)
             }
         }
