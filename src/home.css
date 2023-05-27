@@ -1,0 +1,51 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.centered-div {
+    position: relative;
+    display: flex;
+    justify-content: center; /* Horizontal center */
+    align-items: center; /* Vertical center */
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+}
+
+.container-fluid{
+    display: flex;
+    flex-wrap: wrap;
+    height: 100vh; /* Set the container height to 100% of viewport height */
+    top: 0;
+    left: 0;
+}
+
+.error-message {
+    display: block;
+}
+
+
+.right-side {
+    background-color: lightblue;
+}
+
+.image-container {
+    position: absolute;
+    width: 40%;
+    top: 38%;
+    left: 44.5%;
+    z-index: 1; /* Ensure the image container appears above other elements */
+}
+
+
+.image-container img {
+    vertical-align: middle;
+    width: 100%;
+    height:100%;
+}
+
+.welcome{
+    font-size: 50px;
+}
+

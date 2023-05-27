@@ -9,7 +9,6 @@ import {React,useState} from 'react';
 import {sloved_game, restart_game, get_game_level_data, post_code_api} from '../gamesAPI';
 import {setLevel} from '../../levelsPage/LevelProvider'
 
-import CompilationErrorMessage from '../../alerts/CompilationErrorMessage';
 import { useNavigate } from 'react-router-dom'
 import { DancerRunner } from '../../runSimulation/codeRunner/danceRunner';
 import { StarsQuestRunner } from '../../runSimulation/codeRunner/starsQuestRunner';
@@ -85,11 +84,8 @@ function GameBoard(props) {
     const popoverHoverFocus = (
         <Popover id="popover-trigger-hover-focus" title="Popover bottom">
             <div><strong>Legend</strong></div>
-            <img src={stars_information} className='star'></img>
-            <img src={bombs_information} className='bombs'></img>
-
-
-
+            <img src={stars_information} className='star' alt="error"></img>
+            <img src={bombs_information} className='bombs' alt="error"></img>
         </Popover>
       );
 

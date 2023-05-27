@@ -1,0 +1,35 @@
+.form div {
+    margin: 6.5%;
+}
+
+.link{
+    color: rgb(27, 132, 167); /* Set the text color */
+    cursor: pointer; /* Change the cursor to a pointer */
+}
+  
+.form {
+    width:50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Medium-sized shadow */
+}
+
+
+.btn-primary {
+    background-color: rgb(27, 132, 167) !important;
+    border: rgb(27, 132, 167) !important;
+}
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:visited{
+    background-color: rgb(47, 150, 187) !important;
+    border: rgb(47, 150, 187) !important;
+}
+
+.header{
+    color:rgb(27, 132, 167);
+}
+
+
+.form-text{
+    font-size: 0.975em !important;
+    color: #6c757d;
+    margin-bottom: 3% !important;
+}

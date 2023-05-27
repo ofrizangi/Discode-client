@@ -21,9 +21,7 @@ function App() {
         {console.log(isLogged)}
             {!isLogged && 
               <Routes>
-              <Route path='/' element={<Home/>}></Route>    
-              <Route path="/login" element={<Login setIsLogged={setIsLogged}/>}></Route>
-              <Route path='/register'element={<Register setIsLogged={setIsLogged}/>}></Route>
+              <Route path='/' element={<Home setIsLogged={setIsLogged}/>}></Route>
             </Routes>
             }
             {isLogged && 

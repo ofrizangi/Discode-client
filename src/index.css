@@ -17,3 +17,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.title{
+  font-family: 'cursive';
+  font-style: oblique;
+  font-weight: bold;
+}
+
+.text{
+  font-family: 'cursive';
+  font-style: oblique;
+}
+
+.page-title{
+  font-family: 'Lobster', cursive;
+  font-size: 72px;
+  font-weight: bold;
+  color: rgb(47, 150, 187);
+  text-align: center;
+  text-transform: capitalize;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  padding-top: 5%;
+}
