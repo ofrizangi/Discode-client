@@ -54,3 +54,12 @@ justify-content: center;
     align-items:center;
     justify-content:center
 }
+
+
+.input-text{
+    padding-bottom: 2%;
+}
+
+.col-form-label {
+    padding-left: 6%;
+}

@@ -66,11 +66,13 @@ class DraggableModalDialog extends React.Component {
 			<Modal.Body className="modalBody">
 				<form onSubmit={this.handleSubmit}>
 					{this.props.arguments_name.map((name, index) => {
-						return <div key={index}>
-							<label> {name}:  
-          						<input type="text" value={this.state.name} onChange={(event) => {this.setState({[name]: event.target.value});}} />
-        					</label>
+						return <div key={index} className="form-group row input-text">
+								<label htmlFor="name" className="col-sm-2 col-form-label">{name}:</label>
+								<div className="col-sm-10">
+									<input type="text" className="form-control" id="name" value={this.state.name} onChange={(event) => {this.setState({[name]: event.target.value});}} />
+								</div>
 						</div>
+
 					})}
         			<input type="submit" className="btn btn-success" value="Submit" />
 				</form>
