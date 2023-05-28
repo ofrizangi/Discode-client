@@ -59,15 +59,15 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.load.image(NO_ENTRY,'assets/textures/StarsQuest/no_entry.png')
 
     }
+
     create(data)
 	{  
-		this.boars_data = data[0]
-		this.expected_solution =  data[1]
-		
+		this.board_data = data.board_data
+		this.best_score =  data.best_score
 		// new TileSprite(scene, x, y, width, height, textureKey [, frameKey])
 		//width =265*0.3 =79.5 height=264*0.3=79.2
 		this.board = this.add.tileSprite(0,35,265*6,264*6,BACKGROUND).setScale(0.3).setOrigin(0,0)
-		const borders = this.create_borders()
+	
 		this.player = this.createPlayer()
 
 		var objects = this.createObjects()
@@ -75,9 +75,11 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.bombs = objects.bobms
 		this.no_entrys = objects.noEntey
 
-		this.scoreLabel = this.createScoreLabel(0, 0, 0,  data[1])
+		this.scoreLabel = this.createScoreLabel(0, 0, 0,  this.best_score )
+
 		// this.legend = this.createLegend(0, 515)
-		this.physics.add.collider(this.player, borders, this.collide_wall,null, this )
+		this.physics.world.on('worldbounds', this.collide_wall, this);
+
         this.physics.add.collider(this.player, this.no_entrys, this.collide_no_entrys, null, this)
         this.physics.add.overlap(this.player, this.stars, this.collectScore, null, this)
 		this.physics.add.overlap(this.player, this.bombs, this.collectScore, null, this)
@@ -99,44 +101,15 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.scene.pause();
 
 	}
-	create_borders(){
-		var borderGroup = this.physics.add.group();
-
-		var x_lept_up = 0;
-		var y_lept_up = 35;
-		var x_right_down = 477+0.1;
-		var y_right_down = 475.2 + 35+0.1;
-	
-		var borderThickness = 0;
-		var borderColor = 0x000000;
-	
-		// Top border
-		var topLine = this.add.line(x_lept_up, 0, x_right_down, y_lept_up, x_lept_up, y_lept_up, borderColor).setOrigin(0).setLineWidth(borderThickness);
-		borderGroup.add(topLine);
-	
-		// Bottom border
-		var bottomLine = this.add.line(x_lept_up, 0, x_right_down, y_right_down, x_lept_up, y_right_down, borderColor).setOrigin(0).setLineWidth(borderThickness);
-		borderGroup.add(bottomLine);
-	
-		// // Left border
-		var leftLine = this.add.line(x_lept_up, 0, x_lept_up, y_right_down, x_lept_up, y_lept_up, borderColor).setOrigin(0).setLineWidth(borderThickness);
-		// borderGroup.add(leftLine);
-	
-		// Right border
-		var rightLine = this.add.line(x_lept_up, 0, x_right_down, y_right_down, x_right_down, y_lept_up, borderColor).setOrigin(0).setLineWidth(borderThickness);
-		borderGroup.add(rightLine);
-		this.physics.world.setBounds(x_lept_up, y_lept_up, x_right_down - x_lept_up, y_right_down - y_lept_up);
-		return borderGroup
 
 
 
-	}
 	createPlayer()
 	{
 		const player = this.physics.add.sprite(39.75, 39.6+35, CAR).setScale(0.03)
 	    player.setCollideWorldBounds(true)
 		player.setSize(player.width,player.width)
-		
+		this.physics.world.setBounds(0, 35, 477, 475.2)
 		player.body.onWorldBounds = true;
 
 		return player
@@ -154,7 +127,7 @@ export default class StarsQuestScene extends Phaser.Scene
 
 		for (let i = 0; i <6; i++){
 			for (let j = 0; j <6; j++){
-				let data_child = this.boars_data[i][j]
+				let data_child = this.board_data[i][j]
 				if(data_child == "*"){
 					noEntey.create(39.75 +  j*79.5, 39.6 + 35 + i*79.2, NO_ENTRY).setScale(0.03).refreshBody()
 				}
@@ -182,7 +155,7 @@ export default class StarsQuestScene extends Phaser.Scene
 
 		this.scoreLabel.setScore(0)
 		this.hitBomb(this.player, 0, "Game Over - you collided with a wall\n")
-		console.log("warning! opps, you collid in wall\n")
+		console.log("Game Over - you collided with a wall\n")
 		
 	}
 
@@ -190,7 +163,7 @@ export default class StarsQuestScene extends Phaser.Scene
 	{
 		this.scoreLabel.setScore(0)
 		this.hitBomb(this.player, 0, "Game Over - you can't enter there\n")
-		console.log("warning! opps, you collid in no entry\n")
+		console.log("Game Over - you can't enter there\n")
 		
 	}
 
@@ -203,10 +176,10 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.scoreLabel.add(object.name)
 	}
 
-	createScoreLabel(x, y, score, expected_solution)
+	createScoreLabel(x, y, score, best_score)
 	{
 		const style = { fontSize: '17px', fill: '#000000' }
-		const label = new ScoreLabel(this, x, y, score, expected_solution, style)
+		const label = new ScoreLabel(this, x, y, score, best_score, style)
 
 		this.add.existing(label)
 
@@ -303,9 +276,12 @@ export default class StarsQuestScene extends Phaser.Scene
 
 
 	endgame(){
+		if (this.scoreLabel.getScore()>this.best_score){
+			this.best_score = this.scoreLabel.getScore()
+		}
 		console.log("end game")
 		this.time.delayedCall(1000, function() {
-		this.scene.restart();
+		this.scene.restart({board_data:this.board_data,best_score:this.best_score});
 		this.player.angle = 0
 		// console.log(this.player.angle)
 		}, [], this);

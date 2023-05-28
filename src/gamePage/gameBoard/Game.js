@@ -25,7 +25,7 @@ function Game(props) {
             default: 'arcade',
             arcade: {
                 //gravity: { y: 300 },
-                debug: true
+                // debug: true
             }
         },
         scene: [gameSences1.get(props.game_name).scene]
@@ -40,9 +40,7 @@ function Game(props) {
           }
           phaserGameRef.current = new Phaser.Game(config);
 
-          {console.log(Object.values(props).slice(1,3))}
-
-          phaserGameRef.current.scene.start(props.game_name, Object.values(props).slice(1,3));
+          phaserGameRef.current.scene.start(props.game_name, {board_data:props.data,best_score:props.best_score});
 
           props.setGameSence(phaserGameRef.current.scene)
 

@@ -1,5 +1,5 @@
 import './levels.css'
-import key from '../images/open_lock.png'
+import key from '../images/unlock.png'
 import {setLevel} from '../levelsPage/LevelProvider'
 import { useNavigate } from 'react-router-dom'
 import React from 'react';
@@ -14,12 +14,12 @@ function LevelOpenButton(props) {
     }
 
     return (
-        <span>
-            <button className='keyButton' onClick={goto_game}>
-                <img src={key} alt="buttonpng" className='keyButton'/>
-                {props.level.description ? props.level.description : props.level.level_number}            
-            </button>
-        </span>
+            <div className="circle green" onClick={goto_game}>
+                 <div className='object-center'>
+                <img src={key} alt="buttonpng" className='lock-img'/>
+                <div className='title'>{props.level.level_number-1}</div>
+                </div>
+            </div>
       );
   }
   

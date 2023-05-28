@@ -1,11 +1,132 @@
 
-  .column {
-    margin-left: 5%;
-  }
-  
-  img{
-    width:200px;
-    height: 200px;
+ .background {
+  background-image: url('../images/background13.png');
+  background-size: cover;
+  background-position: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 90%;
+}
+
+h1:hover {
+  font-variation-settings: "wght" 582; 
+  letter-spacing: 1px;
   }
 
- 
+/* GameButton */
+  div.polaroid {
+    width: 450px;
+    height: 450px;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-bottom: 25px;
+    border-radius: 8px;
+    margin-left: 5%;
+    cursor: pointer;
+  }
+  
+
+.games_names {
+    text-align: center;
+    font-size: xx-large;
+  }
+  
+  .container {
+    position: relative;
+    display: contents;
+    display: inline-block;
+    width:100%;
+    height: 85%;
+    border-radius: 8px;
+    padding: 0;
+  }
+
+
+
+/*VideoHover*/
+
+#no_padding{
+  padding: 0;
+}
+
+.video-overlay {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100;
+  z-index: 1;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+  object-fit: fill;
+}
+
+.container:hover .video-overlay {
+  display: block;
+}
+
+.video-play {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  width:100%;
+  height: 100%;
+  object-fit: fill;
+  border-radius: 8px;
+}
+
+.container:hover .video-play {
+  display: none;
+}
+
+.video {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width:100%;
+  height: 100%;
+  border-radius: 8px;
+  z-index: 2;
+  object-fit: fill;
+}
+
+.container:hover .video {
+  display: block;
+}  
+
+img {
+  width:100%;
+  height: 100%;
+  border-radius: 8px;
+  object-fit: fill;
+}
+
+  /* Games */
+.games-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+
+.games-center {
+  position: absolute;
+  top:50%;
+  bottom: 50%;
+  right: 54%;
+  left: 46%;
+  transform: translate(-50%, -50%);
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  margin: 0;
+  width: 100%;
+  z-index: -1;
+  display: flex;
+  justify-content: center;
+  }

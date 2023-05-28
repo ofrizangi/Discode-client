@@ -3,9 +3,9 @@ import * as Constants from '../constants';
 import { getGame } from "../mainPage/GameProvider";
 import LevelClosedButton from './LevelClosedButton';
 import LevelOpenButton from './LevelOpenButton';
+import LevelFreeStyle from './LeveFreeStyle';
 import {getToken} from '../userManagment/authorization'
 import React from 'react';
-
 import { useNavigate } from 'react-router-dom'
 
 function Levels(props) {
@@ -34,12 +34,25 @@ function Levels(props) {
         navigate('/forum')
     }
     return (
-        <div>
-            <h1> Welcome to {getGame()} game levels page </h1>
-            {levels.map((level) => {
-                    return level.locked ? <LevelClosedButton key={level.level_number} level={level}/>: <LevelOpenButton key={level.level_number} level={level}/>
-                })
-            }
+        <div className='background'>
+            <h1 className='title'> Welcome to {getGame()} game levels page </h1>
+            <div className='level_screen'>
+            <LevelFreeStyle key={levels[0]} game_name={getGame()}></LevelFreeStyle>
+            <div className='levels-grid'>
+                {levels.map((level) => {
+                        if (level.level_number  > 1 ){
+                            if(level.locked){
+                            return  <LevelClosedButton key={level.level_number} level={level}/>
+                        }
+                        else {
+                            return <LevelOpenButton key={level.level_number} level={level}/>
+                        }
+                    }
+
+                    })
+                }
+             </div>
+             </div>
             <button className="btn btn-primary" onClick={goto_fourm}> go to Fourm</button>
         </div>
       );

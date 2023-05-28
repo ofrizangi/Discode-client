@@ -63,31 +63,32 @@ export class StarsQuestRunner extends BaseRunner{
             }
         return arr  
     }
-
+ 
+   
     checkSolution(score, message_from_sence) {
         if (message_from_sence != undefined){
             return {
                 'compare': false,
-                'message': message_from_sence  
+                'message': <h3 id="fails">{message_from_sence}</h3>
               }
         }
         else if (score < this.expected_solution){
             return {
                 'compare': false,
-                'message':  `Nice try, your score is ${score}.\n Now we expect it to reach ${this.expected_solution} points\n`
+                'message':  <h3 id="blue">{`Nice try, your score is ${score}.\nNow we expect it to reach ${this.expected_solution} points\n`}</h3>
               }
         }
         else if(score >= this.expected_solution && score > this.best_score){
             post_best_score_api(score)
             return {
                 'compare': true,
-                'message':  `Well done, your score is ${score}.\n you broke your record, keep it up!\n`
+                'message':  <h3 id="succeeded">{`Well done, your score is ${score}.\nyou broke your record, keep it up!\n`}</h3>
               }
         }
         else {
             return {
                 'compare': true,
-                'message': `Well done, your score is  ${score}\n`
+                'message': <h3 id="succeeded">{`Well done, your score is ${score}\n`}</h3> 
               }
         }
 
@@ -151,6 +152,7 @@ export class StarsQuestRunner extends BaseRunner{
             try {
                 eval(this.code)
                 this.actionsList = actionsList
+                console.log(this.actionsList)
                 this.gameSence.resume("starsQuest", {list:actionsList, runner:this})
             }
             catch(message){

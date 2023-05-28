@@ -1,15 +1,15 @@
 import Phaser from 'phaser'
 
-const formatScore = (score, expected_solution) => `Score: ${score}, expected solution: ${expected_solution}`
+const formatScore = (score, best_score) => `Score: ${score}, Your record: ${best_score}`
 
 export default class ScoreLabel extends Phaser.GameObjects.Text
 {
-   constructor(scene, x, y, score,expected_solution, style)
+   constructor(scene, x, y, score,best_score, style)
    {
-       super(scene, x, y, formatScore(score, expected_solution), style)
+       super(scene, x, y, formatScore(score, best_score), style)
 
         this.score = score
-        this.expected_solution = expected_solution
+        this.best_score = best_score
    }
 
    setScore(score)
@@ -25,7 +25,7 @@ export default class ScoreLabel extends Phaser.GameObjects.Text
 
    updateScoreText()
    {
-       this.setText(formatScore(this.score, this.expected_solution))
+       this.setText(formatScore(this.score, this.best_score))
    }
 
    getScore()

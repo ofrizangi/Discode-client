@@ -59,8 +59,7 @@ class CodeModal extends React.Component {
           
         </Modal.Header>
           <Modal.Body className="modalBody">
-           
-            {this.props.compare ? <h3 id="succeeded">{this.props.message}</h3> : <h3 id="fails">{this.props.message}</h3>}
+          {this.props.message}
             <p>{this.props.text}</p>
             </Modal.Body>
             <Modal.Footer id='buttons-footer'>

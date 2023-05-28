@@ -5,7 +5,8 @@ const PLAYER_KEY = 'player'
 const BACKGROUND_KEY = 'background'
 const LINE = "line"
 const LINE_A = "line2"
-
+const PAUSE = "stop"
+const ERSUME = "play"
    
 export default class DancePlayerScene extends Phaser.Scene
 {
@@ -14,6 +15,8 @@ export default class DancePlayerScene extends Phaser.Scene
 		super('dancer')
         this.player = undefined
         this.gameOver = false
+		this.gameIsPaused = false
+		console.log(this.gameIsPaused)
 		
 
 	}
@@ -26,6 +29,8 @@ export default class DancePlayerScene extends Phaser.Scene
 
 		this.load.image(LINE, 'assets/textures/line.png')
 		this.load.image(LINE_A, 'assets/textures/line_a.png')
+		this.load.image(PAUSE, 'assets/textures/stop.png')
+		this.load.image(ERSUME, 'assets/textures/play.png')
 
 		this.load.spritesheet(PLAYER_KEY, 'assets/animations/player.png',{
 			frameWidth: 110,
@@ -37,9 +42,17 @@ export default class DancePlayerScene extends Phaser.Scene
 	{  
         // origin is center
 		const line = this.createLine()
-
+		console.log(this.gameIsPaused)
         this.add.image(300, 250, BACKGROUND_KEY).setScale(1.7,1.4)
-
+		this.pauseBtn = this.add.sprite(5, 5, PAUSE)
+		this.resumeBtn = this.add.sprite(5, 5, ERSUME).setVisible(false).setActive(false)
+		var list = [this.pauseBtn,this.resumeBtn]
+		list.forEach(l => {
+			l.setInteractive()
+			l.setScale(0.1)
+			l.setOrigin(0);
+		})
+		this.resumeBtn.depth = 2
         this.player = this.createPlayer()
 		
 		this.physics.add.collider(this.player, line)
@@ -64,11 +77,32 @@ export default class DancePlayerScene extends Phaser.Scene
 			['slide right', 1000],
 			])
 
-		this.input.on('pointerup', function (pointer) {
+		// this.input.on('pointerup', function (pointer) {
 
-            this.scene.start('ActiveDancerPlayerSence', {list:["aaa"]});
+        //     this.scene.start('ActiveDancerPlayerSence', {list:["aaa"]});
 
-        }, this);
+        // }, this);
+
+		  // Event listener for pointerover
+		  this.pauseBtn.on('pointerdown', function () {
+			console.log('button_stop clicked');
+			console.log(this);
+			if(this.gameIsPaused === false){
+				console.log('this.gameIsPaused = true');
+				this.gameIsPaused = true
+				this.pauseBtn.setVisible(false).setActive(false)
+				this.resumeBtn.setVisible(true).setActive(true)
+			}
+		  });
+
+		  this.resumeBtn.on('pointerdown', function () {
+			console.log('button_play clicked');
+			if(this.gameIsPaused){
+				this.gameIsPaused = false
+				this.resumeBtn.setVisible(false).setActive(false)
+				this.pauseBtn.setVisible(true).setActive(true)
+			}
+		  });
 
 		this.events.on('pause', function (data) {
 			console.log(data)

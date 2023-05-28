@@ -38,20 +38,20 @@ function Games(props) {
 
 
     return (
-        <div>
-            {console.log(games)}
-            {console.log(getToken())}
+        <div className='background'>
             <ul className="nav">
                 <li className="nav-item">
                     <button className="nav-link" onClick={logout}> Logout </button>
                 </li>
             </ul>
-            <h1> Welcome to Discode Game page </h1>
-            <div className='games'>
+            <div className='center games-center'>
+            <h1 className='title'>Discode</h1>
+            <div className='games-container'>
             {games.map((game) => {
                     return <GameButton key={game.game_name} game_name={game.game_name}/>
                 })
             }
+            </div>
             </div>
         </div>
       );

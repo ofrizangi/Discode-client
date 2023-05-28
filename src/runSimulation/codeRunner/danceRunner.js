@@ -11,18 +11,18 @@ export class DancerRunner extends BaseRunner{
         var len_solution = this.actionsList.length;
         var len_expected_solution = this.expected_solution.length;
         if(len_expected_solution === 0){
-          return { 'compare': true, 'message': `Nice idea, well done\n`}
+          return { 'compare': true, 'message': <h3 id="succeeded">{`Nice idea, well done\n`}</h3>}
         }
         if(len_solution > len_expected_solution){
           return {
             'compare': false,
-            'message': `Your solution contains ${len_solution - len_expected_solution} more operations than expected\n`
+            'message': <h3 id="fails">{`Your solution contains ${len_solution - len_expected_solution} more operations than expected\n`}</h3>
           };
         }
         else if(len_expected_solution > len_solution){
           return {
             'compare': false,
-            'message': `Your solution contains ${len_expected_solution - len_solution} less operations than expected\n`
+            'message': <h3 id="fails">{`Your solution contains ${len_expected_solution - len_solution} less operations than expected\n`}</h3>
           };
         } 
         else {
@@ -30,7 +30,7 @@ export class DancerRunner extends BaseRunner{
             if (this.actionsList[i] !== this.expected_solution[i]) {    
               return {
                 'compare': false,
-                'message': `action number ${i+1} is not corrcet\n`
+                'message': <h3 id="fails">{`action number ${i+1} is not corrcet\n`}</h3>
               };
             }
           }

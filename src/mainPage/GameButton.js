@@ -2,18 +2,20 @@ import { useNavigate } from 'react-router-dom'
 import { setGame } from "./GameProvider";
 import React from 'react';
 import './games.css';
-
-import dancer from '../images/dancer.png'
-import quest from '../images/starsQuest.png'
-import coder from '../images/coder.jpeg'
-
+import VideoHover from './VideoHover';
+import dancer_img from '../images/dancer.png'
+import quest_img from '../images/starsQuest.png'
+import coder_img from '../images/coder.jpeg'
+import dancer_video from '../images/dancer.mp4'
+import quest_video from '../images/starsQuest.mp4'
+import coder_video from '../images/coder.mp4'
 
 function GameButton(props) {
 
-    const img_src = {
-        "dancer" : dancer,
-        "starsQuest" : quest,
-        "coder" : coder
+    const games_information = {
+        "dancer" : [dancer_img, dancer_video, "Dancer"],
+        "starsQuest" : [quest_img, quest_video, "Stars Quest"],
+        "coder" : [coder_img, coder_video, "Coder"]
     }
 
     const navigate = useNavigate();
@@ -24,10 +26,14 @@ function GameButton(props) {
     }
 
     return (
-        <button className='column' onClick={goto_game_levels}>
-            <img src={img_src[props.game_name]} alt={props.game_name}/>
-            <div>{props.game_name.split("_")}</div>
-        </button> 
+        <div className='polaroid' onClick={goto_game_levels}>
+            <VideoHover
+                imageSrc={games_information[props.game_name][0]}
+                videoSrc={games_information[props.game_name][1]}
+            />
+            {/* <img src={img_src[props.game_name]} alt={props.game_name}/> */}
+            <div className='title container games_names'>{games_information[props.game_name][2]}</div>
+        </div> 
       );
   }
   

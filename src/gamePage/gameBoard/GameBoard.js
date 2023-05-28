@@ -94,7 +94,7 @@ function GameBoard(props) {
             {props.game !== null && <button className='btn btn-success' onClick={get_code}> Run game</button>}
             {props.game !== null && <button className='btn btn-danger' onClick={restart}> Restart level</button>}
            
-            <Game game_name = {props.game.game_name} data = {props.game.data} level={props.game.level_number} expected_solution={props.game.expected_solution}  setGameSence = {setGameSence}/>
+            <Game game_name = {props.game.game_name}  level={props.game.level_number} data = {props.game.data} best_score={props.game.best_score}  setGameSence = {setGameSence}/>
             {props.game !== null && props.game.game_name === 'starsQuest' &&
             <OverlayTrigger
                 trigger={['hover', 'focus']}
