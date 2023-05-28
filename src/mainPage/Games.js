@@ -38,14 +38,14 @@ function Games(props) {
 
 
     return (
-        <div className='background'>
+        <div className='background background-blue'>
             <ul className="nav">
                 <li className="nav-item">
-                    <button className="nav-link" onClick={logout}> Logout </button>
+                    <span className="nav-link" onClick={logout}> Logout </span>
                 </li>
             </ul>
             <div className='center games-center'>
-            <h1 className='title'>Discode</h1>
+                <h1 className='page-title'> DISCODE games </h1>
             <div className='games-container'>
             {games.map((game) => {
                     return <GameButton key={game.game_name} game_name={game.game_name}/>

@@ -92,7 +92,7 @@ export class CodeRunner {
 
     async compare_solution(){
         if(this.expected_code === undefined){
-            return true
+            return undefined
         }
         const solution = await this.code_runner(this.expected_code)
         const expected_solution = this.add_space_to_console_arr(solution[0])

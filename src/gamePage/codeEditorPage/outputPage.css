@@ -1,32 +1,92 @@
+.output-window-container {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.output-message {
+    flex: 1;   
+}
+
 .console-window {
-    background: #000;
-    border: 3px groove #ccc;
+    background-color: rgb(41, 39, 39);
     color: #ccc;
-    display: block;
-    padding: 5px;
-    min-height: 200pt;
-    margin: 40pt;
+    flex: 9;
     word-wrap: break-word;
     white-space: pre-wrap;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* Medium-sized shadow */
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 3%;
+    overflow: auto;
+}
+
+.upper-terminal{
+    text-align: left;
+	background-color: rgb(61, 61, 63);
+    color: #ccc;
+    margin-left: 5%;
+    margin-right: 5%;    
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* Medium-sized shadow */
 }
 
 
 .mission-window {
-    border: 3px groove #ccc;
+    margin: 5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 1%;
     display: block;
-    padding: 5px;
-    min-height: 100pt;
-    margin: 30pt;
+    flex: 3;
     word-wrap: break-word;
     white-space: pre-wrap;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Medium-sized shadow */
 }
+
+.function-call {
+    border-top: 2px solid rgb(41, 39, 39);
+    margin: 1%;
+}
+
+.game-button {
+    background: none;
+    height: fit-content;
+    width: fit-content;
+    border: none;
+    display: inline-block;
+    outline: none;
+    line-height: 0; /* Add this rule */
+    padding-top: 2%;
+    padding-left: 2%;
+}
+
+.game-button:disabled {
+    opacity: 0.6 !important;
+}
+
+.game-button img {
+    display: block;
+    width: 45px;
+    height: 45px; 
+}
+
+
+.next-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
 
 .success-message{
     color: green;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+
 }
 
 .fail-message{
     color: red;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 
@@ -34,3 +94,15 @@
     width:30px;
     height: 30px;
 }
+
+
+.editor {
+    margin-top: 5%;
+    border: none;
+}
+
+.monaco-editor .overflow-guard {
+    border-bottom: none !important;
+}
+
+

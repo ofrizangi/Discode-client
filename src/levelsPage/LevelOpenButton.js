@@ -15,10 +15,8 @@ function LevelOpenButton(props) {
 
     return (
             <div className="circle green" onClick={goto_game}>
-                 <div className='object-center'>
                 <img src={key} alt="buttonpng" className='lock-img'/>
                 <div className='title'>{props.level.level_number-1}</div>
-                </div>
             </div>
       );
   }

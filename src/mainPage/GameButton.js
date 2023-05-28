@@ -31,8 +31,7 @@ function GameButton(props) {
                 imageSrc={games_information[props.game_name][0]}
                 videoSrc={games_information[props.game_name][1]}
             />
-            {/* <img src={img_src[props.game_name]} alt={props.game_name}/> */}
-            <div className='title container games_names'>{games_information[props.game_name][2]}</div>
+            <h2 className='title games_names'>{games_information[props.game_name][2]}</h2>
         </div> 
       );
   }

@@ -39,7 +39,7 @@ function CodeEditorPage(props) {
 
 
     return(
-        <div className="row d-none d-md-flex">
+        <div>
             <CodeEditorWindow code={code} setCode={setCode}> </CodeEditorWindow>
             <button className='btn btn-success' onClick={generate_code}> generate blocks to code</button>             
         </div>

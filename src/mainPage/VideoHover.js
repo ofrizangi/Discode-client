@@ -18,15 +18,14 @@ const VideoHover = ({ imageSrc, videoSrc }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <img src={imageSrc} alt="Image" />
-      <div className="video-overlay"></div>
-      <video
-        className="video"
-        src={videoSrc}
-        autoPlay={false}
-        muted
-        ref={videoRef}
-      ></video>
+      <img src={imageSrc} alt="error"/>
+		<video
+			className="video"
+			src={videoSrc}
+			autoPlay={false}
+			muted
+			ref={videoRef}
+		></video>
     </div>
   );
 };

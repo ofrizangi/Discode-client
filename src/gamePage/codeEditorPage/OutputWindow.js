@@ -3,9 +3,13 @@ import './outputPage.css'
 import { CodeRunner } from "../../runSimulation/codeRunner/codeRunner";
 import InsertArgsModal from "../../alerts/InsertArgsModal";
 import {sloved_game, get_game_level_data, post_code_api, restart_game} from '../gamesAPI';
-import {setLevel} from '../../levelsPage/LevelProvider'
+import {setLevel, getLevel} from '../../levelsPage/LevelProvider'
 import * as Constants from './../../constants';
+
 import loading from './../../images/loading.gif'
+import play_img from './../../images/play-button.png'
+import restart_img from './../../images/reloading.png'
+
 
 function OutputWindow(props) {
 
@@ -15,12 +19,16 @@ function OutputWindow(props) {
     const expected_solution = props.game.expected_solution
     const function_arguments = props.game.function_arguments
     const mission = props.game.data
+    console.log("gamming" , props.game)
     const [args, setArgs] = useState(props.game.function_arguments.length !== 0 ? [] : null)
     const [runCode, setRunCode] = useState(false)
     const [success, setSuccess] = useState(false)
     const [fail, setFail] = useState(false)
     const [functionCall, setFunctionCall] = useState("")
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+    const [runButtonDisabled, setRunButtonDisabled] = useState(false)
+    const [nextButtonDisabled, setNextButtonDisabled] = useState(true)
+
 
     useEffect(() => {
         if(runCode){
@@ -37,15 +45,7 @@ function OutputWindow(props) {
         await props.setGame(my_game)
     }
 
-    async function restart() {
-        const my_game = await restart_game()
-        await props.setGame(my_game)
-    }
-
-    async function next_level(){
-        setLevel(props.game.level_number+1)
-        const levelData = await get_game_level_data()
-        await props.setGame(levelData)
+    function setter(levelData){
         setOutput([])
         setError({text : "", img: null})
         setArgs(levelData.function_arguments.length !== 0 ? [] : null)
@@ -53,6 +53,20 @@ function OutputWindow(props) {
         setSuccess(false)
         setFail(false)
         setFunctionCall(null)
+        setNextButtonDisabled(true)
+    }
+
+    async function restart() {
+        const my_game = await restart_game()
+        await props.setGame(my_game)
+        setter(my_game)
+    }
+
+    async function next_level(){
+        setLevel(props.game.level_number+1)
+        const levelData = await get_game_level_data()
+        await props.setGame(levelData)
+        setter(levelData)
     }
 
     async function run_code(){
@@ -61,9 +75,9 @@ function OutputWindow(props) {
         if(code_runner.error !== ""){
             if(code_runner.error.includes(Constants.INFINITE_CODE)){
                 setError({text : code_runner.error, img: <img className="loading-gif" src={loading} alt="GIF"/>} )
-                setIsButtonDisabled(true)
+                setRunButtonDisabled(true)
                 setTimeout(() => {
-                    setIsButtonDisabled(false)
+                    setRunButtonDisabled(false)
                     setError({text : code_runner.error, img: null} )
                 }, 1000*30);
             }
@@ -76,8 +90,16 @@ function OutputWindow(props) {
             setError({text : "", img: null})
             setOutput(code_runner.output)
         }
-        setFail(!correct)
-        setSuccess(correct)
+        if(correct !== undefined){
+            setFail(!correct)
+            setSuccess(correct)
+            setNextButtonDisabled(!correct)
+        } else {
+            setFail(false)
+            setSuccess(false)
+            setNextButtonDisabled(false)
+        }
+
         setFunctionCall(code_runner.function_call)
 
         if(correct){
@@ -92,41 +114,34 @@ function OutputWindow(props) {
 
 
 	return (
-		<div>
-			<button className='btn btn-success' disabled={isButtonDisabled} onClick={()=>{setRunCode(true)}}> Run code</button>
-            <button className='btn btn-danger' onClick={restart}> Restart Level </button>
+		<div className="output-window-container">
 
+            {console.log(getLevel())}
             <div className="mission-window">
-				<h1 className="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 mb-2">
-					Mission
-				</h1>
+				<h2> Mission </h2>
                 <div>{mission}</div>
 			</div>
 
+            <div className="upper-terminal">
+                <button className="game-button" disabled={runButtonDisabled} onClick={()=>{setRunCode(true)}}> <img className src={play_img} alt="error"/></button>
+                <button className='game-button' onClick={restart}> <img src={restart_img} alt="error"/> </button>
+                <div className='function-call'> function call : {functionCall} </div>
+            </div>
 
-			<div className="console-window">
-                <p> function call : {functionCall} </p>
-				<h1 className="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 mb-2">
-					Output
-				</h1>
-				{error!== "" ? <div className="error"> {error.text} {error.img}  </div> : <div> {output}</div>}
+            <div className="console-window">
+                    <h2> Output </h2>
+                    {error.text !== "" ? <div> {error.text} {error.img}  </div> : <div> {output}</div>}
 
-                {runCode && args !== null && <InsertArgsModal arguments_name={function_arguments} setArgs={setArgs} setRunCode={setRunCode}/>}
-
+                    {runCode && args !== null && <InsertArgsModal arguments_name={function_arguments} setArgs={setArgs} setRunCode={setRunCode}/>}
 			</div>
+  
+            <div className="output-message"> 
+                {success && <h2 className="success-message">Great job! </h2> }
 
-            {success && 
-                <div className="success-message"> 
-                    <h1>Great job! </h1>
-                    <button className='btn btn-primary' onClick={next_level}> Next level </button>
-                </div>
-            }
+                {fail &&  <h2 className="fail-message"> Wrong output! Try again </h2> }
+            </div>
 
-            {fail && 
-                <div className="fail-message"> 
-                    <h1> Output is not correct! try again... </h1>
-                </div>
-            }
+            <button className='btn btn-primary next-button' disabled={nextButtonDisabled} onClick={next_level}> Next level </button>
 
 
 		</div>
