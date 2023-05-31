@@ -9,6 +9,8 @@ const CAR = "car"
 const STAR = 'star'
 const BOMB = 'bomb'
 const NO_ENTRY = 'no_entry'
+const PAUSE = "pause"
+const STOP = "stop"
 
 export default class StarsQuestScene extends Phaser.Scene
 {
@@ -22,8 +24,9 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.no_entrys = undefined
 		this.scoreLabel = undefined
 		this.legend = undefined
-        this.cursors = undefined
 		this.gameOver = false
+		this.version = 0
+		
 
 		this.typeStars = new Map([
 			[1,Phaser.Display.Color.GetColor(123,104,238)],
@@ -57,9 +60,27 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.load.image(STAR,'assets/textures/StarsQuest/star.png')
 		this.load.image(BOMB,'assets/textures/StarsQuest/bomb.png')
 		this.load.image(NO_ENTRY,'assets/textures/StarsQuest/no_entry.png')
+		this.load.image(PAUSE, 'assets/textures/pause.png')
+		this.load.image(STOP, 'assets/textures/stop.png')
 
     }
 
+	initialization_objects(){
+		this.physics.resume()
+	
+		this.stop = false
+		this.start = true
+		this.gameOver = false
+		
+	
+	}
+
+	destroy_objects(){
+
+
+
+
+	}
     create(data)
 	{  
 		this.board_data = data.board_data
@@ -67,39 +88,70 @@ export default class StarsQuestScene extends Phaser.Scene
 		// new TileSprite(scene, x, y, width, height, textureKey [, frameKey])
 		//width =265*0.3 =79.5 height=264*0.3=79.2
 		this.board = this.add.tileSprite(0,35,265*6,264*6,BACKGROUND).setScale(0.3).setOrigin(0,0)
-	
+		this.scoreLabel = this.createScoreLabel(0, 5, 0,  this.best_score)
 		this.player = this.createPlayer()
 
-		var objects = this.createObjects()
-		this.stars = objects.stars
-		this.bombs = objects.bobms
-		this.no_entrys = objects.noEntey
-
-		this.scoreLabel = this.createScoreLabel(0, 0, 0,  this.best_score )
+		this.initialization_objects()
 
 		// this.legend = this.createLegend(0, 515)
-		this.physics.world.on('worldbounds', this.collide_wall, this);
 
+		this.pauseBtn = this.add.sprite(400, 0, PAUSE).setInteractive().setScale(0.065).setOrigin(0)
+		this.stopBtn = this.add.sprite(440, 0, STOP).setInteractive().setScale(0.2).setOrigin(0)
+		this.createObjects()
+		this.physics.world.on('worldbounds', this.collide_wall, this);
         this.physics.add.collider(this.player, this.no_entrys, this.collide_no_entrys, null, this)
         this.physics.add.overlap(this.player, this.stars, this.collectScore, null, this)
 		this.physics.add.overlap(this.player, this.bombs, this.collectScore, null, this)
 
-        this.cursors = this.input.keyboard.createCursorKeys()
-
-		this.events.once('pause', function (data) {
-			console.log('pause')
-        })
-
-
-		this.events.once('resume', (scene, data) => {
-			this.gameOver = false
-			console.log("resume")
-			this.runGame(data.list)
-			this.runner = data.runner
-		});
-
 		this.scene.pause();
+	
+		this.pauseBtn.on('pointerdown', function () {
+			//console.log('button_pause clicked');
+			this.scene.sendToBack('starsQuest')
+			this.scene.pause('starsQuest')
+			this.action_list.splice(0, this.number_action)
+			////console.log(this.number_action, this.action_list)
+			this.scene.launch('pause',{'name':'starsQuest','action_list':this.action_list})
+		},this);
 
+		this.stopBtn.on('pointerdown', function () {
+			//console.log('button_stop clicked')
+			this.stop = true
+			this.scene.pause('starsQuest')
+			//console.log("version: ", this.version)
+			
+			
+		},this);
+
+		this.events.on('pause', function (data) {
+			//console.log("pause")
+			this.pauseBtn.setVisible(false)
+			this.stopBtn.setVisible(false)
+			this.version +=1
+			//console.log("version:", this.version)
+			if(this.stop){
+				var message = "to_check"
+				this.hitBomb(this.player, 0, message,this.version)
+			}
+			////console.log("this.version",  this.version)
+	        }, this)
+
+		this.events.on('resume', (scene, data) => {
+			//console.log("resume")
+			this.action_list = data.list
+			this.pauseBtn.setVisible(true)
+			this.stopBtn.setVisible(true)
+			////console.log(this.action_list)
+			// this.gameOver = false
+			if (data.runner != undefined){
+				this.runner = data.runner
+				this.full_list = data.list
+			}
+			this.runGame(this.action_list)
+			
+		},this);
+
+		
 	}
 
 
@@ -113,7 +165,7 @@ export default class StarsQuestScene extends Phaser.Scene
 		player.body.onWorldBounds = true;
 
 		return player
-	}
+	}3
 
 	create_child(i,j ,key, data_child){
 		return this.add.sprite(39.75 + j*79.5, 39.6 +35+i*79.2, key).setName(data_child)
@@ -121,30 +173,29 @@ export default class StarsQuestScene extends Phaser.Scene
 
 	createObjects()
 	{
-		const stars = this.physics.add.group()
-		const bobms = this.physics.add.group()
-		const noEntey = this.physics.add.staticGroup()
+		this.stars = this.physics.add.group()
+		this.bombs = this.physics.add.group()
+		this.no_entrys = this.physics.add.staticGroup()
 
 		for (let i = 0; i <6; i++){
 			for (let j = 0; j <6; j++){
 				let data_child = this.board_data[i][j]
 				if(data_child == "*"){
-					noEntey.create(39.75 +  j*79.5, 39.6 + 35 + i*79.2, NO_ENTRY).setScale(0.03).refreshBody()
+					this.no_entrys.create(39.75 +  j*79.5, 39.6 + 35 + i*79.2, NO_ENTRY).setScale(0.03).refreshBody()
 				}
 				else if(data_child > 0){
 					let new_child = this.create_child(i,j ,STAR, data_child)
 					new_child.setScale(0.1+data_child*0.03)
 					new_child.setTint(this.typeStars.get(data_child))
-					stars.add(new_child)
+					this.stars.add(new_child)
 				}
 				else if (data_child < 0){
 					let new_child = this.create_child(i,j ,BOMB, data_child)
 					new_child.setScale(this.bombs_scale.get(data_child))
-					bobms.add(new_child)
+					this.bombs.add(new_child)
 				}
 			}
 		}
-		return {stars: stars, bobms: bobms, noEntey: noEntey}
 	}
 
 
@@ -154,21 +205,26 @@ export default class StarsQuestScene extends Phaser.Scene
 	{
 
 		this.scoreLabel.setScore(0)
-		this.hitBomb(this.player, 0, "Game Over - you collided with a wall\n")
-		console.log("Game Over - you collided with a wall\n")
+		this.physics.pause()
+		this.version+=1
+		this.hitBomb(this.player, 0, "Game Over - you collided with a wall\n", this.version)
+		////console.log("Game Over - you collided with a wall\n")
 		
 	}
 
 	collide_no_entrys()
 	{
 		this.scoreLabel.setScore(0)
-		this.hitBomb(this.player, 0, "Game Over - you can't enter there\n")
-		console.log("Game Over - you can't enter there\n")
+		this.physics.pause()
+		this.version+=1
+		this.hitBomb(this.player, 0, "Game Over - you can't enter there\n", this.version)
+		////console.log("Game Over - you can't enter there\n")
 		
 	}
 
 	collectScore(player, object)
 	{
+		//console.log("overlap")
         // The two parameters passed to disableBody() tells Phaser to disable and hide the GameObject.
 		//object.disableBody(true, true)
 		object.visible = false
@@ -192,9 +248,9 @@ export default class StarsQuestScene extends Phaser.Scene
 		var text = this.add.text(x,y, "Legend:", style);
 
 		for (let i = 1; i <= 6; i++){
-			// console.log(i)
+			// ////console.log(i)
 			let x_ = 39.75 +  (i-1)*79.5
-			// console.log(x_,y)
+			// ////console.log(x_,y)
 
 			let star = this.add.image(x_, y+35, STAR)
 			star.setScale(0.1+i*0.03)
@@ -236,7 +292,7 @@ export default class StarsQuestScene extends Phaser.Scene
 
 	turn(player, dirction){
 		player.angle += this.angles.get(dirction)
-		console.log(this.player.angle)
+		////console.log(this.player.angle)
 	}
 
 
@@ -244,15 +300,17 @@ export default class StarsQuestScene extends Phaser.Scene
 		player.setVelocityY(0)
 		player.setVelocityX(0)
 	}
-	
-	newAction(func, time, dirction){
+	//func-action
+	newAction(func, time, dirction,number_action, version){
 		setTimeout(() => {
-			if (this.gameOver === false){
-			console.log(func)
-			this[func](this.player,dirction)
-			}
-			else{
-				this.stop(this.player)
+			if(this.scene.isPaused() === false && this.version === version){
+				if (this.gameOver === false){
+					this[func](this.player,dirction)
+				}
+				else{
+					this.stop(this.player)
+				}
+				this.number_action = number_action+1
 			}
 		  }, time);
 	} 
@@ -260,45 +318,79 @@ export default class StarsQuestScene extends Phaser.Scene
 
 	runGame(actionsList){
 		var duration = 0
-		for (var action  of actionsList) {
-			if (action.name === "drive"){
-				this.newAction(action.name,duration)
-				duration = duration + this.timeDrive.get(this.player.angle)*action.arg
+		this.len = actionsList.length
+		////console.log("len:", this.len)
+		let i = 0;
+		for ( ; i < this.len; i++) {
+			if (actionsList[i].name === "drive"){
+				////console.log(this.version)
+				this.newAction(actionsList[i].name,duration,undefined, i, this.version)
+				duration = duration + this.timeDrive.get(this.player.angle)
 			}
 			else {
-				this.newAction(action.name,duration, action.arg)
+				this.newAction(actionsList[i].name,duration, actionsList[i].arg,i, this.version)
 				duration = duration + 5
 			}
 		}
-		this.newAction("stop", duration)
-		this.hitBomb(this.player, duration)
+		this.newAction("stop", duration, undefined, i, this.version)
+		this.hitBomb(this.player, duration,undefined, this.version)
 	}
 
 
-	endgame(){
-		if (this.scoreLabel.getScore()>this.best_score){
-			this.best_score = this.scoreLabel.getScore()
-		}
-		console.log("end game")
-		this.time.delayedCall(1000, function() {
-		this.scene.restart({board_data:this.board_data,best_score:this.best_score});
-		this.player.angle = 0
-		// console.log(this.player.angle)
-		}, [], this);
+	restart_func(){
+		//console.log("restart_func")
+		// if (this.scoreLabel.getScore()>this.best_score){
+		// 	this.best_score = this.scoreLabel.getScore()
+		// }
+		// if (version = this.version){
+			// this.time.delayedCall(1000, function() {
+				
+				//console.log(this.stars.getChildren())
+				this.player.x = 39.75
+				this.player.y =39.6+35
+				this.player.angle = 0 
+				this.initialization_objects()
+				// this.action_list = this.full_list
+				this.scoreLabel.setScore(0)
+
+				this.stars.getChildren().forEach(function(star) {
+					star.visible = true
+					star.body.enable = true
+					//console.log(star.body.enable)
+				  }, this);
+				  this.bombs.getChildren().forEach(function(bomb) {
+					bomb.visible = true
+					bomb.body.enable = true
+					
+				  }, this);
+
+				 if(this.stop === false){
+					this.scene.pause()
+				 }
+				
+		// }, [], this);
+		//}
+		
+		
 	  }
 
 
-	async hitBomb(player, time, message)
+	async hitBomb(player, time, message, version)
 	{
-       
 		setTimeout(() => {
-			if (this.gameOver === false){
+		
+		
+			////console.log("this.gameOver", this.gameOver , "this.version" ,this.version, "version",version)
+			if (this.gameOver === false && this.version === version){
+				//console.log("in hitBomb2")
+				//console.log(time, message, version)
 				this.gameOver = true
-				this.physics.pause()
-				this.endgame()
-				this.gameOver = true
-				this.runner.showModel(this.scoreLabel.getScore(),message)}
-		  }, time);
+				// this.physics.pause()
+				
+				this.runner.showModel(this.scoreLabel.getScore(),message)
+				this.restart_func()
+			}
+		  }, time+1000);
 		
 	}
 }

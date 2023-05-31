@@ -30,7 +30,6 @@ export default class ScoreLabel extends Phaser.GameObjects.Text
 
    getScore()
    {
-       console.log(this.score)
        return this.score
    }
    

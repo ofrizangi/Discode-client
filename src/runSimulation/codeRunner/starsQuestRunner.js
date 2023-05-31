@@ -49,11 +49,11 @@ export class StarsQuestRunner extends BaseRunner{
             arr[i] = [];
                 for (let j = 0; j < numbers_cols; j++) {
                     if (i === 0 || i === numbers_rows-1 || j===0 || j ===numbers_cols-1){
-                        arr[i][j] = -1;
+                        arr[i][j] = -5;
                     }
                     else{
                         if (board[i-1][j-1] === "*"){
-                            arr[i][j] =  -100
+                            arr[i][j] = -100
                         }
                         else {
                             arr[i][j] =  board[i-1][j-1]
@@ -63,9 +63,59 @@ export class StarsQuestRunner extends BaseRunner{
             }
         return arr  
     }
- 
+    
+    calculateScore(){
+
+        var row = 1
+        var col = 1
+        var angle = 0
+        var score = 0
+
+        const plus = function(x) {return x+1}
+        const minus = function(x) {return x-1}
+        const id = function(x) {return x}
+
+        const dict_col = {0 : plus , 90 : id , 180: minus ,270: id}
+
+        const dict_row = {0 : id , 90: plus, 180: id, 270: minus}
+
+        //console.log(this.actionsList)
+        //console.log(this.score)
+        for(var action of this.actionsList){
+            
+            //console.log(action)
+            if (action.name === "drive"){
+                row = dict_row[angle](row)
+                col = dict_col[angle](col)
+                var val = this.score[row][col]
+                //console.log(row, col, this.score[row][col])
+                if (val === -5){
+                    return {"score": 0, "message":"Game Over - you collided with a wall\n"}
+                }
+                if (val === "*"){
+                    return {"score": 0, "message":"Game Over - you can't enter there\n"}
+                }
+                score +=val
+			}
+			else {
+                if (action.arg === "right"){
+                    angle = (angle +90)%360
+                }
+                else{
+                    angle = (angle -90+360)%360
+                }
+			}
+        }
+        return {"score": score, "message":undefined}
+
+    }
    
     checkSolution(score, message_from_sence) {
+        if (message_from_sence ===  "to_check") {
+            var result = this.calculateScore()
+            score = result.score
+            message_from_sence=result.message
+        }
         if (message_from_sence != undefined){
             return {
                 'compare': false,
@@ -118,7 +168,7 @@ export class StarsQuestRunner extends BaseRunner{
         }
 
         const get_next_row = function(direction){
-            console.log("row" , dict_col[angle][direction](y))
+            //console.log("row" , dict_col[angle][direction](y))
             return dict_row[angle][direction](y)
         };
 
@@ -130,7 +180,10 @@ export class StarsQuestRunner extends BaseRunner{
         const drive =  function(numberSteps){
             x = get_next_col("front")
             y = get_next_row("front")
-            writeActions("drive", numberSteps)
+            for (var i = 0; i < numberSteps; i++) {
+                writeActions("drive", 0)
+            }
+            
         };
 
         const turn = function(direction){
@@ -152,7 +205,7 @@ export class StarsQuestRunner extends BaseRunner{
             try {
                 eval(this.code)
                 this.actionsList = actionsList
-                console.log(this.actionsList)
+                //console.log(this.actionsList)
                 this.gameSence.resume("starsQuest", {list:actionsList, runner:this})
             }
             catch(message){

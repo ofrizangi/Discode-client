@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 
 import DancePlayerScene from '../../scenes/DancePlayerScene';
 import StarsQuestScene from '../../scenes/StarsQuestScene';
+import PauseScene from '../../scenes/PauseScene';
 
 
 function Game(props) {
@@ -28,7 +29,7 @@ function Game(props) {
                 // debug: true
             }
         },
-        scene: [gameSences1.get(props.game_name).scene]
+        scene: [gameSences1.get(props.game_name).scene, PauseScene]
     }
    
     

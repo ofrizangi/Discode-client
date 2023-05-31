@@ -32,7 +32,7 @@ export default class BaseRunner {
 		for(let i=0; i< game_blocks_id.length; i++){
 			str += `function ${game_blocks_id[i]}(){}`
 		}
-		console.log(str)
+		// console.log(str)
         return str
     }
 
@@ -71,7 +71,7 @@ export default class BaseRunner {
 
 
     showModel(score, message_from_sence){
-		console.log(message_from_sence, score)
+		// console.log(message_from_sence, score)
 		const information_on_soultion = this.checkSolution(score, message_from_sence);
 		if (information_on_soultion.compare)
 		{
@@ -89,7 +89,7 @@ export default class BaseRunner {
         var bb = new Blob([ this.get_blocks_game_empty_functions() + this.code + "postMessage('done')"], {
             type: 'text/javascript'
         });
-		console.log(bb)
+		// console.log(bb)
         var bbURL = URL.createObjectURL(bb);
 
         try {

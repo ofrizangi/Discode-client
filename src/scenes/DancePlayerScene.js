@@ -5,9 +5,9 @@ const PLAYER_KEY = 'player'
 const BACKGROUND_KEY = 'background'
 const LINE = "line"
 const LINE_A = "line2"
-const PAUSE = "stop"
-const ERSUME = "play"
-   
+const PAUSE = "pause"
+const STOP = "stop"
+
 export default class DancePlayerScene extends Phaser.Scene
 {
     constructor()
@@ -16,7 +16,7 @@ export default class DancePlayerScene extends Phaser.Scene
         this.player = undefined
         this.gameOver = false
 		this.gameIsPaused = false
-		console.log(this.gameIsPaused)
+		this.version = -1
 		
 
 	}
@@ -29,8 +29,8 @@ export default class DancePlayerScene extends Phaser.Scene
 
 		this.load.image(LINE, 'assets/textures/line.png')
 		this.load.image(LINE_A, 'assets/textures/line_a.png')
-		this.load.image(PAUSE, 'assets/textures/stop.png')
-		this.load.image(ERSUME, 'assets/textures/play.png')
+		this.load.image(PAUSE, 'assets/textures/pause.png')
+		this.load.image(STOP, 'assets/textures/stop.png')
 
 		this.load.spritesheet(PLAYER_KEY, 'assets/animations/player.png',{
 			frameWidth: 110,
@@ -42,17 +42,11 @@ export default class DancePlayerScene extends Phaser.Scene
 	{  
         // origin is center
 		const line = this.createLine()
-		console.log(this.gameIsPaused)
         this.add.image(300, 250, BACKGROUND_KEY).setScale(1.7,1.4)
-		this.pauseBtn = this.add.sprite(5, 5, PAUSE)
-		this.resumeBtn = this.add.sprite(5, 5, ERSUME).setVisible(false).setActive(false)
-		var list = [this.pauseBtn,this.resumeBtn]
-		list.forEach(l => {
-			l.setInteractive()
-			l.setScale(0.1)
-			l.setOrigin(0);
-		})
-		this.resumeBtn.depth = 2
+		// this.pauseBtn = this.add.sprite(5, 5, PAUSE).setInteractive().setScale(0.1).setOrigin(0)
+		// this.stopBtn = this.add.sprite(50, 5, STOP).setInteractive().setScale(0.30).setOrigin(0)
+		this.pauseBtn = this.add.sprite(400, 0, PAUSE).setInteractive().setScale(0.065).setOrigin(0)
+		this.stopBtn = this.add.sprite(440, 0, STOP).setInteractive().setScale(0.2).setOrigin(0)
         this.player = this.createPlayer()
 		
 		this.physics.add.collider(this.player, line)
@@ -77,43 +71,45 @@ export default class DancePlayerScene extends Phaser.Scene
 			['slide right', 1000],
 			])
 
-		// this.input.on('pointerup', function (pointer) {
 
-        //     this.scene.start('ActiveDancerPlayerSence', {list:["aaa"]});
-
-        // }, this);
-
-		  // Event listener for pointerover
 		  this.pauseBtn.on('pointerdown', function () {
-			console.log('button_stop clicked');
-			console.log(this);
-			if(this.gameIsPaused === false){
-				console.log('this.gameIsPaused = true');
-				this.gameIsPaused = true
-				this.pauseBtn.setVisible(false).setActive(false)
-				this.resumeBtn.setVisible(true).setActive(true)
-			}
-		  });
+			console.log('button_pause clicked');
+			this.scene.sendToBack('dancer')
+			this.scene.pause('dancer')
+			this.action_list.splice(0, this.number_action)
+			console.log(this.number_action, this.action_list)
+			this.scene.launch('pause',{'name':'dancer','action_list':this.action_list})
+		  },this);
 
-		  this.resumeBtn.on('pointerdown', function () {
-			console.log('button_play clicked');
-			if(this.gameIsPaused){
-				this.gameIsPaused = false
-				this.resumeBtn.setVisible(false).setActive(false)
-				this.pauseBtn.setVisible(true).setActive(true)
-			}
-		  });
+		  this.stopBtn.on('pointerdown', function () {
+		  	this.pauseBtn.setVisible(false)
+		  	this.stopBtn.setVisible(false)
+			console.log('button_stop clicked')
+			this.scene.pause('dancer')
+			this.hitBomb(this.player, 0, this.version)
+
+		
+		  },this);
 
 		this.events.on('pause', function (data) {
-			console.log(data)
-            console.log('Scene A paused');
-        })
+			this.pauseBtn.setVisible(false)
+			this.stopBtn.setVisible(false)
+			this.version +=1
+			console.log("pause")
+        }, this)
 
 		this.events.on('resume', (scene, data) => {
+			if(this.version === 0){
+				this.runner = data.runner
+			}
+			this.pauseBtn.setVisible(true)
+			this.stopBtn.setVisible(true)
+			console.log("resume")
 			console.log(data)
-            console.log('Scene A resumed');
+			this.action_list = data.list
+			console.log(this.action_list)
 			this.runGame(data.list)
-			this.runner = data.runner
+
 
 		});
 		this.scene.pause();
@@ -264,49 +260,52 @@ export default class DancePlayerScene extends Phaser.Scene
 	}
 
 
-	newAction(action, time){
+	newAction(action, time, number_action, version){
+		
 		setTimeout(() => {
-			if(action === "slide left"){
-				this.player.setVelocityX(-40)
-			}
-			else if(action === "slide right" ){
-				this.player.setVelocityX(40)
+			if(this.scene.isPaused() === false && this.version === version){
+				console.log(number_action)
+				if(action === "slide left"){
+					
+					this.player.setVelocityX(-40)
+				}
+				else if(action === "slide right" ){
+					this.player.setVelocityX(40)
 
+				}
+				else{
+					this.player.setVelocityX(0)
+				}
+				this.player.anims.play(action)
+				this.number_action = number_action+1
 			}
-			else{
-				this.player.setVelocityX(0)
-			}
-			this.player.anims.play(action)
 		  }, time);
 	}   
  
 	runGame(actionsList){
 		this.physics.resume()
 		var duration = 0
-		for (var action  of actionsList) {
-			this.newAction(action, duration)
-			duration = duration + this.time_actions.get(action)
+		this.len = actionsList.length
+		console.log("len:", this.len)
+		for (let i = 0; i < this.len; i++) {
+			this.newAction(actionsList[i], duration, i, this.version)
+			duration = duration + this.time_actions.get(actionsList[i])
 	   }
-	    this.hitBomb(this.player, duration)
+	    this.hitBomb(this.player, duration, this.version)
 	}	
 
 
-    update()
-	{	//this.player.setVelocityX(40)
-		//console.log(this.player.body.velocity)
-	}
-   
-    
-
-    async hitBomb(player, time)
+    async hitBomb(player, time, version)
 	{
         
 		setTimeout(() => {
-			this.physics.pause()
-			this.scene.pause();
-			this.gameOver = true
-			console.log(time)
-			this.runner.showModel()
+			if (this.version === version){
+				this.physics.pause()
+				this.scene.pause();
+				this.gameOver = true
+				console.log(time)
+				this.runner.showModel()
+			}
 		  }, time);
 	}
 	
