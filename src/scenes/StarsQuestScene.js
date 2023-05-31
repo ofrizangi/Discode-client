@@ -68,7 +68,7 @@ export default class StarsQuestScene extends Phaser.Scene
 	initialization_objects(){
 		this.physics.resume()
 	
-		this.stop = false
+		this.stop_bool = false
 		this.start = true
 		this.gameOver = false
 		
@@ -116,7 +116,7 @@ export default class StarsQuestScene extends Phaser.Scene
 
 		this.stopBtn.on('pointerdown', function () {
 			//console.log('button_stop clicked')
-			this.stop = true
+			this.stop_bool = true
 			this.scene.pause('starsQuest')
 			//console.log("version: ", this.version)
 			
@@ -129,7 +129,7 @@ export default class StarsQuestScene extends Phaser.Scene
 			this.stopBtn.setVisible(false)
 			this.version +=1
 			//console.log("version:", this.version)
-			if(this.stop){
+			if(this.stop_bool){
 				var message = "to_check"
 				this.hitBomb(this.player, 0, message,this.version)
 			}
@@ -364,7 +364,7 @@ export default class StarsQuestScene extends Phaser.Scene
 					
 				  }, this);
 
-				 if(this.stop === false){
+				 if(this.stop_bool === false){
 					this.scene.pause()
 				 }
 				
