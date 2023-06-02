@@ -388,7 +388,10 @@ export default class StarsQuestScene extends Phaser.Scene
 				// this.physics.pause()
 				
 				this.runner.showModel(this.scoreLabel.getScore(),message)
-				this.restart_func()
+
+				setTimeout(() => {
+					this.restart_func()
+                }, 500);
 			}
 		  }, time+1000);
 		

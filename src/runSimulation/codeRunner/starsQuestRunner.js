@@ -125,7 +125,7 @@ export class StarsQuestRunner extends BaseRunner{
         else if (score < this.expected_solution){
             return {
                 'compare': false,
-                'message':  <h3 id="blue">{`Nice try, your score is ${score}.\nNow we expect it to reach ${this.expected_solution} points\n`}</h3>
+                'message':  <h3 id="blue">{`Nice try, your score is ${score}.\nNow we expect you to reach ${this.expected_solution} points\n`}</h3>
               }
         }
         else if(score >= this.expected_solution && score > this.best_score){

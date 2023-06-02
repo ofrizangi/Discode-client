@@ -1,3 +1,14 @@
 .editor {
-    background-color: black;
+    border: none;
+}
+
+.coder-editor {
+    margin-top: 5%;
+}
+
+.monaco-editor .overflow-guard {
+    border-bottom: none !important;
+}
+.generate-button {
+    margin: 0% auto;
 }

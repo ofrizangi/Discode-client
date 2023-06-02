@@ -30,8 +30,7 @@ function NumberArgument(props) {
 
     return (
         <span>
-            {/* {console.log(row._id,commands, val)} */}
-            <input id={Constants.ARGUMENTS_IDENTIFIER} type="number" min="1" className="number" value={(val === null || val === undefined) ? "" :val} onChange={set_argument}/>
+            <input id={Constants.ARGUMENTS_IDENTIFIER} type="number" min="1" className="number-input" value={(val === null || val === undefined) ? "" :val} onChange={set_argument}/>
         </span>
     );
 

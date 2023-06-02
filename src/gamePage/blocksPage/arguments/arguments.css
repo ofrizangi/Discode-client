@@ -1,3 +1,19 @@
-.number {
-    width: 20%;
+.number-input {
+    width: 10%;
+    height: 20%;
 }
+
+/* .select-input{
+    border-radius: 4px;
+    appearance: none;
+    text-align: center;
+} */
+
+/* .select-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 14px;
+} */

@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { get_game_level_data, get_level_commands } from './gamesAPI';
+import { get_game_level_data, get_level_commands , restart_game} from './gamesAPI';
 import GameBoard from './gameBoard/GameBoard';
 import BlockPage from './blocksPage/BlocksPage';
 import CodeEditorPage from './codeEditorPage/CodeEditorPage';
@@ -8,7 +8,11 @@ import React from 'react';
 import './game.css'
 import { getGame } from '../mainPage/GameProvider';
 import OutputWindow from './codeEditorPage/OutputWindow';
+import LeftSelection from './LeftSelection'
 import CodeEditorWindow from './codeEditorPage/CodeEditorWindow';
+
+import restart_img from './../images/reloading.png'
+
 
 function GamePage(props) {
 
@@ -39,36 +43,30 @@ function GamePage(props) {
         set_commands()
     }, [gameLevel]);
 
-    
+
     return (
         <div>
             { gameLevel !== null &&
                 <div className="row d-none d-md-flex">
                     <div className='col-6'>
+
                         { gameLevel.blocks.length !== 0 && (
-                            <div className="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                <input type="radio" className="btn-check" name="btnradio" id="blocks" autoComplete="off" defaultChecked />
-                                <label id="blocks" className="btn btn-outline-primary" htmlFor="blocks" onClick={(event)=>{setLeftSideView(event.currentTarget.id)}}>Blocks</label>
-                        
-                                <input type="radio" className="btn-check" name="btnradio" id="editor" autoComplete="off" />
-                                <label id="editor" className="btn btn-outline-primary" htmlFor="editor" onClick={(event)=>{setLeftSideView(event.currentTarget.id)}}>Editor</label>
-                            </div>)
-                        }
+                                    <LeftSelection setLeftSideView={setLeftSideView}/>)
+                                }
 
-                        { getGame() === "coder" ? code !== null && <CodeEditorWindow code={code} setCode={setCode} ></CodeEditorWindow> :
+
+                        { getGame() === "coder" ? code !== null && <div className="coder-editor"> <CodeEditorWindow code={code} setCode={setCode} ></CodeEditorWindow> </div> :
                             leftSideView === 'blocks' ?  
-                            (commands !== null && solution!==null && <BlockPage gameLevel={gameLevel} commands={commands} setCommands={setCommands} solution={solution} setSolution={setSolution}></BlockPage>) : 
-                            (code !== null && <CodeEditorPage code={code} setCode={setCode} gameLevel={gameLevel} commands={commands} solution={solution}></CodeEditorPage>)
+                            (commands !== null && solution!==null && <BlockPage gameLevel={gameLevel} commands={commands} setCommands={setCommands} solution={solution} setSolution={setSolution} setGame={setGameLevel}></BlockPage>) : 
+                            (code !== null && <CodeEditorPage code={code} setCode={setCode} gameLevel={gameLevel} setGame={setGameLevel} commands={commands} solution={solution}></CodeEditorPage>)
                         }
 
-                        { gameLevel.video_src !== undefined && <video key={gameLevel.video_src} className="gdriveVideo" preload="auto" width="300" height="250" controls>
-                                                    <source src={gameLevel.video_src} type='video/mp4'/>
-                                                </video>
-                        }
                     </div>
+
                     <div className="col-6">
-                        {getGame() === "coder" ? <OutputWindow code={code} game={gameLevel} setGame={setGameLevel}></OutputWindow> :
-                         <GameBoard game={gameLevel} setGame={setGameLevel} commands={commands} solution={solution} code={code} leftSideView={leftSideView}/> }
+                        {gameLevel !== null && 
+                            (getGame() === "coder" ? <OutputWindow code={code} game={gameLevel} setGame={setGameLevel}></OutputWindow> :
+                            <GameBoard game={gameLevel} setGame={setGameLevel} commands={commands} solution={solution} code={code} leftSideView={leftSideView}/>) }
                     </div>
                     <div id="model"></div>
                 </div>

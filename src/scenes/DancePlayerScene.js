@@ -95,7 +95,7 @@ export default class DancePlayerScene extends Phaser.Scene
 			this.pauseBtn.setVisible(false)
 			this.stopBtn.setVisible(false)
 			this.version +=1
-			console.log("pause")
+			console.log("innnnnnnnnn pause")
         }, this)
 
 		this.events.on('resume', (scene, data) => {
@@ -283,6 +283,7 @@ export default class DancePlayerScene extends Phaser.Scene
 	}   
  
 	runGame(actionsList){
+		console.log("runningggggg")
 		this.physics.resume()
 		var duration = 0
 		this.len = actionsList.length

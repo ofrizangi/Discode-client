@@ -13,7 +13,7 @@ function DescriptionConst(props) {
         <div>
             {getDescriptionList(block.description[list_num]).map((item, index) => { return item !== Constants.ARGUMENTS_IDENTIFIER ? 
                                 <span key={index}> {item} </span> : 
-                                (<span key={index}> {getConstArgument(block.arguments_type, list_num, getArgumentIndex(index, getDescriptionList(block.description[list_num])), row, props.commands, props.setCommands)} </span> )})
+                                (<span key={index}> {getConstArgument(block.arguments_type, list_num, getArgumentIndex(index, getDescriptionList(block.description[list_num])), row)} </span> )})
         }
 
         </div>

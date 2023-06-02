@@ -95,14 +95,3 @@
     height: 30px;
 }
 
-
-.editor {
-    margin-top: 5%;
-    border: none;
-}
-
-.monaco-editor .overflow-guard {
-    border-bottom: none !important;
-}
-
-

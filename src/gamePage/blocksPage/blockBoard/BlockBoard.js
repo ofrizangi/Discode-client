@@ -1,5 +1,4 @@
 import * as Constants from '../../../constants';
-import './blockBoard.css'
 import { Droppable } from 'react-beautiful-dnd';
 import BlockRow from './BlockRow';
 import {React} from 'react';
@@ -27,7 +26,7 @@ function BlockBoard(props) {
     }
 
     return (
-        <div className="board clickable-board" onClick={handle_on_click}>
+        <div className="board clickable-board" onClick={handle_on_click}> 
                 <Droppable droppableId={Constants.DROPPABLE_BOARD_ID + props.row_id + props.list_num} >
                     {(provided, snapshot) => (
                         <div ref={provided.innerRef} {...provided.droppableProps}>

@@ -4,6 +4,8 @@ import * as Constants from '../../constants';
 
 import { translate_blocks } from '../../runSimulation/CodeCreator';
 import Game from './Game';
+import Video from './Video'
+
 import {React,useState} from 'react';
 
 import {sloved_game, restart_game, get_game_level_data, post_code_api} from '../gamesAPI';
@@ -12,21 +14,17 @@ import {setLevel} from '../../levelsPage/LevelProvider'
 import { useNavigate } from 'react-router-dom'
 import { DancerRunner } from '../../runSimulation/codeRunner/danceRunner';
 import { StarsQuestRunner } from '../../runSimulation/codeRunner/starsQuestRunner';
-import { getGame } from '../../mainPage/GameProvider';
-import 'bootstrap/dist/css/bootstrap.css';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover'
 import Button from 'react-bootstrap/Button';
+
 import '../game.css'
 import stars_information from '../../images/stars_information.png'
 import bombs_information from '../../images/bombs_information.png'
 
 function GameBoard(props) {
 
-
-    // const [compilationOpen, setCompilationOpen] = useState(false)
     const [gameSence, setGameSence] = useState()
-    // const [text, setText] = useState("")
     const solution = props.solution
     const commands = props.commands
     const setGame = props.setGame
@@ -68,17 +66,10 @@ function GameBoard(props) {
             else if(props.game.game_name === "starsQuest"){
                 runner = new StarsQuestRunner(code, back_to_levels, next_level, gameSence,props.game.data, props.game.blocks, leftSideView, props.game.expected_solution,solve, props.game.best_score)
             }
-            // if (runner.runcode()){     
-            //     await solve()
-            // }
             runner.runcode()
         }
     }
 
-    async function restart() {
-        const my_game = await restart_game()
-        await props.setGame(my_game)
-    }
 
     
     const popoverHoverFocus = (
@@ -91,10 +82,16 @@ function GameBoard(props) {
 
     return (
         <div id="gameBoard">
-            {props.game !== null && <button className='btn btn-success' onClick={get_code}> Run game</button>}
-            {props.game !== null && <button className='btn btn-danger' onClick={restart}> Restart level</button>}
+            { <button className='btn btn-success' onClick={get_code}> Run game</button>}
+
+            {
+                props.game.video_src !== undefined &&  <Video gameLevel = {props.game} />
+            }
            
             <Game game_name = {props.game.game_name}  level={props.game.level_number} data = {props.game.data} best_score={props.game.best_score}  setGameSence = {setGameSence}/>
+            
+            
+            
             {props.game !== null && props.game.game_name === 'starsQuest' &&
             <OverlayTrigger
                 trigger={['hover', 'focus']}
@@ -104,8 +101,6 @@ function GameBoard(props) {
                 <Button>Information</Button>
                 </OverlayTrigger>
             }           
-
-            {/* {compilationOpen && <CompilationErrorMessage text={text}/>} */}
 
         </div>
     );

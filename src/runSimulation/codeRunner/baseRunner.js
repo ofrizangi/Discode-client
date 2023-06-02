@@ -32,7 +32,6 @@ export default class BaseRunner {
 		for(let i=0; i< game_blocks_id.length; i++){
 			str += `function ${game_blocks_id[i]}(){}`
 		}
-		// console.log(str)
         return str
     }
 
@@ -81,7 +80,7 @@ export default class BaseRunner {
         const gameBoard = createRoot(document.getElementById('model') );
         const model = <CodeModal text={this.leftSideView === "blocks" ? this.code : ""} message = {information_on_soultion.message} compare={information_on_soultion.compare} back={this.back_to_levels} next_level={this.next_level}/>
         gameBoard.render(model);
-        },1000);   
+        },500);
     }
     
 

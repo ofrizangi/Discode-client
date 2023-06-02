@@ -7,8 +7,7 @@ function NumberArgumentConst(props) {
 
     return (
         <span>
-            {/* {console.log(value)} */}
-            <input disabled type="number" className="number" defaultValue={value}/>
+            <input disabled type="number-input" className="number-input" defaultValue={value}/>
         </span>
     );
 

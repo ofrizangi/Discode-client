@@ -1,0 +1,75 @@
+.block {
+    padding-left: 10pt;
+    padding-bottom: 10pt;
+    padding-top: 5pt;
+    border-radius: 15px;
+    border: 2px solid #edf1e6;
+    font-family: sans-serif;
+    cursor: grabbing;
+
+}
+
+.block:hover {
+    border-color: #c8c8c0;
+}
+
+
+.block-const {
+    opacity:0.6;
+}
+
+.blocks-left-capacity {
+    color: #fff;
+    padding: 1%;
+    border-radius: 4px;
+    width: 40%;
+    background-color:rgba(128,128,128,0.5);
+    font-family: sans-serif;
+    font-size: large;
+    margin: 0% auto;
+}
+
+
+.block-list {
+    overflow: auto;
+    max-height: 80vh; /* Set the maximum height of the container to 100% of the viewport height */
+    width: 21%;
+    position: fixed;
+    top: '96px';
+}
+
+.board {
+    background-color: rgb(239, 231, 231);
+    min-height: 20pt;
+    border-radius: 15px;
+}
+
+.clickable-board {
+    border-style: solid;
+}
+
+
+.upper-row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1%;
+}
+
+.restart-blocks-button {
+    align-self: flex-start;
+    background: none;
+    height: fit-content;
+    width: fit-content;
+    border: none;
+    display: inline-block;
+    outline: none;
+    line-height: 0; /* Add this rule */
+    margin-bottom: 1%;
+}
+
+.restart-blocks-button img {
+    display: block;
+    width: 45px;
+    height: 45px; 
+}

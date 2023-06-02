@@ -1,4 +1,3 @@
-import './blockBoard.css'
 import BlockRowConst from './BlockRowConst';
 import {React} from 'react';
 

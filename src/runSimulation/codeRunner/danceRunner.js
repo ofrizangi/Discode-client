@@ -43,7 +43,6 @@ export class DancerRunner extends BaseRunner{
 
 
     async runcode(){
-		// console.log("validate!!!!!!!!!!!!!!!!!!!!!")
       	const blocks = this.blocks
 		const validate_arguments = this.leftSideView === "editor" ? this.validate_arguments : function(){}
 
@@ -75,7 +74,6 @@ export class DancerRunner extends BaseRunner{
 			try {
 				eval(this.code)
 				this.actionsList= actionsList
-				// console.log(actionsList)
 				this.gameSence.resume("dancer", {list:actionsList, runner:this})
 				
 			}
