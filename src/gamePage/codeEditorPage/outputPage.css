@@ -95,3 +95,23 @@
     height: 30px;
 }
 
+
+
+/* info hover */
+
+.info-icon {
+    color:  rgb(27, 132, 167);
+    font-size: 1.5rem; /* Adjust the size as per your requirement */
+}
+
+.trigger-size {
+    position: relative;
+    display: inline-block;
+}
+
+.popover-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+  }

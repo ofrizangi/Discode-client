@@ -8,7 +8,7 @@ import Video from './Video'
 
 import {React,useState} from 'react';
 
-import {sloved_game, restart_game, get_game_level_data, post_code_api} from '../gamesAPI';
+import {sloved_game, get_game_level_data, post_code_api} from '../gamesAPI';
 import {setLevel} from '../../levelsPage/LevelProvider'
 
 import { useNavigate } from 'react-router-dom'
@@ -22,9 +22,12 @@ import '../game.css'
 import stars_information from '../../images/stars_information.png'
 import bombs_information from '../../images/bombs_information.png'
 
+import ErrorMessage from './../../alerts/ErrorMessage'
+
 function GameBoard(props) {
 
     const [gameSence, setGameSence] = useState()
+    const [error, setError] = useState("")
     const solution = props.solution
     const commands = props.commands
     const setGame = props.setGame
@@ -33,7 +36,6 @@ function GameBoard(props) {
 
 
     const navigate = useNavigate();
-
 
     async function solve() {
         if(leftSideView === 'editor'){
@@ -54,9 +56,10 @@ function GameBoard(props) {
     }
 
     async function get_code() {
+        setError("")
         const code = leftSideView === "blocks" ? await translate_blocks(commands, solution) : editor_code
         if(code.includes(Constants.COMPILATION_ERROR)){
-            alert(code)
+            setError(code)
         }
         else {
             var runner;
@@ -66,7 +69,10 @@ function GameBoard(props) {
             else if(props.game.game_name === "starsQuest"){
                 runner = new StarsQuestRunner(code, back_to_levels, next_level, gameSence,props.game.data, props.game.blocks, leftSideView, props.game.expected_solution,solve, props.game.best_score)
             }
-            runner.runcode()
+            const ret_val = await runner.runcode()
+            if(ret_val.includes(Constants.INFINITE_CODE) || ret_val.includes(Constants.COMPILATION_ERROR)){
+                setError(ret_val)
+            }
         }
     }
 
@@ -82,6 +88,8 @@ function GameBoard(props) {
 
     return (
         <div id="gameBoard">
+            {error !== "" && <ErrorMessage text={error} setError={setError}></ErrorMessage>}
+
             { <button className='btn btn-success' onClick={get_code}> Run game</button>}
 
             {
@@ -89,8 +97,6 @@ function GameBoard(props) {
             }
            
             <Game game_name = {props.game.game_name}  level={props.game.level_number} data = {props.game.data} best_score={props.game.best_score}  setGameSence = {setGameSence}/>
-            
-            
             
             {props.game !== null && props.game.game_name === 'starsQuest' &&
             <OverlayTrigger

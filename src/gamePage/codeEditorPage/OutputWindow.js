@@ -9,6 +9,7 @@ import * as Constants from './../../constants';
 import loading from './../../images/loading.gif'
 import play_img from './../../images/play-button.png'
 import restart_img from './../../images/reloading.png'
+import InfoHover from "./InfoHover";
 
 
 function OutputWindow(props) {
@@ -116,9 +117,8 @@ function OutputWindow(props) {
 	return (
 		<div className="output-window-container">
 
-            {console.log(getLevel())}
             <div className="mission-window">
-				<h2> Mission </h2>
+				<h2> Mission <InfoHover></InfoHover> </h2>
                 <div>{mission}</div>
 			</div>
 

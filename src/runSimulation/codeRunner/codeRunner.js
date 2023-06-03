@@ -16,10 +16,10 @@ export class CodeRunner {
         var solution = await this.code_runner(this.code)
         this.output= this.add_space_to_console_arr(solution[0])
         this.error = solution[1]
-        if(this.error !== ""){
+        if(this.error !== "") {
             return false
         }
-        return this.compare_solution()
+        return await this.compare_solution()
     }
 
 
@@ -48,7 +48,7 @@ export class CodeRunner {
             };
             worker.onerror = function(error) {
                 // Worker encountered an error
-                reject(error.message);
+                resolve(error.message);
                 worker.terminate();
                 clearTimeout(timeout);
             };
@@ -61,33 +61,46 @@ export class CodeRunner {
     }
 
 
-    async code_runner(code) {
-        var output = []
-        var error = ""
-        var bb = new Blob([this.function_call + code + "postMessage('done')"], {
+    async if_infinite_code(){
+        var bb = new Blob([ this.function_call + this.code + "postMessage('done')"], {
             type: 'text/javascript'
         });
         var bbURL = URL.createObjectURL(bb);
 
         try {
             await this.runWorker(bbURL)
+			return false
+		} catch(e) {
+			return true
+		}
+	}
 
+
+    async code_runner(code) {
+        var output = []
+        var error = ""
+
+        if(await this.if_infinite_code()){
+            return [output, Constants.INFINITE_CODE]
+        }
+        else {
+            
             const str_code = this.function_call + code
 
             console.stdlog = console.log.bind(console);
 
-            console.log = function(){
+            console.log = function() {
                 output = output.concat(Array.from(arguments))
             }
-
-            eval(str_code)
-
+            try {
+                eval(str_code)
+            }
+            catch(e){
+                error = e.name + " - " + e.message
+            }
             console.log = console.stdlog
+            return [output, error]
         }
-        catch(e){
-            error = e
-        }
-        return [output, error]
     }
 
     async compare_solution(){

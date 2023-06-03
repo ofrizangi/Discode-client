@@ -10,6 +10,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import { isLoggedIn } from './userManagment/authorization';
 import { useState } from 'react';
 import React from 'react';
+import ExplanationPage from './explanationPage/ExplenationPage';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
               <Routes>
                <Route path='/' element={<Games setIsLogged= {setIsLogged}/>}></Route>
                <Route path='/levels' element={<Levels/>}></Route>
+               <Route path='/explanation' element={<ExplanationPage/>}></Route>
                <Route path='/game' element={<GamePage/>}></Route>
                <Route path='/forum' element={<ForumPage/>}></Route>
 

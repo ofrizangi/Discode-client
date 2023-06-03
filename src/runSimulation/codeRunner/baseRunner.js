@@ -37,15 +37,18 @@ export default class BaseRunner {
 
     check_errors(error){
 		if(error.message === "iteration is not defined"){
-			return "Error - if iteration must be inside repeat block"
+			return `**${Constants.COMPILATION_ERROR}** - if iteration must be inside repeat block`
 		}
-		return `Error - ${error.message}`
+		return `**${Constants.COMPILATION_ERROR}** - ${error.message}`
     }
 
 	validate_arguments(blocks, block_id, args) {
 		const block = blocks.filter(obj => obj._id === block_id)[0]
-		// all the commands we write in code are simple one that have only one line
+		// all the commands we write in the code are simple one that have only one line
 		const arguments_type = block.arguments_type[0]
+		if(arguments_type.length > args.length){
+			throw new Error(`missing arguments in command "${block_id}"`)
+		}
 		for(let i=0;i<args.length; i++){
 			if(arguments_type[i] === undefined){
 				throw new Error(`too many arguments in command "${block_id}"`)
@@ -77,9 +80,9 @@ export default class BaseRunner {
 			this.solve_in_server_function()
 		}
       setTimeout(() => {
-        const gameBoard = createRoot(document.getElementById('model') );
-        const model = <CodeModal text={this.leftSideView === "blocks" ? this.code : ""} message = {information_on_soultion.message} compare={information_on_soultion.compare} back={this.back_to_levels} next_level={this.next_level}/>
-        gameBoard.render(model);
+			const gameBoard = createRoot(document.getElementById('model') );
+			const model = <CodeModal text={this.leftSideView === "blocks" ? this.code : ""} message = {information_on_soultion.message} compare={information_on_soultion.compare} back={this.back_to_levels} next_level={this.next_level}/>
+			gameBoard.render(model);
         },500);
     }
     
@@ -119,7 +122,7 @@ export default class BaseRunner {
                 worker = null;
                 reject(Constants.INFINITE_CODE);
 
-            }, 200);
+            }, 300);
         });
     }
 

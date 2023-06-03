@@ -7,18 +7,24 @@ import { useState, useEffect } from 'react';
 import GameButton from './GameButton'
 import React from 'react';
 import './games.css';
+import { useNavigate } from 'react-router-dom'
 
 
 function Games(props) {
 
     const [games, setGames] = useState([])
 
+    const navigate = useNavigate();
 
     function logout(){
         setToken(null)
         setGame(null)
         setLevel(null)
         props.setIsLogged(false)
+    }
+
+    function goto_explanation_page(){
+        navigate('/explanation')
     }
 
     useEffect(() => {
@@ -42,6 +48,9 @@ function Games(props) {
             <ul className="nav">
                 <li className="nav-item">
                     <span className="nav-link" onClick={logout}> Logout </span>
+                </li>
+                <li className="nav-item">
+                    <span className="nav-link" onClick={goto_explanation_page}> JavaScript Concepts </span>
                 </li>
             </ul>
             <div className='center games-center'>

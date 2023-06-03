@@ -1,5 +1,4 @@
 import { getGame } from "../mainPage/GameProvider";
-import * as Constants from '../constants';
 
 import {useState, useEffect } from 'react';
 

@@ -4,6 +4,9 @@ import { StarsQuestGenerator } from './codeGenerators/starsQuestGenerator'
 
 import { getGame } from '../mainPage/GameProvider'
 
+import * as Constants from './../constants';
+
+
 const CodeCreator = () => {
 
     const game_generators = {
@@ -31,18 +34,18 @@ const CodeCreator = () => {
             if(row.block.complex === 0){
                 for(let i=0; i<row.arguments[0].length; i++){
                     if(row.arguments[0][i] === null){
-                        return `Error - ${row.block._id} is missing arguments`
+                        return `**${Constants.COMPILATION_ERROR}** - ${row.block._id} is missing arguments`
                     }
                 }
             }
             else {
                 for(let line_number=0; line_number<row.block.complex; line_number++){
                     if(row.inner_blocks[line_number].length === 0){
-                        return `Error - ${row.block._id} must contain inside other blocks`
+                        return `**${Constants.COMPILATION_ERROR}** - ${row.block._id} must contain inside other blocks`
                     }
                     for(let i=0; i<row.arguments[line_number].length; i++){
                         if(row.arguments[line_number][i] === null){
-                            return `Error - ${row.block._id} is missing arguments`
+                            return `**${Constants.COMPILATION_ERROR}** - ${row.block._id} is missing arguments`
                         }
                     }
                 }

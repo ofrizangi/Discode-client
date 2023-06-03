@@ -1,6 +1,6 @@
 import * as Constants from '../../constants';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import './blocks.css'
 
 import BlockList from './blockList/BlockList';
@@ -126,8 +126,6 @@ function BlocksPage(props) {
 
 
     async function dragEndHandler(draggable_block){
-
-        console.log(draggable_block)
 
         if(draggable_block.source.droppableId.includes(Constants.DROPPABLE_LIST_ID) && draggable_block.destination.droppableId.includes(Constants.DROPPABLE_BOARD_ID)){
             if(commands.length >= max_row_number) {

@@ -2,6 +2,8 @@ import BaseRunner from "./baseRunner";
 
 import {post_best_score_api} from '../../gamePage/gamesAPI';
 
+import * as Constants from './../../constants';
+
 export class StarsQuestRunner extends BaseRunner{
 
     constructor(code,back_to_levels, next_level, gameSence,board,  blocks, leftSideView,expected_solution, solve_in_server_function,best_score){
@@ -116,7 +118,7 @@ export class StarsQuestRunner extends BaseRunner{
             score = result.score
             message_from_sence=result.message
         }
-        if (message_from_sence != undefined){
+        if (message_from_sence !== undefined){
             return {
                 'compare': false,
                 'message': <h3 id="fails">{message_from_sence}</h3>
@@ -199,7 +201,7 @@ export class StarsQuestRunner extends BaseRunner{
         const infinite_code = await this.if_infinite_code()
 
 		if(infinite_code){
-			alert("infinite code")
+			return Constants.INFINITE_CODE
 		}
         else {
             try {
@@ -209,7 +211,7 @@ export class StarsQuestRunner extends BaseRunner{
                 this.gameSence.resume("starsQuest", {list:actionsList, runner:this})
             }
             catch(message){
-                alert(this.check_errors(message))
+                return this.check_errors(message)
             }
         }
     }

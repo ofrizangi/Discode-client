@@ -42,17 +42,22 @@ justify-content: center;
 }
 
 .close-button {
-    background: none;
     border: none;
-    padding: 0;
     color: #000;
     font-size: 1.5rem;
     opacity: 0.5;
+    cursor: pointer;
 }
 
-.alert{
+.alert {
+    display: flex;
     align-items:center;
-    justify-content:center
+    justify-content:space-between;
+    flex-grow: 1;
+}
+
+.alert-text {
+    flex-grow: 1;
 }
 
 
@@ -62,4 +67,8 @@ justify-content: center;
 
 .col-form-label {
     padding-left: 6%;
+}
+
+.bold-text {
+    font-weight: bold;
 }

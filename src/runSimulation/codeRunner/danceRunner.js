@@ -1,5 +1,7 @@
 import BaseRunner from "./baseRunner";
 
+import * as Constants from './../../constants';
+
 export class DancerRunner extends BaseRunner{
 
 	// constructor(expected_solution,code,back_to_levels, next_level, gameSence, blocks, leftSideView){
@@ -7,7 +9,7 @@ export class DancerRunner extends BaseRunner{
 		
 	// }
 
-    checkSolution(score) {
+    checkSolution() {
         var len_solution = this.actionsList.length;
         var len_expected_solution = this.expected_solution.length;
         if(len_expected_solution === 0){
@@ -68,7 +70,7 @@ export class DancerRunner extends BaseRunner{
 		const infinite_code = await this.if_infinite_code()
 
 		if(infinite_code){
-			alert("infinite code")
+			return Constants.INFINITE_CODE
 		}
 		else {
 			try {
@@ -78,7 +80,7 @@ export class DancerRunner extends BaseRunner{
 				
 			}
 			catch(message){
-				alert(this.check_errors(message))
+				return this.check_errors(message)
 			}
 
 		}
