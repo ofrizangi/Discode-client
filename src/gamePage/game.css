@@ -13,13 +13,37 @@
   height: 40%;
 }
 
-
 .btn-group-wrapper {
-    width: 100%;
+  width: 100%;
 }
 
 .btn-group {
-    display: flex;
-    width: 100%;
-    border-radius: 4px;
+  display: flex;
+  width: 100%;
+  border-radius: 4px;
+}
+
+
+#myVideo {
+   position: absolute; 
+  width: 370.8px;
+  height:370.8px;
+  z-index: 1;
+  top: 79pt; /*56*/
+  right: 80pt; /*80*/
+  object-fit: fill;
+}
+
+
+.video_level{
+  align-items: center;
+
+}
+
+
+#phaserCanvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

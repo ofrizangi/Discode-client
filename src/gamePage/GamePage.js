@@ -60,7 +60,6 @@ function GamePage(props) {
                             (commands !== null && solution!==null && <BlockPage gameLevel={gameLevel} commands={commands} setCommands={setCommands} solution={solution} setSolution={setSolution} setGame={setGameLevel}></BlockPage>) : 
                             (code !== null && <CodeEditorPage code={code} setCode={setCode} gameLevel={gameLevel} setGame={setGameLevel} commands={commands} solution={solution}></CodeEditorPage>)
                         }
-
                     </div>
 
                     <div className="col-6">

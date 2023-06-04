@@ -35,7 +35,7 @@ export class DancerRunner extends BaseRunner{
         }
         return {
           'compare': true,
-          'message': `Well done\n`
+          'message': <h3 id="succeeded"> {`Well done\n`}</h3>
         };
     }
 

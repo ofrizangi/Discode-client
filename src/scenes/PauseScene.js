@@ -23,12 +23,17 @@ export default class PauseScene extends Phaser.Scene
 		console.log(data)
 		this.name_of_sence = data.name
 		this.action_list = data.action_list
+		this.x = data.x
+		this.y = data.y
 	}
 
     create()
 	{  
 		// console.log(" create - PauseScene")
-		this.resumeBtn = this.add.sprite(400, 0, RESUME).setInteractive().setScale(0.065).setOrigin(0)
+		
+		this.resumeBtn = this.add.sprite(this.x, this.y, RESUME).setInteractive().setScale(0.065).setOrigin(0)
+		
+
 		this.resumeBtn.depth = 2
 
 		this.resumeBtn.on('pointerdown', function () {
@@ -39,10 +44,7 @@ export default class PauseScene extends Phaser.Scene
                     
 		  }, this);
 
-		this.events.on('launch', (scene, data) => {
-			// console.log(data)
-            this.name_of_sence = data.name
-		});
+
 	}
 
 }

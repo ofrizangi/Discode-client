@@ -28,6 +28,10 @@ function GameBoard(props) {
 
     const [gameSence, setGameSence] = useState()
     const [error, setError] = useState("")
+    const [runButtonDisabled, setRunButtonDisabled] = useState(false)
+    const [videoDisplay, setVideoDisplay] = useState('block')
+
+    // const [text, setText] = useState("")
     const solution = props.solution
     const commands = props.commands
     const setGame = props.setGame
@@ -36,6 +40,19 @@ function GameBoard(props) {
 
 
     const navigate = useNavigate();
+
+    const retry_level = () => {
+        setRunButtonDisabled(false)
+        var video = document.getElementById("myVideo")
+        if (video != undefined){
+            setVideoDisplay('block')
+            video.currentTime = 0;
+            video.pause();       
+        }
+        
+    };
+
+    
 
     async function solve() {
         if(leftSideView === 'editor'){
@@ -48,6 +65,8 @@ function GameBoard(props) {
     async function back_to_levels(){
         navigate('/levels')
     }
+
+
 
     async function next_level(){
         setLevel(props.game.level_number+1)
@@ -62,12 +81,15 @@ function GameBoard(props) {
             setError(code)
         }
         else {
+            setRunButtonDisabled(true)
             var runner;
+            setVideoDisplay('none')
+            console.log(document.getElementById("gameBoard"))
             if (props.game.game_name === "dancer"){
-                runner= new DancerRunner(code, back_to_levels, next_level, gameSence, props.game.blocks, leftSideView, props.game.expected_solution,solve)
+                runner= new DancerRunner(code, back_to_levels, next_level,retry_level, gameSence, props.game.blocks, leftSideView, props.game.expected_solution,solve)
             }
             else if(props.game.game_name === "starsQuest"){
-                runner = new StarsQuestRunner(code, back_to_levels, next_level, gameSence,props.game.data, props.game.blocks, leftSideView, props.game.expected_solution,solve, props.game.best_score)
+                runner = new StarsQuestRunner(code, back_to_levels, next_level, retry_level, gameSence,props.game.data, props.game.blocks, leftSideView, props.game.expected_solution,solve, props.game.best_score)
             }
             const ret_val = await runner.runcode()
             if(ret_val.includes(Constants.INFINITE_CODE) || ret_val.includes(Constants.COMPILATION_ERROR)){
@@ -90,14 +112,13 @@ function GameBoard(props) {
         <div id="gameBoard">
             {error !== "" && <ErrorMessage text={error} setError={setError}></ErrorMessage>}
 
-            { <button className='btn btn-success' onClick={get_code}> Run game</button>}
+            { <button className='btn btn-success' onClick={get_code} disabled={runButtonDisabled}> Run game</button>}
 
             {
-                props.game.video_src !== undefined &&  <Video gameLevel = {props.game} />
+                props.game.video_src !== undefined &&  <Video gameLevel = {props.game} display={videoDisplay}  />
             }
            
-            <Game game_name = {props.game.game_name}  level={props.game.level_number} data = {props.game.data} best_score={props.game.best_score}  setGameSence = {setGameSence}/>
-            
+            <Game game_name = {props.game.game_name}  level={props.game.level_number} data = {props.game.data} best_score={props.game.best_score}  setGameSence = {setGameSence} video_src={props.game.video_src}/>            
             {props.game !== null && props.game.game_name === 'starsQuest' &&
             <OverlayTrigger
                 trigger={['hover', 'focus']}

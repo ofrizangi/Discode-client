@@ -17,6 +17,12 @@ export default class ScoreLabel extends Phaser.GameObjects.Text
        this.score  = score
        this.updateScoreText()
    }
+   
+   setBestScore(best_score)
+   {
+       this.best_score  =  best_score
+       this.updateScoreText()
+   }
 
    add(points)
    {

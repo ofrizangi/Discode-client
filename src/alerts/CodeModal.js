@@ -34,7 +34,13 @@ class CodeModal extends React.Component {
   hideModal = () => {
     this.setState({ open: false });
   }
+  
+  retryLevel = () => {
     
+    this.hideModal()
+    this.props.retry_level()
+    this.props.gameSence.scenes[0].restart_func()
+  }
   nextLevel = () => {
     this.hideModal()
     this.props.next_level()
@@ -51,7 +57,7 @@ class CodeModal extends React.Component {
     return (
       <Modal
         show={this.state.open}
-        onHide={() => this.setState({open: false})}
+        onHide={() => {this.retryLevel()}}
         dialogAs={DraggableModalDialog}
       >
         <Modal.Header closeButton className="grab">
@@ -63,7 +69,7 @@ class CodeModal extends React.Component {
             <p>{this.props.text}</p>
             </Modal.Body>
             <Modal.Footer id='buttons-footer'>
-              <button  type="button" className="btn btn-success" onClick={this.hideModal}>Retry</button>
+              <button  type="button" className="btn btn-success" onClick={this.retryLevel}>Retry</button>
               <button type="button" className="btn btn-success" onClick={this.backToLevels}>Levels</button>
               {this.props.compare ?  <button type="button" className="btn btn-success" onClick={this.nextLevel}>Next</button> :               
 			  	<button type="button" className="btn btn-success" onClick={this.nextLevel} disabled>Next</button>}

@@ -1,18 +1,14 @@
 
-
 function Video(props) {
 
     const gameLevel = props.gameLevel
+    const display = props.display
+    console.log(display)
 
     return (
-        <div>
-            <div>
-            Copy my moves:
-            </div>
-            <video key={gameLevel.video_src} className="gdriveVideo" preload="auto" width="300" height="250" controls>
+        <video key={gameLevel.video_src} className="gdriveVideo video_level"  id="myVideo" preload="auto" style={{display:display}} controls>
                 <source src={gameLevel.video_src} type='video/mp4'/>
-            </video>
-        </div>
+        </video>
     )
 }
 

@@ -4,12 +4,13 @@ import Phaser from 'phaser';
 import DancePlayerScene from '../../scenes/DancePlayerScene';
 import StarsQuestScene from '../../scenes/StarsQuestScene';
 import PauseScene from '../../scenes/PauseScene';
+import { useEffect, useRef } from 'react';
 
 
 function Game(props) {
 
   const gameSences1 = new Map([
-    ['dancer', {"scene":DancePlayerScene, width:600, height:500}],
+    ['dancer', {"scene":DancePlayerScene, width:370.8, height:370.8}],
     ['starsQuest', {"scene":StarsQuestScene, width:477, height:475.2+35}],
     ])
 
@@ -33,31 +34,33 @@ function Game(props) {
     }
    
     
-    function usePhaserGame(config) {
-        const phaserGameRef = React.useRef(null);
-        React.useEffect(() => {
-          if (phaserGameRef.current) {
+
+  const phaserGameRef = useRef(null);
+
+  function usePhaserGame(config) {
+      
+      useEffect(() => {
+        if (phaserGameRef.current) {
             return;
-          }
-          phaserGameRef.current = new Phaser.Game(config);
+        }
+        phaserGameRef.current = new Phaser.Game(config);
 
-          phaserGameRef.current.scene.start(props.game_name, {board_data:props.data,best_score:props.best_score});
+        phaserGameRef.current.scene.start(props.game_name, {board_data:props.data,best_score:props.best_score});
 
-          props.setGameSence(phaserGameRef.current.scene)
+        props.setGameSence(phaserGameRef.current.scene)
 
-          return () => {
-            phaserGameRef.current.destroy(true);
-            phaserGameRef.current = null;
-          };
-        }, [props.level] /* only run once; config ref elided on purpose */);
+        return () => {
+          phaserGameRef.current.destroy(true);
+          phaserGameRef.current = null;
+        };
+      }, [props.level] /* only run once; config ref elided on purpose */);
         return phaserGameRef.current;
     }
+
 	const game = usePhaserGame(config)
 
     return (
-		<>
-        <div id="game-content"> </div>
-		</>
+      <div id="phaserCanvas"></div>
     );
 }
 export default Game;

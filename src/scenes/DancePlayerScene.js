@@ -41,15 +41,16 @@ export default class DancePlayerScene extends Phaser.Scene
     create()
 	{  
         // origin is center
-		const line = this.createLine()
-        this.add.image(300, 250, BACKGROUND_KEY).setScale(1.7,1.4)
+		// const line = this.createLine()
+        var image = this.add.image(0, 0, BACKGROUND_KEY).setScale(1.03,1.03).setOrigin(0)
+		// console.log(image.displayWidth, image.displayHeight)
 		// this.pauseBtn = this.add.sprite(5, 5, PAUSE).setInteractive().setScale(0.1).setOrigin(0)
 		// this.stopBtn = this.add.sprite(50, 5, STOP).setInteractive().setScale(0.30).setOrigin(0)
-		this.pauseBtn = this.add.sprite(400, 0, PAUSE).setInteractive().setScale(0.065).setOrigin(0)
-		this.stopBtn = this.add.sprite(440, 0, STOP).setInteractive().setScale(0.2).setOrigin(0)
+		this.pauseBtn = this.add.sprite(290, 10, PAUSE).setInteractive().setScale(0.065).setOrigin(0)
+		this.stopBtn = this.add.sprite(330, 10, STOP).setInteractive().setScale(0.2).setOrigin(0)
         this.player = this.createPlayer()
 		
-		this.physics.add.collider(this.player, line)
+		// this.physics.add.collider(this.player, line)
 		this.time_actions = new Map([
 			['jump with hands', 800],
 			['jump without hands', 800],
@@ -78,7 +79,7 @@ export default class DancePlayerScene extends Phaser.Scene
 			this.scene.pause('dancer')
 			this.action_list.splice(0, this.number_action)
 			console.log(this.number_action, this.action_list)
-			this.scene.launch('pause',{'name':'dancer','action_list':this.action_list})
+			this.scene.launch('pause',{'name':'dancer','action_list':this.action_list, x:290, y:10})
 		  },this);
 
 		  this.stopBtn.on('pointerdown', function () {
@@ -116,28 +117,16 @@ export default class DancePlayerScene extends Phaser.Scene
 	}
 	
 
-	createLine()
-	{
-		const lines = this.physics.add.staticGroup()
-
-
-		lines.create(300, 340, LINE)
-		lines.create(110, 250, LINE_A)
-		lines.create(490, 250, LINE_A)
-
-        return lines
-	}
-
-
-
 	createPlayer()
 	{
 		
-        const player = this.physics.add.sprite(300, 240, PLAYER_KEY)
+        const player = this.physics.add.sprite(189, 155, PLAYER_KEY).setScale(1.5)
+		console.log(player.width, player.height)
+		// the player won't be able to run outside of this area - according configrition
+		player.setCollideWorldBounds(true)
+		this.physics.world.setBounds(42, 0, 286.8, 370.8)
+		player.body.onWorldBounds = true;
 
-        // the player won't be able to run outside of this area - according configrition
-	    player.setCollideWorldBounds(true)
-		player.setScale(1.5)
 
 		this.anims.create({
 			key: 'stop',
@@ -295,6 +284,12 @@ export default class DancePlayerScene extends Phaser.Scene
 	    this.hitBomb(this.player, duration, this.version)
 	}	
 
+	restart_func(){
+		this.player.anims.play('stop')
+		this.player.x = 189
+		this.player.y = 155
+
+	}
 
     async hitBomb(player, time, version)
 	{
@@ -306,6 +301,8 @@ export default class DancePlayerScene extends Phaser.Scene
 				this.gameOver = true
 				console.log(time)
 				this.runner.showModel()
+				this.version = -1
+
 			}
 		  }, time);
 	}
