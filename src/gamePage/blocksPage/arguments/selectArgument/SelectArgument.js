@@ -30,7 +30,7 @@ function SelectArgument(props) {
 
     return (
         <span>
-            <select id={Constants.ARGUMENTS_IDENTIFIER} value={(selected === null || selected === undefined) ? "default" : selected} onChange={set_argument}>
+            <select className="select-input" id={Constants.ARGUMENTS_IDENTIFIER} value={(selected === null || selected === undefined) ? "default" : selected} onChange={set_argument}>
                 <option disabled value={"default"} > ---- </option>
                 {props.options.map((option) => {return <option key={option} value={option}>{option}</option>})}
             </select>

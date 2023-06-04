@@ -4,10 +4,6 @@ import * as Constants from './../../constants';
 
 export class DancerRunner extends BaseRunner{
 
-	// constructor(expected_solution,code,back_to_levels, next_level, gameSence, blocks, leftSideView){
-	// 	super(code,back_to_levels, next_level, gameSence, blocks, leftSideView)
-		
-	// }
 
     checkSolution() {
         var len_solution = this.actionsList.length;
@@ -77,14 +73,12 @@ export class DancerRunner extends BaseRunner{
 				eval(this.code)
 				this.actionsList= actionsList
 				this.gameSence.resume("dancer", {list:actionsList, runner:this})
-				
+				return "success"
 			}
 			catch(message){
 				return this.check_errors(message)
 			}
-
 		}
-
     }
 
     

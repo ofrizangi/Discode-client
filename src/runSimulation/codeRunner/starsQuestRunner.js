@@ -207,8 +207,8 @@ export class StarsQuestRunner extends BaseRunner{
             try {
                 eval(this.code)
                 this.actionsList = actionsList
-                //console.log(this.actionsList)
                 this.gameSence.resume("starsQuest", {list:actionsList, runner:this})
+                return "success"
             }
             catch(message){
                 return this.check_errors(message)
