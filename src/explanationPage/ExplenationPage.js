@@ -7,7 +7,9 @@ function ExplanationPage() {
   return (
 	<div className='background background-blue'>
 
-	<h1 className="page-title">Programming Concepts Explanation</h1>
+	<div className='height-title'>
+		<h1 className="page-title">Programming Concepts Explanation</h1>
+	</div>
 
 
     <div className="explanation-page">

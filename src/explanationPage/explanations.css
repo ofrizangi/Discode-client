@@ -22,10 +22,19 @@
     margin-right: 20%;
 	background-color: #cfe7e9;
     padding-left: 1%;
+    padding-right: 1%;
 	color: #333;
     overflow-y: auto;
-    height: 90%;
+    height: 85%;
     text-align: left;
+}
+
+
+.height-title {
+    height: 15%;
+    display: flex;
+    justify-content: center; /* Horizontal center */
+    align-items: center; /* Vertical center */
 }
   
   .concept-section {
@@ -47,6 +56,7 @@
 	background-color: #e8eaf6;
 	padding: 10px;
 	border-radius: 4px;
+    margin-right: 10%;
 	font-family: monospace;
 	white-space: pre;
 	text-align: left;
