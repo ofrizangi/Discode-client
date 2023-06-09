@@ -1,8 +1,5 @@
-import { color } from 'framer-motion'
 import Phaser from 'phaser'
 import ScoreLabel from './ui/SorceLabel'
-import { object, string } from 'prop-types'
-import { checkMaxIfStatementsInShader } from 'pixi.js'
 
 const BACKGROUND = 'background'
 const CAR = "car"
@@ -23,7 +20,6 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.bombs = undefined
 		this.no_entrys = undefined
 		this.scoreLabel = undefined
-		this.legend = undefined
 		
 
 		this.typeStars = new Map([
@@ -75,12 +71,7 @@ export default class StarsQuestScene extends Phaser.Scene
 	
 	}
 
-	destroy_objects(){
 
-
-
-
-	}
     create(data)
 	{  
 		this.board_data = data.board_data
@@ -272,11 +263,12 @@ export default class StarsQuestScene extends Phaser.Scene
 		}
 		
 	}
-	restart_func(){
+	restart_func(last_best_score){
 		
 		////console.log("restart_func")
-		if (this.scoreLabel.getScore()>this.best_score){
-			this.scoreLabel.setBestScore(this.scoreLabel.getScore())
+		if (last_best_score > this.best_score){
+			this.best_score = last_best_score
+			this.scoreLabel.setBestScore(last_best_score)
 		}
 		this.player.x = 39.75
 		this.player.y =39.6+35

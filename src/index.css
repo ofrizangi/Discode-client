@@ -7,23 +7,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-canvas {
-  position: absolute;
-  top: 80pt;
-  right:80pt;
-  /*top: 50%; 
-  position: absolute;
-  right: 11.8%;
-  top: 29.4%;
-  padding-top: 30%; 
-  right: 12.2pt;
-  transform: translate(-50%, -50%);
-  position: absolute;
-  top: 80pt;
-  right: 60pt;
-  transform: translate(50%, -50%); */
-} 
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

@@ -67,7 +67,7 @@ export class StarsQuestRunner extends BaseRunner{
         return arr  
     }
  
-    
+
 
     calculateScore(){
 
@@ -119,27 +119,32 @@ export class StarsQuestRunner extends BaseRunner{
         if (message_from_sence !== undefined){
             return {
                 'compare': false,
-                'message': <h3 id="fails">{message_from_sence}</h3>
+                'message': <h3 id="fails">{message_from_sence}</h3>,
+                'best_score':this.best_score
               }
         }
         if(score > this.best_score){
+            this.best_score = score
             post_best_score_api(score)
         }
         if (score < this.expected_solution){
             return {
                 'compare': false,
-                'message':  <h3 id="blue">{`Nice try, your score is ${score}.\nNow we expect you to reach ${this.expected_solution} points\n`}</h3>
+                'message':  <h3 id="blue">{`Nice try, your score is ${score}.\nNow we expect you to reach ${this.expected_solution} points\n`}</h3>,
+                'best_score':this.best_score
               }
         }
         if(score >= this.expected_solution && score > this.best_score){
             return {
                 'compare': true,
-                'message':  <h3 id="succeeded">{`Well done, your score is ${score}.\nyou broke your record, keep it up!\n`}</h3>
-              }
+                'message':  <h3 id="succeeded">{`Well done, your score is ${score}.\nyou broke your record, keep it up!\n`}</h3>,
+                'best_score':this.best_score
+            }
         }
         return {
                 'compare': true,
-                'message': <h3 id="succeeded">{`Well done, your score is ${score}\n`}</h3> 
+                'message': <h3 id="succeeded">{`Well done, your score is ${score}\n`}</h3>,
+                'best_score':this.best_score
         }
     }
 
@@ -165,13 +170,22 @@ export class StarsQuestRunner extends BaseRunner{
         const dict_row = {0 : {"front":id, "left":minus, "right":plus} , 90 : {"front":plus, "left":id, "right":id},
                      180: {"front":id, "left":plus, "right":minus},270:{"front":minus, "left":id, "right":id}}
 
-        const get_next_col = function(direction,number_steps){
+        const get_next_col_n_steps = function(direction,number_steps){
             return dict_col[angle][direction](x,number_steps)
         }
 
-        const get_next_row = function(direction, number_steps){
+        const get_next_row_n_steps = function(direction, number_steps){
             return dict_row[angle][direction](y,number_steps)
         };
+
+        const get_next_col = function(direction){
+            return get_next_col_n_steps(direction,1)
+        }
+
+        const get_next_row = function(direction){
+            return get_next_row_n_steps(direction,1)
+        };
+
 
 
         const writeActions = function() {
@@ -181,8 +195,8 @@ export class StarsQuestRunner extends BaseRunner{
 
 
         const drive =  function(number_steps){
-                x = get_next_col("front",number_steps)
-                y = get_next_row("front",number_steps)
+                x = get_next_col_n_steps("front",number_steps)
+                y = get_next_row_n_steps("front",number_steps)
 
                 validate_arguments(blocks, "drive", [number_steps])
                 actionsList.push({name: "drive" , arg : {'x': x-1 ,"y":y-1} })

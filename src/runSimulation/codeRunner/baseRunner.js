@@ -9,7 +9,6 @@ export default class BaseRunner {
         this.back_to_levels = back_to_levels
         this.next_level = next_level
 		this.retry_level = retry_level
-        this.actionsList = []
         this.compareSolution = {}
         this.gameSence = gameSence
 		this.blocks = blocks
@@ -70,18 +69,19 @@ export default class BaseRunner {
 		}
 	}
 
-	checkSolution(score){}
+	checkSolution(solution, message_from_sence){}
 
 
-    showModel(score, message_from_sence){
-		const information_on_soultion = this.checkSolution(score, message_from_sence);
+    showModel(solution, message_from_sence){
+		console.log(solution)
+		const information_on_soultion = this.checkSolution(solution, message_from_sence);
 		if (information_on_soultion.compare)
 		{
 			this.solve_in_server_function()
 		}
       setTimeout(() => {
         const gameBoard = createRoot(document.getElementById('model') );
-        const model = <CodeModal text={this.leftSideView === "blocks" ? this.code : ""} message = {information_on_soultion.message} compare={information_on_soultion.compare} back={this.back_to_levels} next_level={this.next_level} retry_level={this.retry_level} gameSence={this.gameSence} />
+        const model = <CodeModal text={this.leftSideView === "blocks" ? this.code : ""} message = {information_on_soultion.message} compare={information_on_soultion.compare} best_score={information_on_soultion.best_score} back={this.back_to_levels} next_level={this.next_level} retry_level={this.retry_level} gameSence={this.gameSence} />
         gameBoard.render(model);
         },500);   
     }

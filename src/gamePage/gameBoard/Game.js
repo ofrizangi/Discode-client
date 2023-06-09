@@ -10,16 +10,16 @@ import { useEffect, useRef } from 'react';
 function Game(props) {
 
   const gameSences1 = new Map([
-    ['dancer', {"scene":DancePlayerScene, width:370.8, height:370.8}],
-    ['starsQuest', {"scene":StarsQuestScene, width:477, height:475.2+35}],
+    ['dancer', {"scene":DancePlayerScene, width:370.8, height:370.8, style: 'position: absolute;top: 80pt; right:80pt;'}],
+    ['starsQuest', {"scene":StarsQuestScene, width:477, height:475.2+35 , style:'position: absolute;top: 120pt; right:50pt;'}],
     ])
 
 
     const config = {
         type: Phaser.AUTO,
-
         width: gameSences1.get(props.game_name).width,
         height:gameSences1.get(props.game_name).height,
+        canvasStyle: gameSences1.get(props.game_name).style,
         title: 'Game',
         backgroundColor: '#FFFFFF',
         pixleArt: false,

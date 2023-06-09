@@ -38,6 +38,9 @@ function GameBoard(props) {
     const editor_code = props.code
     const leftSideView = props.leftSideView
 
+    let data_board = props.game.data;
+
+
 
     const navigate = useNavigate();
 
@@ -89,11 +92,12 @@ function GameBoard(props) {
                 runner= new DancerRunner(code, back_to_levels, next_level,retry_level, gameSence, props.game.blocks, leftSideView, props.game.expected_solution,solve)
             }
             else if(props.game.game_name === "starsQuest"){
-                runner = new StarsQuestRunner(code, back_to_levels, next_level, retry_level, gameSence,props.game.data, props.game.blocks, leftSideView, props.game.expected_solution,solve, props.game.best_score)
+                runner = new StarsQuestRunner(code, back_to_levels, next_level, retry_level, gameSence,data_board, props.game.blocks, leftSideView, props.game.expected_solution,solve, props.game.best_score)
             }
             const ret_val = await runner.runcode()
             if(ret_val.includes(Constants.INFINITE_CODE) || ret_val.includes(Constants.COMPILATION_ERROR)){
                 setError(ret_val)
+                retry_level()
             }
         }
     }
@@ -108,26 +112,56 @@ function GameBoard(props) {
         </Popover>
       );
 
-    return (
-        <div id="gameBoard">
-            {error !== "" && <ErrorMessage text={error} setError={setError}></ErrorMessage>}
+      function setRandomData(){
 
-            { <button className='btn btn-success' onClick={get_code} disabled={runButtonDisabled}> Run game</button>}
+        if (data_board && data_board[0] && data_board[0][0] && data_board[0][0] === "no_data"  ){
 
-            {
-                props.game.video_src !== undefined &&  <Video gameLevel = {props.game} display={videoDisplay}  />
+        let posotive_values = [0,1,2,3,4,5,6]
+        let other_values = ["*",-2,-4,0]
+
+
+        let numbers_rows = data_board.length
+        let numbers_cols = data_board[0].length
+        let arr = [];
+        for (let i = 0; i < numbers_rows; i++) {
+            arr[i] = [];
+            for (let j = 0; j < numbers_cols; j++) {
+                if (Math.random() < 0.8 || (i==0 && j==1)|| (i==1 && j==0)) {
+                    arr[i][j] = posotive_values[Math.floor(Math.random() * posotive_values.length)]
+                }
+                else {
+                    arr[i][j] = other_values[Math.floor(Math.random() * other_values.length)]
+                }
             }
-           
-            <Game game_name = {props.game.game_name}  level={props.game.level_number} data = {props.game.data} best_score={props.game.best_score}  setGameSence = {setGameSence} video_src={props.game.video_src}/>            
-            {props.game !== null && props.game.game_name === 'starsQuest' &&
-            <OverlayTrigger
-                trigger={['hover', 'focus']}
-                placement="bottom"
-                overlay={popoverHoverFocus}
-                >
-                <Button>Information</Button>
-                </OverlayTrigger>
-            }           
+        }
+        arr[0][0] = 0
+        data_board = arr;
+        }
+        
+        
+    }
+
+
+    return (
+       
+        <div id="gameBoard">
+            <div id={`gmame-screen-${props.game.game_name}`}>
+            <div className='instruction'>somting</div>
+    {error !== "" && <ErrorMessage text={error} setError={setError}></ErrorMessage>}
+        
+           { props.game.video_src !== undefined &&  <Video gameLevel = {props.game} display={videoDisplay}/>}
+           {setRandomData()}
+            <Game game_name = {props.game.game_name}  level={props.game.level_number} data = {data_board} best_score={props.game.best_score}  setGameSence = {setGameSence} video_src={props.game.video_src}/>            
+            <div className={`controls-${props.game.game_name}`}>
+            <button className='btn btn-success' onClick={get_code} disabled={runButtonDisabled}>Run game</button>
+            {props.game.game_name === 'starsQuest' &&
+            <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverHoverFocus} >
+                <Button id="information-btn">Information</Button>
+            </OverlayTrigger>} 
+            </div>
+        
+            </div>
+            
 
         </div>
     );

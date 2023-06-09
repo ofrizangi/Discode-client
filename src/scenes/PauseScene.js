@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import { version } from 'react'
 
 const RESUME = "resume"
    

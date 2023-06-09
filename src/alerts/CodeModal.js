@@ -39,10 +39,11 @@ class CodeModal extends React.Component {
     
     this.hideModal()
     this.props.retry_level()
-    this.props.gameSence.scenes[0].restart_func()
+    this.props.gameSence.scenes[0].restart_func(this.props.best_score)
   }
   nextLevel = () => {
     this.hideModal()
+    this.props.retry_level()
     this.props.next_level()
 
   };

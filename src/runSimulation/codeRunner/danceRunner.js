@@ -5,12 +5,14 @@ import * as Constants from './../../constants';
 export class DancerRunner extends BaseRunner{
 
 
-    checkSolution() {
-        var len_solution = this.actionsList.length;
+    checkSolution(solution, message_from_sence) {
+      console.log(solution)
+        var len_solution = solution.length;
         var len_expected_solution = this.expected_solution.length;
         if(len_expected_solution === 0){
           return { 'compare': true, 'message': <h3 id="succeeded">{`Nice idea, well done\n`}</h3>}
         }
+        console.log(len_expected_solution, len_solution)
         if(len_solution > len_expected_solution){
           return {
             'compare': false,
@@ -25,7 +27,7 @@ export class DancerRunner extends BaseRunner{
         } 
         else {
           for (var i = 0; i < len_solution; i++) {
-            if (this.actionsList[i] !== this.expected_solution[i]) {    
+            if (solution[i] !== this.expected_solution[i]) {    
               return {
                 'compare': false,
                 'message': <h3 id="fails">{`action number ${i+1} is not corrcet\n`}</h3>
@@ -71,9 +73,8 @@ export class DancerRunner extends BaseRunner{
 		else {
 			try {
 				eval(this.code)
-				this.actionsList= actionsList
 				this.gameSence.resume("dancer", {list:actionsList, runner:this})
-				return "success"
+				return "done"
 			}
 			catch(message){
 				return this.check_errors(message)

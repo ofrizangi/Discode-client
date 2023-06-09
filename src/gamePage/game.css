@@ -3,6 +3,42 @@
   justify-content: center;
 }
 
+#gameBoard{
+  width:100vh;
+  height: 100vh
+}
+
+.instruction{
+  font-family: 'Lobster', cursive;
+  font-size: 40px;
+  color: rgb(47, 150, 187);
+  text-align:  initial;;
+}
+
+#gmame-screen-starsQuest{
+  /*top: 120pt; right:50pt;
+  idth:477, height:475.2+35*/
+  width: 575px;
+  height:660px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  position: absolute; 
+  top: 60pt;
+  right: 20pt;
+ 
+}
+
+.controls-starsQuest {
+  position: relative;
+  margin-bottom: 20px;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  width: 55%;
+  z-index: 1;
+  top: 395pt;  
+}
+
 .star {
   width: 100%;
   height: 100%;
@@ -34,16 +70,11 @@
   object-fit: fill;
 }
 
+#information-btn{
+  margin-left: 5px;
+}
 
 .video_level{
   align-items: center;
 
-}
-
-
-#phaserCanvas {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
