@@ -73,7 +73,9 @@ export class DancerRunner extends BaseRunner{
 		else {
 			try {
 				eval(this.code)
-				this.gameSence.resume("dancer", {list:actionsList, runner:this})
+        // if (actionsList.length > 0){
+        this.gameSence.resume("dancer", {list:actionsList, runner:this})
+        // }
 				return "done"
 			}
 			catch(message){

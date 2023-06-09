@@ -21,6 +21,7 @@ import Button from 'react-bootstrap/Button';
 import '../game.css'
 import stars_information from '../../images/stars_information.png'
 import bombs_information from '../../images/bombs_information.png'
+import play_img from '../../images/play-button.png'
 
 import ErrorMessage from './../../alerts/ErrorMessage'
 
@@ -43,6 +44,14 @@ function GameBoard(props) {
 
 
     const navigate = useNavigate();
+
+    // const disription_game = {'dancer':"Dance with me",  'starsQuest':"Collect many stars"};
+    const disription_game = new Map([
+        ['dancer', "Dance with me"],
+        ['starsQuest', "Collect many stars"],
+        ])
+
+
 
     const retry_level = () => {
         setRunButtonDisabled(false)
@@ -145,20 +154,25 @@ function GameBoard(props) {
     return (
        
         <div id="gameBoard">
-            <div id={`gmame-screen-${props.game.game_name}`}>
-            <div className='instruction'>somting</div>
-    {error !== "" && <ErrorMessage text={error} setError={setError}></ErrorMessage>}
+              <div className={`error-${props.game.game_name}`}>
+              {error !== "" && <ErrorMessage  text={error} setError={setError}></ErrorMessage>}
+            </div>
         
+            <div id={`game-screen-${props.game.game_name}`}>
+            <div className={`controls`}>
+            < span className='instruction'>{disription_game.get(props.game.game_name)}</span>
+            <button className='game-button' onClick={get_code} disabled={runButtonDisabled}><img src={play_img} alt="error"/></button>
+            </div> 
+            
+            {props.game.game_name === 'starsQuest' &&
+            <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverHoverFocus} >
+                <i className="information bi bi-info-circle info-icon"></i>
+            </OverlayTrigger>} 
+  
            { props.game.video_src !== undefined &&  <Video gameLevel = {props.game} display={videoDisplay}/>}
            {setRandomData()}
             <Game game_name = {props.game.game_name}  level={props.game.level_number} data = {data_board} best_score={props.game.best_score}  setGameSence = {setGameSence} video_src={props.game.video_src}/>            
-            <div className={`controls-${props.game.game_name}`}>
-            <button className='btn btn-success' onClick={get_code} disabled={runButtonDisabled}>Run game</button>
-            {props.game.game_name === 'starsQuest' &&
-            <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverHoverFocus} >
-                <Button id="information-btn">Information</Button>
-            </OverlayTrigger>} 
-            </div>
+   
         
             </div>
             
