@@ -70,43 +70,40 @@ export class StarsQuestRunner extends BaseRunner{
 
 
     calculateScore(){
+        var x = 0
+        var y = 0
+        var angle = 0
+        var score = 0
 
-    var x = 0
-    var y = 0
-    var angle = 0
-    var score = 0
-
-
-    for(var i = 0; i < this.actionsList.length; i++){
-		if(this.actionsList[i].name == "turn" ){
-            if  (this.actionsList[i].arg == "right"){angle = (angle +90)%360; }
-            else{angle = (angle -90+360)%360}
-            continue
-        }
-        
-        var next_x = this.actionsList[i].arg.x
-		var next_y = this.actionsList[i].arg.y
-
-        if (next_x < 0 || next_x > 5  || next_y < 0 || next_y > 5 ){ return {"score": 0, "message":"Game Over - you collided with a wall\n"}}
-        if ( this.game_board[y][x] === '*') {return {"score": 0, "message":"Game Over - you can't enter there\n"}}
-
-		//drive
-        while (x != next_x || y != next_y){
+        for(var i = 0; i < this.actionsList.length; i++){
+            if(this.actionsList[i].name == "turn" ){
+                if  (this.actionsList[i].arg == "right"){angle = (angle +90)%360; }
+                else{angle = (angle -90+360)%360}
+                continue
+            }
             
-            if(angle === 0 && x < next_x){x+=1;}
-            else if(angle === 90 && y < next_y){y+=1; }
-            else if (angle === 180 && x > next_x){x-=1;}
-            else if(angle === 270 && y > next_y){y-=1}
+            var next_x = this.actionsList[i].arg.x
+            var next_y = this.actionsList[i].arg.y
 
-            var val =  this.game_board[y][x]
-            score += val
-            this.game_board[y][x] = 0
+            if (next_x < 0 || next_x > 5  || next_y < 0 || next_y > 5 ){ return {"score": 0, "message":"Game Over - you collided with a wall\n"}}
+            if ( this.game_board[y][x] === '*') {return {"score": 0, "message":"Game Over - you can't enter there\n"}}
+
+            //drive
+            while (x != next_x || y != next_y){
+                
+                if(angle === 0 && x < next_x){x+=1;}
+                else if(angle === 90 && y < next_y){y+=1; }
+                else if (angle === 180 && x > next_x){x-=1;}
+                else if(angle === 270 && y > next_y){y-=1}
+
+                var val =  this.game_board[y][x]
+                score += val
+                this.game_board[y][x] = 0
+            }
+            
         }
-        
+        return {"score": score, "message":undefined}
     }
-    return {"score": score, "message":undefined}
-
-}
 			
 
    
@@ -179,14 +176,18 @@ export class StarsQuestRunner extends BaseRunner{
         };
 
         const get_next_col = function(direction){
+            if(direction !== "left" && direction !== "front" && direction !== "right"){
+                throw new Error(`argument "${direction}" is not valid`)
+            }
             return get_next_col_n_steps(direction,1)
         }
 
-        const get_next_row = function(direction){
+        const get_next_row = function(direction) {
+            if(direction !== "left" && direction !== "front" && direction !== "right"){
+                throw new Error(`argument "${direction}" is not valid`)
+            }
             return get_next_row_n_steps(direction,1)
         };
-
-
 
         const writeActions = function() {
             validate_arguments(blocks, arguments[0], [arguments[1].number_steps])
@@ -218,7 +219,6 @@ export class StarsQuestRunner extends BaseRunner{
             }
             validate_arguments(blocks, "turn", [direction])
 			actionsList.push({name: "turn" , arg : direction })
-
         };
 
         const infinite_code = await this.if_infinite_code()

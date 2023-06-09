@@ -10,6 +10,8 @@ import { restart_game } from '../gamesAPI';
 
 import restart_img from './../../images/reloading.png'
 
+import * as Constants from '../../constants';
+
 
 function CodeEditorPage(props) {
 
@@ -31,9 +33,14 @@ function CodeEditorPage(props) {
     }, [code]);
 
 
+    // in this two functions we are asuming the complex game blocks are only in StartQuest game
     function get_main_function_call(){
         const game_blocks = blocks.filter(element => element.is_game_block)
         const game_blocks_id = game_blocks.map(obj => obj._id)
+        const blocks_id = blocks.map(obj => obj._id)
+        if(blocks_id.some((element) => Constants.board_and_score_conditions.includes(element))){
+            return "main("+ game_blocks_id.join(',') + ",get_next_col,get_next_row,score,board)"
+        }
         return "main("+ game_blocks_id.join(',') + ")"
     }
 
@@ -56,11 +63,17 @@ function CodeEditorPage(props) {
         }
         for(let id = 0; id< game_blocks_id.length; id++){
             const first_char =  joined_arguments[id].length === 0 || joined_arguments[id][0] === "Number" ? "" : "'"
-            console.log( joined_arguments[id][joined_arguments.length - 1])
             const second_char =  joined_arguments[id].length === 0 || joined_arguments[id][joined_arguments[id].length - 1] === "Number" ? "" : "'"
             game_blocks_id[id] = `${game_blocks_id[id]}(${first_char}${joined_arguments[id].join(" , ")}${second_char})`
         }
+        const blocks_id = blocks.map(obj => obj._id)
+        if(blocks_id.some((element) => Constants.board_and_score_conditions.includes(element))){
+            return "/* game function calls:\n * "+ game_blocks_id.join('\n * ') 
+            + "\n * get_next_row('right'\\'left'\\'front') \n * get_next_col('right'\\'left'\\'front')\n*/\n\n" +
+            "/* arrays:\n * board[7][7] - position of objects \n * score[7][7] - score of objects\n*/\n\n"
+        }       
         return "/* game function calls:\n * "+ game_blocks_id.join('\n * ') + "\n*/\n\n"
+
     }
 
 

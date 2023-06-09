@@ -143,9 +143,7 @@ function GameBoard(props) {
         }
         arr[0][0] = 0
         data_board = arr;
-        }
-        
-        
+        }     
     }
 
 
@@ -173,8 +171,6 @@ function GameBoard(props) {
    
         
             </div>
-            
-
         </div>
     );
 }

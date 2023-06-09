@@ -62,7 +62,7 @@ class DraggableModalDialog extends React.Component {
 			dialogAs={DraggableModalDialog}>
 			
 			<Modal.Header closeButton className="grab">
-				<Modal.Title> Insert code arguments: </Modal.Title>
+				<Modal.Title> Insert code arguments </Modal.Title>
 			</Modal.Header>
 			<Modal.Body className="modalBody">
 				<form onSubmit={this.handleSubmit}>
@@ -75,7 +75,9 @@ class DraggableModalDialog extends React.Component {
 						</div>
 
 					})}
-        			<input type="submit" className="btn btn-success" value="Submit" />
+					<div className="d-flex justify-content-center">
+        				<input type="submit" className="btn btn-success submit-button" value="Submit" />
+					</div>
 				</form>
 			</Modal.Body>
 		</Modal>

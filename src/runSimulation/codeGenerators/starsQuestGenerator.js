@@ -71,15 +71,15 @@ export class StarsQuestGenerator extends BaseGenerator {
         
     }
 
-    drive_const(block, line_number){
+    drive_number_of_steps(block, line_number){
         return `drive(number_steps);`
     }
 
-    number_steps(block, line_number){
+    set_number_of_steps(block, line_number){
         const numberSteps = block.arguments[line_number][0]
         return `let number_steps = ${numberSteps};`
     }
-    upate_number_steps(block, line_number){
+    substact_number_of_steps(block, line_number){
         const number = block.arguments[line_number][0]
         return `number_steps = number_steps -  ${number};`
     }

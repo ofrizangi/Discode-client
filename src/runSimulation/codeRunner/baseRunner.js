@@ -22,6 +22,10 @@ export default class BaseRunner {
 	get_main_function_call(){
         const game_blocks = this.blocks.filter(element => element.is_game_block)
         const game_blocks_id = game_blocks.map(obj => obj._id)
+        const blocks_id = this.blocks.map(obj => obj._id)
+		if(blocks_id.some((element) => Constants.board_and_score_conditions.includes(element))){
+            return "main("+ game_blocks_id.join(',') + ",get_next_col,get_next_row,score,board)"
+        }
         return "main("+ game_blocks_id.join(',') + ")"
     }
 

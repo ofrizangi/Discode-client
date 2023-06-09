@@ -20,7 +20,6 @@ function OutputWindow(props) {
     const expected_solution = props.game.expected_solution
     const function_arguments = props.game.function_arguments
     const mission = props.game.data
-    console.log("gamming" , props.game)
     const [args, setArgs] = useState(props.game.function_arguments.length !== 0 ? [] : null)
     const [runCode, setRunCode] = useState(false)
     const [success, setSuccess] = useState(false)
