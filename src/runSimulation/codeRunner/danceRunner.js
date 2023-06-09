@@ -10,19 +10,19 @@ export class DancerRunner extends BaseRunner{
         var len_solution = solution.length;
         var len_expected_solution = this.expected_solution.length;
         if(len_expected_solution === 0){
-          return { 'compare': true, 'message': <h3 id="succeeded">{`Nice idea, well done\n`}</h3>}
+          return { 'compare': true, 'message': <div className="modal-title"> <h3 id="succeeded"> Nice idea, well done </h3> </div> }
         }
         console.log(len_expected_solution, len_solution)
         if(len_solution > len_expected_solution){
           return {
             'compare': false,
-            'message': <h3 id="fails">{`Your solution contains ${len_solution - len_expected_solution} more operations than expected\n`}</h3>
+            'message': <div className="modal-title"> <h3 id="fails"> Wrong solution </h3> Your solution contains {len_solution - len_expected_solution} more operations than expected </div>
           };
         }
         else if(len_expected_solution > len_solution){
           return {
             'compare': false,
-            'message': <h3 id="fails">{`Your solution contains ${len_expected_solution - len_solution} less operations than expected\n`}</h3>
+            'message': <div className="modal-title"> <h3 id="fails"> Wrong solution </h3> Your solution contains {len_expected_solution - len_solution} less operations than expected </div>
           };
         } 
         else {
@@ -30,14 +30,14 @@ export class DancerRunner extends BaseRunner{
             if (solution[i] !== this.expected_solution[i]) {    
               return {
                 'compare': false,
-                'message': <h3 id="fails">{`action number ${i+1} is not corrcet\n`}</h3>
+                'message': <div className="modal-title"> <h3 id="fails"> Wrong solution </h3> action number {i+1} is not corrcet </div>
               };
             }
           }
         }
         return {
           'compare': true,
-          'message': <h3 id="succeeded"> {`Well done\n`}</h3>
+          'message': <div className="modal-title"> <h3 id="succeeded"> well done </h3> </div>
         };
     }
 

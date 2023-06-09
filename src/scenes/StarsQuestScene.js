@@ -188,7 +188,7 @@ export default class StarsQuestScene extends Phaser.Scene
 			this.is_run = false
 			//console.log(this.action_list[this.index].arg)
 			this.physics.pause()
-			this.gameOver("Game Over - you collided with a wall\n",)		
+			this.gameOver("you collided with a wall\n",)		
 		}
 		
 	}
@@ -197,7 +197,7 @@ export default class StarsQuestScene extends Phaser.Scene
 	{
 		this.is_run = false
 		this.physics.pause()
-		this.gameOver("Game Over - you can't enter there\n")
+		this.gameOver("you can't enter there\n")
 		
 	}
 

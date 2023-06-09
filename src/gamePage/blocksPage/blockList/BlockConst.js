@@ -16,7 +16,10 @@ function BlockConst(props) {
                 <DescriptionConst block={block} list_num={0}></DescriptionConst> 
                 :
                 Array(block.complex).fill(null).map((list_value, list_num) => (
-                    <DescriptionConst key={list_num} block={block} list_num={list_num}></DescriptionConst> 
+                    <div key={list_num}>
+                        <div className='description'> <DescriptionConst key={list_num} block={block} list_num={list_num}></DescriptionConst> </div>
+                        <div className='board'> </div> 
+                    </div>
                 )) }
         </div>
     );

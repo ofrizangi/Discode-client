@@ -25,9 +25,9 @@ function Block(props) {
                          :
                             Array(block.complex).fill(null).map((list_value, list_num) => (
                             <div key={list_num}>
-                                <DescriptionConst block={block} list_num={list_num}></DescriptionConst> 
-                         </div>
-
+                                <div className='description'><DescriptionConst block={block} list_num={list_num}></DescriptionConst> </div>
+                                <div className='board'> </div>
+                            </div>
                        )) }
                 </div>
             )}

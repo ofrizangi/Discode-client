@@ -1,21 +1,16 @@
 .number-input {
     width: 27pt;
-    height: 18pt;
+    height: 20pt;
+    border-radius: 4px;
 }
 
 .select-input {
-    height: 18pt;
-
-    /* border-radius: 4px;
-    appearance: none;
-    text-align: center; */
+    height: 20pt;
+    border-radius: 4px;
+    text-align: center;
 }
 
-/* .select-icon {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    pointer-events: none;
-    font-size: 14px;
-} */
+.disable-select {
+    background-color: #f1f1f1;
+}
+

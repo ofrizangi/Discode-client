@@ -81,9 +81,9 @@ export default class BaseRunner {
 		}
       setTimeout(() => {
         const gameBoard = createRoot(document.getElementById('model') );
-        const model = <CodeModal text={this.leftSideView === "blocks" ? this.code : ""} message = {information_on_soultion.message} compare={information_on_soultion.compare} best_score={information_on_soultion.best_score} back={this.back_to_levels} next_level={this.next_level} retry_level={this.retry_level} gameSence={this.gameSence} />
+        const model = <CodeModal text={this.leftSideView === "blocks" ? this.code : ""} message = {information_on_soultion.message} compare={information_on_soultion.compare} best_score={information_on_soultion.best_score} back={this.back_to_levels} next_level={this.next_level} retry_level={this.retry_level} gameSence={this.gameSence} gameBoard={gameBoard}/>
         gameBoard.render(model);
-        },500);   
+        }, 500);   
     }
     
 
@@ -91,9 +91,7 @@ export default class BaseRunner {
         var bb = new Blob([ this.get_blocks_game_empty_functions() + this.code + "postMessage('done')"], {
             type: 'text/javascript'
         });
-		// console.log(bb)
         var bbURL = URL.createObjectURL(bb);
-
         try {
             await this.runWorker(bbURL)
 			return false

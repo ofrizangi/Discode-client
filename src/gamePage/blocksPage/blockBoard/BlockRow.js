@@ -28,7 +28,7 @@ function BlockRow(props) {
                         : 
                         Array(block.complex).fill(null).map((list_value, list_num) => (
                             <div key={list_num}>
-                                <Description block={block} row={row} list_num={list_num} commands={props.commands} setCommands={props.setCommands}></Description> 
+                                <div className='description'> <Description block={block} row={row} list_num={list_num} commands={props.commands} setCommands={props.setCommands}></Description> </div>
                                 <BlockBoardConst solution={get_inner_blocks(row._id, list_num)} setDroppableBlock={props.setDroppableBlock} droppableBlock={props.droppableBlock} commands={props.commands} setCommands={props.setCommands} droppableListNumber={props.droppableListNumber} setDroppableListNumber={props.setDroppableListNumber}
                                                     list_num={list_num} outer_block_id={row._id}/>
                             </div>

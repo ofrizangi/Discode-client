@@ -60,6 +60,7 @@ class DraggableModalDialog extends React.Component {
 			show={this.state.open}
 			onHide={this.hideModal}
 			dialogAs={DraggableModalDialog}>
+			
 			<Modal.Header closeButton className="grab">
 				<Modal.Title> Insert code arguments: </Modal.Title>
 			</Modal.Header>
