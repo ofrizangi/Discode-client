@@ -7,7 +7,7 @@ function SelectArgumentConst(props) {
 
     return (
         <span>
-            <select className="select-input" disabled defaultValue={value}>
+            <select className="select-input disable-select" disabled defaultValue={value}>
                 <option id="default"> ---- </option>
                 {props.options.map((option) => {return <option key={option}>{option}</option>})}
             </select>

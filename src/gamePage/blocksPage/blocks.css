@@ -6,7 +6,6 @@
     border: 2px solid #edf1e6;
     font-family: sans-serif;
     cursor: grabbing;
-
 }
 
 .block:hover {
@@ -72,4 +71,9 @@
     display: block;
     width: 45px;
     height: 45px; 
+}
+
+.description {
+    text-align: left;
+    margin: 2%;
 }

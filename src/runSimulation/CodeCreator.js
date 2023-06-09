@@ -64,7 +64,7 @@ const CodeCreator = () => {
                 code += tab + generator[block_id](row, 0) + "\n"
             } else {
                 for(let line_num = 0; line_num < row.block.complex; line_num++){
-                    code += tab + generator[block_id](row, line_num)
+                    code += tab + generator[block_id](row, line_num, tab)
                     var new_tab = tab + "\t"
                     code += "{\n" + rec_translate_blocks(commands, row.inner_blocks[line_num], generator, new_tab) + tab + "}\n"
                 }

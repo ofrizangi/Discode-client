@@ -7,25 +7,25 @@ import React from 'react';
 import './alerts.css'
 
 class DraggableModalDialog extends React.Component {
-  render() {
-    return (
-      <Draggable handle=".modal-header">
-        <ModalDialog {...this.props} />
-      </Draggable>
-    );
-  }
-}
+	render() {
+		return (
+		<Draggable handle=".modal-header">
+			<ModalDialog {...this.props} />
+		</Draggable>
+		);
+	}
+	}
 
-class CodeModal extends React.Component {
+	class CodeModal extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: true
-    };
-    this.showModal = this.showModal.bind(this);
-    this.hideModal = this.hideModal.bind(this);
-  };
+	constructor(props) {
+		super(props);
+		this.state = {
+		open: true
+		};
+		this.showModal = this.showModal.bind(this);
+		this.hideModal = this.hideModal.bind(this);
+	};
 
   showModal = () => {
     this.setState({ open: true });
@@ -33,6 +33,7 @@ class CodeModal extends React.Component {
   
   hideModal = () => {
     this.setState({ open: false });
+	this.props.gameBoard.unmount();
   }
   
   retryLevel = () => {
@@ -46,12 +47,20 @@ class CodeModal extends React.Component {
     this.props.retry_level()
     this.props.next_level()
 
-  };
+	};
 
-  backToLevels = () => {
-    this.hideModal()
-    this.props.back()
-  };
+	backToLevels = () => {
+		this.hideModal()
+		this.props.back()
+	};
+
+	componentDidMount() {
+		window.addEventListener('popstate', this.hideModal);
+	  }
+	
+	componentWillUnmount() {
+		window.removeEventListener('popstate', this.hideModal);
+	}
   
   render() {
 
@@ -60,23 +69,20 @@ class CodeModal extends React.Component {
         show={this.state.open}
         onHide={() => {this.retryLevel()}}
         dialogAs={DraggableModalDialog}
-      >
+		>
         <Modal.Header closeButton className="grab">
-          <Modal.Title>Your solution </Modal.Title>
-          
+			<Modal.Title> {this.props.message} </Modal.Title>
         </Modal.Header>
-          <Modal.Body className="modalBody">
-          {this.props.message}
-            <p>{this.props.text}</p>
-            </Modal.Body>
-            <Modal.Footer id='buttons-footer'>
-              <button  type="button" className="btn btn-success" onClick={this.retryLevel}>Retry</button>
-              <button type="button" className="btn btn-success" onClick={this.backToLevels}>Levels</button>
-              {this.props.compare ?  <button type="button" className="btn btn-success" onClick={this.nextLevel}>Next</button> :               
-			  	<button type="button" className="btn btn-success" onClick={this.nextLevel} disabled>Next</button>}
-
-            </Modal.Footer>
-          {/* <Modal.Footer>Footer</Modal.Footer> */}
+        {this.props.text !== "" && 
+		<Modal.Body className="modalBody">
+            <pre>{this.props.text}</pre>
+        </Modal.Body>}
+        <Modal.Footer id='buttons-footer'>
+			<button  type="button" className="btn btn-success" onClick={this.retryLevel}>Retry</button>
+			<button type="button" className="btn btn-success" onClick={this.backToLevels}>Levels</button>
+			{this.props.compare ?  <button type="button" className="btn btn-success" onClick={this.nextLevel}>Next</button> :               
+				<button type="button" className="btn btn-success" onClick={this.nextLevel} disabled>Next</button>}
+        </Modal.Footer>
       </Modal>
     );
   }

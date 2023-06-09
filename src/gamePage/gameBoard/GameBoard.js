@@ -47,16 +47,14 @@ function GameBoard(props) {
     const retry_level = () => {
         setRunButtonDisabled(false)
         var video = document.getElementById("myVideo")
-        if (video != undefined){
+        if (video !== undefined && video !== null){
             setVideoDisplay('block')
             video.currentTime = 0;
             video.pause();       
         }
-        
     };
 
     
-
     async function solve() {
         if(leftSideView === 'editor'){
             await post_code_api(editor_code)

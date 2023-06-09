@@ -119,7 +119,7 @@ export class StarsQuestRunner extends BaseRunner{
         if (message_from_sence !== undefined){
             return {
                 'compare': false,
-                'message': <h3 id="fails">{message_from_sence}</h3>,
+                'message': <div className="modal-title"> <h3 id="fails"> game over </h3> {message_from_sence}</div>,
                 'best_score':this.best_score
               }
         }
@@ -130,20 +130,20 @@ export class StarsQuestRunner extends BaseRunner{
         if (score < this.expected_solution){
             return {
                 'compare': false,
-                'message':  <h3 id="blue">{`Nice try, your score is ${score}.\nNow we expect you to reach ${this.expected_solution} points\n`}</h3>,
+                'message': <div className="modal-title"> <h3 id="blue"> Nice try </h3> your score is {score}, Now we expect you to reach {this.expected_solution} points </div>,
                 'best_score':this.best_score
               }
         }
         if(score >= this.expected_solution && score > this.best_score){
             return {
                 'compare': true,
-                'message':  <h3 id="succeeded">{`Well done, your score is ${score}.\nyou broke your record, keep it up!\n`}</h3>,
+                'message':  <div className="modal-title"> <h3 id="succeeded"> Well done</h3> your score is {score}. you broke your record, keep it up! </div>,
                 'best_score':this.best_score
-            }
+              }
         }
         return {
                 'compare': true,
-                'message': <h3 id="succeeded">{`Well done, your score is ${score}\n`}</h3>,
+                'message':  <div className="modal-title"> <h3 id="succeeded"> Well done</h3> your score is {score} </div>,
                 'best_score':this.best_score
         }
     }
@@ -195,18 +195,18 @@ export class StarsQuestRunner extends BaseRunner{
 
 
         const drive =  function(number_steps){
-                x = get_next_col_n_steps("front",number_steps)
-                y = get_next_row_n_steps("front",number_steps)
+            x = get_next_col_n_steps("front",number_steps)
+            y = get_next_row_n_steps("front",number_steps)
 
-                validate_arguments(blocks, "drive", [number_steps])
-                actionsList.push({name: "drive" , arg : {'x': x-1 ,"y":y-1} })
+            validate_arguments(blocks, "drive", [number_steps])
+            actionsList.push({name: "drive" , arg : {'x': x-1 ,"y":y-1} })
 
-                writeActions("drive", {'x': x-1 ,"y":y-1, "number_steps":number_steps})
-                if (x>=7 || x<=0 || y<=0 || y>=7 || board[y][x] === "no entry sign"){
-                    throw new Error(`game failed`)
-                }
-                board[y][x] = 0
-                score[y][x] = 0            
+            writeActions("drive", {'x': x-1 ,"y":y-1, "number_steps":number_steps})
+            if (x>=7 || x<=0 || y<=0 || y>=7 || board[y][x] === "no entry sign"){
+                throw new Error(`game failed`)
+            }
+            board[y][x] = 0
+            score[y][x] = 0            
         };
 
         const turn = function(direction){

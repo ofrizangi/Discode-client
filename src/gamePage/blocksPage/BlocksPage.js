@@ -127,18 +127,18 @@ function BlocksPage(props) {
 
     async function dragEndHandler(draggable_block){
 
-        if(draggable_block.source.droppableId.includes(Constants.DROPPABLE_LIST_ID) && draggable_block.destination.droppableId.includes(Constants.DROPPABLE_BOARD_ID)){
-            if(commands.length >= max_row_number) {
-                alert("to many blocks")
-                return
-            }
-        }
+        // if(draggable_block.source.droppableId.includes(Constants.DROPPABLE_LIST_ID) && draggable_block.destination.droppableId.includes(Constants.DROPPABLE_BOARD_ID)){
+        //     if(commands.length >= max_row_number) {
+        //         alert("to many blocks")
+        //         return
+        //     }
+        // }
 
         const src_index = draggable_block.source.index
         const dest_index = draggable_block.destination === null ? null : draggable_block.destination.index
 
         // if droppable block isn't null then we are handling an inner command
-        if(droppableBlock !== null){
+        if(droppableBlock !== null) {
             const outer_command_index = commands.findIndex(element => element._id === droppableBlock)
 
             if (dest_index === null) {
