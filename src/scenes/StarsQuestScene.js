@@ -197,6 +197,8 @@ export default class StarsQuestScene extends Phaser.Scene
 		//width =265*0.3 =79.5 - >477-79.5/2
 		// height=264*0.3=79.2 -> 475.2+35-79.2/2
 		if (this.player.x < 38 || this.player.x >438.5   || this.player.y < 73.5 || this.player.y > 471.5 ){
+			this.pauseBtn.setVisible(false)
+			this.stopBtn.setVisible(false)
 			this.carCollisionSound.play();
 			this.is_run = false
 			//console.log(this.action_list[this.index].arg)
@@ -208,6 +210,8 @@ export default class StarsQuestScene extends Phaser.Scene
 
 	collide_no_entrys()
 	{
+		this.pauseBtn.setVisible(false)
+		this.stopBtn.setVisible(false)
 		this.carCollisionSound.play();
 		this.is_run = false
 		this.physics.pause()
@@ -314,6 +318,8 @@ export default class StarsQuestScene extends Phaser.Scene
 
 	gameOver(message)
 	{
+		this.pauseBtn.setVisible(false)
+		this.stopBtn.setVisible(false)
 		this.runner.showModel(this.scoreLabel.getScore(),message)
 	}
 }

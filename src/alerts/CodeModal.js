@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import ModalDialog from "react-bootstrap/ModalDialog";
 import Draggable from "react-draggable";
 import React from 'react';
-
+import * as Constants from '../constants';
 import './alerts.css'
 
 class DraggableModalDialog extends React.Component {
@@ -78,7 +78,7 @@ class DraggableModalDialog extends React.Component {
         <Modal.Footer id='buttons-footer'>
 			<button  type="button" className="btn btn-success" onClick={this.retryLevel}>Retry</button>
 			<button type="button" className="btn btn-success" onClick={this.backToLevels}>Levels</button>
-			{this.props.compare ?  <button type="button" className="btn btn-success" onClick={this.nextLevel}>Next</button> :               
+			{(this.props.compare && this.props.level_number < Constants.NUMBER_OF_LEVELS) ?  <button type="button" className="btn btn-success" onClick={this.nextLevel}>Next</button> :               
 				<button type="button" className="btn btn-success" onClick={this.nextLevel} disabled>Next</button>}
         </Modal.Footer>
       </Modal>

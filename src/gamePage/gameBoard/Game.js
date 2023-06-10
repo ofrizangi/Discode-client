@@ -44,7 +44,7 @@ function Game(props) {
             return;
         }
         phaserGameRef.current = new Phaser.Game(config);
-
+        console.log("game", props.data)
         phaserGameRef.current.scene.start(props.game_name, {board_data:props.data,best_score:props.best_score});
 
         props.setGameSence(phaserGameRef.current.scene)

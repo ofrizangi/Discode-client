@@ -5,7 +5,7 @@ import * as Constants from '../../constants';
 
 export default class BaseRunner {
 
-    constructor(code,back_to_levels, next_level, retry_level, gameSence, blocks, leftSideView,expected_solution, solve_in_server_function){
+    constructor(code,level_number,back_to_levels, next_level, retry_level, gameSence, blocks, leftSideView,expected_solution, solve_in_server_function){
         this.back_to_levels = back_to_levels
         this.next_level = next_level
 		this.retry_level = retry_level
@@ -16,6 +16,7 @@ export default class BaseRunner {
 		this.code = this.leftSideView === 'editor' ? this.get_main_function_call() + ";" + code : code
 		this.expected_solution = expected_solution
 		this.solve_in_server_function = solve_in_server_function
+		this.level_number = level_number
     }
 
 
@@ -85,7 +86,7 @@ export default class BaseRunner {
 		}
       setTimeout(() => {
         const gameBoard = createRoot(document.getElementById('model') );
-        const model = <CodeModal text={this.leftSideView === "blocks" ? this.code : ""} message = {information_on_soultion.message} compare={information_on_soultion.compare} best_score={information_on_soultion.best_score} back={this.back_to_levels} next_level={this.next_level} retry_level={this.retry_level} gameSence={this.gameSence} gameBoard={gameBoard}/>
+        const model = <CodeModal level_number={this.level_number} text={this.leftSideView === "blocks" ? this.code : ""} message = {information_on_soultion.message} compare={information_on_soultion.compare} best_score={information_on_soultion.best_score} back={this.back_to_levels} next_level={this.next_level} retry_level={this.retry_level} gameSence={this.gameSence} gameBoard={gameBoard}/>
         gameBoard.render(model);
         }, 500);   
     }

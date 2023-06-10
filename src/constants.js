@@ -15,4 +15,7 @@ export const COMPILATION_ERROR = "Error"
 export const INFINITE_CODE = "inifinite code"
 
 
+
 export const board_and_score_conditions = ["if_elif_else_next_step", "if_elif_elif_else_next_step", "if_elif_else_next_step_or" , "if_score"]
+
+export const NUMBER_OF_LEVELS = 12

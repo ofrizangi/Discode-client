@@ -7,8 +7,9 @@ import { act } from "react-dom/test-utils";
 
 export class StarsQuestRunner extends BaseRunner{
 
-    constructor(code,back_to_levels, next_level, retry_level, gameSence,board,  blocks, leftSideView,expected_solution, solve_in_server_function, best_score){
-        super(code,back_to_levels, next_level,retry_level, gameSence, blocks, leftSideView,expected_solution, solve_in_server_function)
+    constructor(code, level_number,back_to_levels, next_level, retry_level, gameSence,board,  blocks, leftSideView,expected_solution, solve_in_server_function, best_score){
+        super(code,level_number,back_to_levels, next_level,retry_level, gameSence, blocks, leftSideView,expected_solution, solve_in_server_function)
+        console.log(board)
         this.board = this.replace_to_names(board)
         this.game_board = board
         this.score = this.add_wall(board)
@@ -17,13 +18,17 @@ export class StarsQuestRunner extends BaseRunner{
     }
 
     replace_to_names(board){
+        console.log(board)
         let numbers_rows = board.length + 2
         let numbers_cols = board[0].length + 2
+        console.log(numbers_rows, numbers_cols)
         let arr = [];
         for (let i = 0; i < numbers_rows; i++) {
-            arr[i] = [];
+            arr[i] = [0,0,0,0,0,0,0,0];
             for (let j = 0; j < numbers_cols; j++) {
-                
+                if (i> 0 && j> 2){
+                       console.log("change?", arr[1][2]) 
+                }
                 if (i === 0 || i === numbers_rows-1 || j===0 || j ===numbers_cols-1){
                     arr[i][j] = "wall";
                 }
@@ -36,13 +41,21 @@ export class StarsQuestRunner extends BaseRunner{
                     }
                     else if(board[i-1][j-1] > 0){
                         arr[i][j] =  "star"
+                        if (i===1 && j===2){
+                            console.log(board[i-1][j-1], arr[i][j])
+                        }
                     }
                     else{
+                        console.log(i-1,j-1,board[i-1][j-1])
                         arr[i][j] =  0
                     }
                 }
             }
           }
+          console.log( arr[1][2])
+          arr[1][2] = "star"
+          console.log(arr)
+          console.log( arr[1][2])
         return arr
         }
 
@@ -129,6 +142,13 @@ export class StarsQuestRunner extends BaseRunner{
             this.best_score = score
             post_best_score_api(score)
         }
+        if (this.expected_solution === undefined){
+            return {
+                'compare': true,
+                'message':  <div className="modal-title"> <h3 id="blue">Nice try</h3> your score is {score} </div>,
+                'best_score':this.best_score
+              }
+        }
         if (score < this.expected_solution){
             return {
                 'compare': false,
@@ -161,7 +181,7 @@ export class StarsQuestRunner extends BaseRunner{
         var angle = 0
         var board = this.board
         var score = this.score
-
+        console.log(board)
         const plus = function(x, number_steps) {return x+number_steps}
         const minus = function(x, number_steps) {return x-number_steps}
         const id = function(x) {return x}
