@@ -82,7 +82,15 @@ export default class DancePlayerScene extends Phaser.Scene
 				this.originalActionsList = [...data.list]
 				this.actionsList = data.list
 				this.nextAnimation= this.actionsList.shift()
-				this.player.play(this.nextAnimation);
+				if (this.nextAnimation){
+					console.log(this.nextAnimation)
+					this.player.play(this.nextAnimation);
+				}
+				else {
+					console.log("else")
+					this.scene.pause()
+					this.gameOver()
+				}
 			}
 			this.is_run = true
 			this.pauseBtn.setVisible(true)
