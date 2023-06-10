@@ -3,13 +3,11 @@ import BaseRunner from "./baseRunner";
 import {post_best_score_api} from '../../gamePage/gamesAPI';
 
 import * as Constants from './../../constants';
-import { act } from "react-dom/test-utils";
 
 export class StarsQuestRunner extends BaseRunner{
 
     constructor(code, level_number,back_to_levels, next_level, retry_level, gameSence,board,  blocks, leftSideView,expected_solution, solve_in_server_function, best_score){
         super(code,level_number,back_to_levels, next_level,retry_level, gameSence, blocks, leftSideView,expected_solution, solve_in_server_function)
-        console.log(board)
         this.board = this.replace_to_names(board)
         this.game_board = board
         this.score = this.add_wall(board)
@@ -18,17 +16,12 @@ export class StarsQuestRunner extends BaseRunner{
     }
 
     replace_to_names(board){
-        console.log(board)
         let numbers_rows = board.length + 2
         let numbers_cols = board[0].length + 2
-        console.log(numbers_rows, numbers_cols)
         let arr = [];
         for (let i = 0; i < numbers_rows; i++) {
             arr[i] = [0,0,0,0,0,0,0,0];
             for (let j = 0; j < numbers_cols; j++) {
-                if (i> 0 && j> 2){
-                       console.log("change?", arr[1][2]) 
-                }
                 if (i === 0 || i === numbers_rows-1 || j===0 || j ===numbers_cols-1){
                     arr[i][j] = "wall";
                 }
@@ -51,15 +44,13 @@ export class StarsQuestRunner extends BaseRunner{
                     }
                 }
             }
-          }
-          console.log( arr[1][2])
-          arr[1][2] = "star"
-          console.log(arr)
-          console.log( arr[1][2])
-        return arr
         }
+        return arr
+    }
 
-    add_wall(board){
+    
+
+    add_wall(board) {
         let numbers_rows = board.length + 2
         let numbers_cols = board[0].length + 2
         let arr = [];
@@ -78,18 +69,16 @@ export class StarsQuestRunner extends BaseRunner{
                         }
                     }
                 }
-            }
+        }
         return arr  
     }
  
-
 
     calculateScore(){
         var x = 0
         var y = 0
         var angle = 0
         var score = 0
-
         for(var i = 0; i < this.actionsList.length; i++){
             if(this.actionsList[i].name === "turn" ){
                 if  (this.actionsList[i].arg === "right"){angle = (angle +90)%360; }
@@ -119,6 +108,9 @@ export class StarsQuestRunner extends BaseRunner{
         }
         return {"score": score, "message":undefined}
     }
+
+
+
 			
 
    
@@ -138,6 +130,7 @@ export class StarsQuestRunner extends BaseRunner{
                 'best_score':this.best_score
               }
         }
+        const best_score = this.best_score
         if(score > this.best_score){
             this.best_score = score
             post_best_score_api(score)
@@ -156,7 +149,7 @@ export class StarsQuestRunner extends BaseRunner{
                 'best_score':this.best_score
               }
         }
-        if(score >= this.expected_solution && score > this.best_score){
+        if(score >= this.expected_solution && score > best_score){
             return {
                 'compare': true,
                 'message':  <div className="modal-title"> <h3 id="succeeded"> Well done</h3> your score is {score}. you broke your record, keep it up! </div>,
@@ -221,6 +214,10 @@ export class StarsQuestRunner extends BaseRunner{
 
 
         const drive =  function(number_steps){
+
+            let prev_x = x
+            let prev_y = y
+
             x = get_next_col_n_steps("front",number_steps)
             y = get_next_row_n_steps("front",number_steps)
 
@@ -231,8 +228,14 @@ export class StarsQuestRunner extends BaseRunner{
             if (x>=7 || x<=0 || y<=0 || y>=7 || board[y][x] === "no entry sign"){
                 throw new Error(`game failed`)
             }
-            board[y][x] = 0
-            score[y][x] = 0            
+
+            for(let i=prev_y;  i <=y; i++){
+                for(let j= prev_x; j<=x ; j++){
+                    board[i][j] = 0
+                    score[i][j] = 0            
+                }
+            }
+            console.log("board" , board)
         };
 
         const turn = function(direction){

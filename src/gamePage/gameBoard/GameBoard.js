@@ -36,9 +36,7 @@ function GameBoard(props) {
     const editor_code = props.code
     const leftSideView = props.leftSideView
 
-    const [dataBoard, setDataBoard] = useState(undefined)
-    
-
+    const [dataBoard, setDataBoard] = useState(props.game.data)
 
 
     const navigate = useNavigate();
@@ -62,12 +60,6 @@ function GameBoard(props) {
             setRunButtonDisabled(false)
         }
     }, [props.commands]);
-
-    useEffect(() => {
-        if(props.game.data !== undefined){
-            setDataBoard(getRandomData(props.game.data))
-        }
-    }, [props.game.data]);
 
 
     const retry_level = () => {
@@ -117,8 +109,9 @@ function GameBoard(props) {
                 runner= new DancerRunner(code, props.game.level_number, back_to_levels, next_level,retry_level, gameSence, props.game.blocks, leftSideView, props.game.expected_solution,solve)
             }
             else if(props.game.game_name === "starsQuest"){
-                console.log("new StarsQuestRunner", dataBoard)
-                runner = new StarsQuestRunner(code,props.game.level_number, back_to_levels, next_level, retry_level, gameSence,dataBoard, props.game.blocks, leftSideView, props.game.expected_solution,solve, props.game.best_score)
+                const copied_borad =[...dataBoard.map(row => [...row])]
+                console.log(copied_borad, dataBoard)
+                runner = new StarsQuestRunner(code,props.game.level_number, back_to_levels, next_level, retry_level, gameSence,copied_borad, props.game.blocks, leftSideView, props.game.expected_solution,solve, props.game.best_score)
             }
             const ret_val = await runner.runcode()
             if(ret_val.includes(Constants.INFINITE_CODE) || ret_val.includes(Constants.COMPILATION_ERROR)){
@@ -137,36 +130,6 @@ function GameBoard(props) {
             <img src={bombs_information} className='bombs' alt="error"></img>
         </Popover>
       );
-
-      function getRandomData(data_board){
-        
-        if (data_board && data_board[0] && data_board[0][0] && data_board[0][0] === "no_data"  ){
-
-        let posotive_values = [0,1,2,3,4,5,6]
-        let other_values = ["*",-2,-4,0]
-
-
-        let numbers_rows = data_board.length
-        let numbers_cols = data_board[0].length
-        let arr = [];
-        for (let i = 0; i < numbers_rows; i++) {
-            arr[i] = [];
-            for (let j = 0; j < numbers_cols; j++) {
-                if (Math.random() < 0.8 || (i===0 && j===1)|| (i===1 && j===0)) {
-                    arr[i][j] = posotive_values[Math.floor(Math.random() * posotive_values.length)]
-                }
-                else {
-                    arr[i][j] = other_values[Math.floor(Math.random() * other_values.length)]
-                }
-            }
-        }
-        arr[0][0] = 0
-        data_board = arr;
-        console.log("create",data_board)
-       
-        }
-        return data_board
-    }
 
 
     return (
@@ -195,10 +158,8 @@ function GameBoard(props) {
                 <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverHoverFocus} >
                     <i className="information bi bi-info-circle info-icon"></i>
                 </OverlayTrigger>} 
-    
                 { props.game.video_src !== undefined &&  <Video gameLevel = {props.game} display={videoDisplay}/>}
-                {dataBoard !== undefined && <Game game_name = {props.game.game_name} level={props.game.level_number} data = {dataBoard} best_score={props.game.best_score}  setGameSence = {setGameSence} video_src={props.game.video_src}/>
-}
+                <Game game_name = {props.game.game_name} level={props.game.level_number} setDataBoard = {setDataBoard} data={props.game.data} best_score={props.game.best_score}  setGameSence = {setGameSence} video_src={props.game.video_src}/>
 
             </div>
         </div>

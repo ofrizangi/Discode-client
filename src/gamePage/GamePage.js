@@ -64,7 +64,7 @@ function GamePage(props) {
                     </div>
 
                     <div className="col-5">
-                        {commands !== null &&
+                        {
                             (getGame() === "coder" ? <OutputWindow code={code} game={gameLevel} setGame={setGameLevel} setSolution={setSolution}></OutputWindow> :
                             <GameBoard game={gameLevel} setGame={setGameLevel} commands={commands} solution={solution} code={code} leftSideView={leftSideView} setSolution={setSolution} setCommands={setCommands}/>) }
                     </div>

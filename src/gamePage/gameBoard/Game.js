@@ -15,6 +15,35 @@ function Game(props) {
     ])
 
 
+	function getRandomData(data_board){
+        
+        if (data_board && data_board[0] && data_board[0][0] && data_board[0][0] === "no_data"  ){
+
+            let posotive_values = [0,1,2,3,4,5,6]
+            let other_values = ["*",-2,-4,0]
+
+            let numbers_rows = data_board.length
+            let numbers_cols = data_board[0].length
+            let arr = [];
+            for (let i = 0; i < numbers_rows; i++) {
+                arr[i] = [];
+                for (let j = 0; j < numbers_cols; j++) {
+                    if (Math.random() < 0.8 || (i===0 && j===1)|| (i===1 && j===0)) {
+                        arr[i][j] = posotive_values[Math.floor(Math.random() * posotive_values.length)]
+                    }
+                    else {
+                        arr[i][j] = other_values[Math.floor(Math.random() * other_values.length)]
+                    }
+                }
+            }
+            arr[0][0] = 0
+            data_board = arr;
+        }
+		console.log("b" , data_board)
+        return data_board
+    }
+
+
     const config = {
         type: Phaser.AUTO,
         width: gameSences1.get(props.game_name).width,
@@ -39,13 +68,15 @@ function Game(props) {
 
   function usePhaserGame(config) {
       
-      useEffect(() => {
+    useEffect(() => {
         if (phaserGameRef.current) {
             return;
         }
         phaserGameRef.current = new Phaser.Game(config);
         console.log("game", props.data)
-        phaserGameRef.current.scene.start(props.game_name, {board_data:props.data,best_score:props.best_score});
+		const data = getRandomData(props.data)
+        phaserGameRef.current.scene.start(props.game_name, {board_data:data,best_score:props.best_score});
+		props.setDataBoard(data)
 
         props.setGameSence(phaserGameRef.current.scene)
 
