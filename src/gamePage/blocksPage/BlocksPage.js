@@ -187,6 +187,7 @@ function BlocksPage(props) {
 
 
     async function restart() {
+        await setCommands(null)
         const my_game = await restart_game()
         await props.setGame(my_game)
     }

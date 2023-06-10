@@ -56,12 +56,14 @@ function OutputWindow(props) {
     }
 
     async function restart() {
+        await props.setCommands(null)
         const my_game = await restart_game()
         await props.setGame(my_game)
         setter(my_game)
     }
 
     async function next_level(){
+        await props.setCommands(null)
         setLevel(props.game.level_number+1)
         const levelData = await get_game_level_data()
         await props.setGame(levelData)

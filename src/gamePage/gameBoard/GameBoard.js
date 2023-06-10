@@ -8,7 +8,7 @@ import Video from './Video'
 
 import {React,useState, useEffect} from 'react';
 
-import {sloved_game, get_game_level_data, post_code_api} from '../gamesAPI';
+import {sloved_game, get_game_level_data, post_code_api, get_level_commands} from '../gamesAPI';
 import {setLevel} from '../../levelsPage/LevelProvider'
 
 import { useNavigate } from 'react-router-dom'
@@ -56,7 +56,6 @@ function GameBoard(props) {
 
 
     useEffect(() => {
-        console.log("innnnn")
         if(props.commands !== null){
             setRunButtonDisabled(false)
         }
@@ -87,14 +86,12 @@ function GameBoard(props) {
         navigate('/levels')
     }
 
-
-
     async function next_level(){
         setRunButtonDisabled(true)
+        await props.setCommands(null)
         setLevel(props.game.level_number+1)
         const levelData = await get_game_level_data()
-        setGame(levelData)
-        // retry_level()
+        await setGame(levelData)
     }
 
     async function get_code() {

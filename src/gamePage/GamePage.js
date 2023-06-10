@@ -31,8 +31,9 @@ function GamePage(props) {
     }, []);
 
     useEffect(() => {
+        
         async function set_commands_server(){
-            if(gameLevel !== null){
+            if(gameLevel !== null && commands === null){
                 const level_commands = await get_level_commands();
                 setSolution(gameLevel.solution.map(row => row._id.id))
                 setCommands(level_commands)
@@ -64,8 +65,8 @@ function GamePage(props) {
 
                     <div className="col-5">
                         {gameLevel !== null && 
-                            (getGame() === "coder" ? <OutputWindow code={code} game={gameLevel} setGame={setGameLevel}></OutputWindow> :
-                            <GameBoard game={gameLevel} setGame={setGameLevel} commands={commands} solution={solution} code={code} leftSideView={leftSideView}/>) }
+                            (getGame() === "coder" ? <OutputWindow code={code} game={gameLevel} setGame={setGameLevel} setCommands={setCommands}></OutputWindow> :
+                            <GameBoard game={gameLevel} setGame={setGameLevel} commands={commands} solution={solution} code={code} leftSideView={leftSideView} setCommands={setCommands}/>) }
                     </div>
                     <div id="model"></div>
                 </div>
