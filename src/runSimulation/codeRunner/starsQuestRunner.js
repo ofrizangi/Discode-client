@@ -26,7 +26,7 @@ export class StarsQuestRunner extends BaseRunner{
                     arr[i][j] = "wall";
                 }
                 else{
-                    if (board[i-1][j-1] == "*"){
+                    if (board[i-1][j-1] === "*"){
                         arr[i][j] =  "no entry sign"
                     }
                     else if (board[i-1][j-1] < 0){
@@ -76,8 +76,8 @@ export class StarsQuestRunner extends BaseRunner{
         var score = 0
 
         for(var i = 0; i < this.actionsList.length; i++){
-            if(this.actionsList[i].name == "turn" ){
-                if  (this.actionsList[i].arg == "right"){angle = (angle +90)%360; }
+            if(this.actionsList[i].name === "turn" ){
+                if  (this.actionsList[i].arg === "right"){angle = (angle +90)%360; }
                 else{angle = (angle -90+360)%360}
                 continue
             }
@@ -89,7 +89,7 @@ export class StarsQuestRunner extends BaseRunner{
             if ( this.game_board[y][x] === '*') {return {"score": 0, "message":"Game Over - you can't enter there\n"}}
 
             //drive
-            while (x != next_x || y != next_y){
+            while (x !== next_x || y !== next_y){
                 
                 if(angle === 0 && x < next_x){x+=1;}
                 else if(angle === 90 && y < next_y){y+=1; }

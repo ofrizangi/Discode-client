@@ -32,9 +32,10 @@
 .block-list {
     overflow: auto;
     max-height: 80vh; /* Set the maximum height of the container to 100% of the viewport height */
-    width: 21%;
+    width: 27%;
     position: fixed;
     top: '96px';
+    margin-left: 1%;
 }
 
 .board {

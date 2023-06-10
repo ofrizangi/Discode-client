@@ -6,7 +6,7 @@ import { translate_blocks } from '../../runSimulation/CodeCreator';
 import Game from './Game';
 import Video from './Video'
 
-import {React,useState} from 'react';
+import {React,useState, useEffect} from 'react';
 
 import {sloved_game, get_game_level_data, post_code_api} from '../gamesAPI';
 import {setLevel} from '../../levelsPage/LevelProvider'
@@ -16,7 +16,6 @@ import { DancerRunner } from '../../runSimulation/codeRunner/danceRunner';
 import { StarsQuestRunner } from '../../runSimulation/codeRunner/starsQuestRunner';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover'
-import Button from 'react-bootstrap/Button';
 
 import '../game.css'
 import stars_information from '../../images/stars_information.png'
@@ -29,10 +28,8 @@ function GameBoard(props) {
 
     const [gameSence, setGameSence] = useState()
     const [error, setError] = useState("")
-    const [runButtonDisabled, setRunButtonDisabled] = useState(false)
+    const [runButtonDisabled, setRunButtonDisabled] = useState(true)
     const [videoDisplay, setVideoDisplay] = useState('block')
-
-    // const [text, setText] = useState("")
     const solution = props.solution
     const commands = props.commands
     const setGame = props.setGame
@@ -42,14 +39,28 @@ function GameBoard(props) {
     let data_board = props.game.data;
 
 
-
     const navigate = useNavigate();
 
     // const disription_game = {'dancer':"Dance with me",  'starsQuest':"Collect many stars"};
     const disription_game = new Map([
         ['dancer', "Dance with me"],
         ['starsQuest', "Collect many stars"],
-        ])
+    ])
+
+
+    useEffect(() => {
+        if(props.game.video_src !== undefined){
+            setVideoDisplay('block')
+        }
+    }, [props.game.video_src]);
+
+
+    useEffect(() => {
+        console.log("innnnn")
+        if(props.commands !== null){
+            setRunButtonDisabled(false)
+        }
+    }, [props.commands]);
 
 
 
@@ -79,9 +90,11 @@ function GameBoard(props) {
 
 
     async function next_level(){
+        setRunButtonDisabled(true)
         setLevel(props.game.level_number+1)
         const levelData = await get_game_level_data()
         setGame(levelData)
+        // retry_level()
     }
 
     async function get_code() {
@@ -133,7 +146,7 @@ function GameBoard(props) {
         for (let i = 0; i < numbers_rows; i++) {
             arr[i] = [];
             for (let j = 0; j < numbers_cols; j++) {
-                if (Math.random() < 0.8 || (i==0 && j==1)|| (i==1 && j==0)) {
+                if (Math.random() < 0.8 || (i===0 && j===1)|| (i===1 && j===0)) {
                     arr[i][j] = posotive_values[Math.floor(Math.random() * posotive_values.length)]
                 }
                 else {
@@ -151,25 +164,33 @@ function GameBoard(props) {
        
         <div id="gameBoard">
               <div className={`error-${props.game.game_name}`}>
-              {error !== "" && <ErrorMessage  text={error} setError={setError}></ErrorMessage>}
+                {error !== "" && <ErrorMessage  text={error} setError={setError}></ErrorMessage>}
+              </div>
+
+            <div className='game-nav-container'>
+                <ul className="nav nav-game">
+                    <li className="nav-item">
+                        <span className="nav-link" onClick={back_to_levels}> Levels </span>
+                    </li>
+                </ul> 
             </div>
+
         
             <div id={`game-screen-${props.game.game_name}`}>
-            <div className={`controls`}>
-            < span className='instruction'>{disription_game.get(props.game.game_name)}</span>
-            <button className='game-button' onClick={get_code} disabled={runButtonDisabled}><img src={play_img} alt="error"/></button>
-            </div> 
-            
-            {props.game.game_name === 'starsQuest' &&
-            <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverHoverFocus} >
-                <i className="information bi bi-info-circle info-icon"></i>
-            </OverlayTrigger>} 
-  
-           { props.game.video_src !== undefined &&  <Video gameLevel = {props.game} display={videoDisplay}/>}
-           {setRandomData()}
-            <Game game_name = {props.game.game_name}  level={props.game.level_number} data = {data_board} best_score={props.game.best_score}  setGameSence = {setGameSence} video_src={props.game.video_src}/>            
-   
-        
+                <div className={`controls`}>
+                < span className='instruction'>{disription_game.get(props.game.game_name)}</span>
+                <button className='game-button' onClick={get_code} disabled={runButtonDisabled}> <img src={play_img} alt="error"/></button>
+                </div> 
+          
+                {props.game.game_name === 'starsQuest' &&
+                <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverHoverFocus} >
+                    <i className="information bi bi-info-circle info-icon"></i>
+                </OverlayTrigger>} 
+    
+                { props.game.video_src !== undefined &&  <Video gameLevel = {props.game} display={videoDisplay}/>}
+                {setRandomData()}
+                <Game game_name = {props.game.game_name} level={props.game.level_number} data = {data_board} best_score={props.game.best_score}  setGameSence = {setGameSence} video_src={props.game.video_src}/>
+
             </div>
         </div>
     );

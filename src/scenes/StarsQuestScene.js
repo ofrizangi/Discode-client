@@ -121,7 +121,7 @@ export default class StarsQuestScene extends Phaser.Scene
 
 		this.events.on('resume', (scene, data) => {
 			
-			if (data.runner != undefined){
+			if (data.runner !== undefined){
 				this.runner = data.runner
 				this.action_list = data.list
 			}
@@ -155,7 +155,7 @@ export default class StarsQuestScene extends Phaser.Scene
 		for (let i = 0; i <6; i++){
 			for (let j = 0; j <6; j++){
 				let data_child = this.board_data[i][j]
-				if(data_child == "*"){
+				if(data_child === "*"){
 					this.no_entrys.create(39.75 +  j*79.5, 39.6 + 35 + i*79.2, NO_ENTRY).setScale(0.03).refreshBody()
 				}
 				else if(data_child > 0){
@@ -233,7 +233,7 @@ export default class StarsQuestScene extends Phaser.Scene
 				this.gameOver(undefined)
 				return
 			}
-			if(this.index < this.action_list.length && this.action_list[this.index].name == "turn" ){
+			if(this.index < this.action_list.length && this.action_list[this.index].name === "turn" ){
 				this.player.angle += this.angles.get(this.action_list[this.index].arg)
 				this.index++
 				return

@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Login from './userManagment/Login'
-import Register from './userManagment/Register'
 import './home.css'
 import robot from './images/robot_blocks.png'
 import ErrorMessage from './alerts/ErrorMessage';

@@ -38,13 +38,17 @@ function Levels(props) {
     function goto_fourm(event){
         navigate('/forum')
     }
+
+    function goto_games(){
+        navigate('/')
+    }
     
     return (
         <div className='background background-grey'>
             <div className='levels-header'>
                 <ul className="nav">
-                    <li className="nav-item">
-                        <span className="nav-link" onClick={goto_fourm}>Forum</span>
+                    <li className="nav-item nav-levels">
+                        <span className="nav-link" onClick={goto_games}>Games</span>
                     </li>
                 </ul>
                 <h1 className='page-title'> {games_information[getGame()][0]} levels</h1>

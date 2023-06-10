@@ -9,80 +9,82 @@
 }
 
 .instruction{
-  font-family: 'Lobster', cursive;
-  font-size: 40px;
-  color: rgb(47, 150, 187);
-  width: 80%;
+    font-family: 'Lobster', cursive;
+    font-size: 40px;
+    color: rgb(47, 150, 187);
+    width: 80%;
 }
 
 
 .error-starsQuest{
-  width: 570px;
-  padding: 1rem;
-  position: absolute; 
-  top:2pt;
-  right: 20pt;
-  padding: 0;
+    width: 500px;
+    padding: 1rem;
+    position: absolute; 
+    top:5pt;
+    right: 45pt;
+    padding: 0;
 }
 
 .error-dancer{
-  width: 470px;
-  padding: 1rem;
-  position: absolute; 
-  top:2pt;
-  right: 45pt;
-  padding: 0;
+    width: 470px;
+    padding: 1rem;
+    position: absolute; 
+    top:2pt;
+    right: 45pt;
+    padding: 0;
 }
 
 
 #game-screen-starsQuest{
-  /*top: 120pt; right:50pt;
-  width:477, height:475.2+35*/
-  width: 570px;
-  height:635px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  padding: 1rem;
-  position: absolute; 
-  top: 60pt;
-  right: 20pt;
+    /*top: 120pt; right:50pt;
+    width:477, height:475.2+35*/
+    width: 540px;
+    height:635px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    position: absolute; 
+    top: 60pt;
+    right: 15pt;
 }
 
 #game-screen-dancer{
-  /* width:370.8, height:370.8,;top: 135pt; right:80pt; */
-  width: 470px;
-  height:520px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  padding: 1rem;
-  position: absolute; 
-  top: 60pt;
-  right: 45pt;
+    /* width:370.8, height:370.8,;top: 135pt; right:80pt; */
+    width: 470px;
+    height:520px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    position: absolute; 
+    top: 60pt;
+    right: 45pt;
 }
 
 .information{
-  top: 55.8pt;
-  right: 172pt;
-  z-index: 1;
-  position:absolute;
+    top: 55.8pt;
+    right: 172pt;
+    z-index: 1;
+    position:absolute;
 }
 
 .controls{
-  display: flex;
-  justify-content: flex-start;
-  padding-left: 35px;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 35px;
 }
 
 .star {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .bombs {
-  width: 40%;
-  height: 40%;
+    width: 40%;
+    height: 40%;
 }
 
 .btn-group-wrapper {
-  width: 100%;
+    margin-top: 1%;
+    margin-left: 2%;
+    width: 100%;
 }
 
 .btn-group {
@@ -109,4 +111,10 @@
 .video_level{
   align-items: center;
 
+}
+
+.nav-game {
+    position: absolute; 
+    top:0pt;
+    right: 0pt;
 }

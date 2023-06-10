@@ -1,6 +1,8 @@
 import jwt_decode from "jwt-decode";
 import {setGame} from '../mainPage/GameProvider'
 import {setLevel} from '../levelsPage/LevelProvider'
+import {set_solution, set_commands} from '../gamePage/BlocksProvider'
+
 
 const createTokenProvider = () => {
 
@@ -9,11 +11,11 @@ const createTokenProvider = () => {
     const setToken =(token) => {
         _token = token
         // if token is not null
-        if(token){
+        if(token) {
             localStorage.setItem('REACT_TOKEN_AUTH', JSON.stringify(token))
         }
         // if token is null we want to clean the storage
-        else{
+        else {
             localStorage.removeItem('REACT_TOKEN_AUTH')
         }
     }
@@ -33,6 +35,8 @@ const createTokenProvider = () => {
             setToken(null)
             setGame(null)
             setLevel(null)
+            set_solution(null)
+            set_commands(null)
             return null
         }
         return _token  

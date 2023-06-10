@@ -3,13 +3,12 @@ import './outputPage.css'
 import { CodeRunner } from "../../runSimulation/codeRunner/codeRunner";
 import InsertArgsModal from "../../alerts/InsertArgsModal";
 import {sloved_game, get_game_level_data, post_code_api, restart_game} from '../gamesAPI';
-import {setLevel, getLevel} from '../../levelsPage/LevelProvider'
+import {setLevel} from '../../levelsPage/LevelProvider'
 import * as Constants from './../../constants';
 
 import loading from './../../images/loading.gif'
 import play_img from './../../images/play-button.png'
 import restart_img from './../../images/reloading.png'
-import InfoHover from "./InfoHover";
 
 
 function OutputWindow(props) {
@@ -117,12 +116,12 @@ function OutputWindow(props) {
 		<div className="output-window-container">
 
             <div className="mission-window">
-				<h2> Mission <InfoHover></InfoHover> </h2>
+				<h2> Mission </h2>
                 <div>{mission}</div>
 			</div>
 
             <div className="upper-terminal">
-                <button className="game-button" disabled={runButtonDisabled} onClick={()=>{setRunCode(true)}}> <img className src={play_img} alt="error"/></button>
+                <button className="game-button" disabled={runButtonDisabled} onClick={()=>{setRunCode(true)}}> <img src={play_img} alt="error"/></button>
                 <button className='game-button' onClick={restart}> <img src={restart_img} alt="error"/> </button>
                 <div className='function-call'> function call : {functionCall} </div>
             </div>

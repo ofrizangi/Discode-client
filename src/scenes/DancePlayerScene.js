@@ -30,7 +30,7 @@ export default class DancePlayerScene extends Phaser.Scene
 	{  
         // origin is center
 		// const line = this.createLine()
-        var image = this.add.image(0, 0, BACKGROUND_KEY).setScale(1.03,1.03).setOrigin(0)
+        this.add.image(0, 0, BACKGROUND_KEY).setScale(1.03,1.03).setOrigin(0)
 		// console.log(image.displayWidth, image.displayHeight)
 		this.pauseBtn = this.add.sprite(290, 10, PAUSE).setInteractive().setScale(0.065).setOrigin(0)
 		this.stopBtn = this.add.sprite(330, 10, STOP).setInteractive().setScale(0.2).setOrigin(0)
@@ -77,9 +77,9 @@ export default class DancePlayerScene extends Phaser.Scene
 
 		this.events.on('resume', (scene, data) => {
 			console.log("resume")
-			if (data.runner != undefined){
+			if (data.runner !== undefined){
 				this.runner = data.runner
-				this.originalActionsList = [... data.list]
+				this.originalActionsList = [...data.list]
 				this.actionsList = data.list
 				this.nextAnimation= this.actionsList.shift()
 				this.player.play(this.nextAnimation);

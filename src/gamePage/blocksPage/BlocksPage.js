@@ -203,9 +203,9 @@ function BlocksPage(props) {
             <div > 
                 <DragDropContext onDragEnd={(param) => dragEndHandler(param)} >
                     <div className="row d-none d-md-flex">
-                        <div className="col-5"> <BlockList blocks={blocks} max_row_number={max_row_number} commands={commands}/> </div>
-                        {droppableBlock === null ? <div className="col-7" > <BlockBoard solution={solution} list_num={null} setDroppableBlock={setDroppableBlock} row_id={null} droppableListNumber={droppableListNumber} setDroppableListNumber={setDroppableListNumber} droppableBlock = {droppableBlock} commands={commands} setCommands={setCommands}/> </div> : 
-                                                    <div className="col-7"> <BlockBoardConst solution={solution} setDroppableBlock={setDroppableBlock} droppableBlock = {droppableBlock} commands={commands} setCommands={setCommands} droppableListNumber={droppableListNumber} setDroppableListNumber={setDroppableListNumber} list_num={null} outer_block_id={null}/> </div>}
+                        <div className="col-6"> <BlockList blocks={blocks} max_row_number={max_row_number} commands={commands}/> </div>
+                        {droppableBlock === null ? <div className="col-6" > <BlockBoard solution={solution} list_num={null} setDroppableBlock={setDroppableBlock} row_id={null} droppableListNumber={droppableListNumber} setDroppableListNumber={setDroppableListNumber} droppableBlock = {droppableBlock} commands={commands} setCommands={setCommands}/> </div> : 
+                                                    <div className="col-6"> <BlockBoardConst solution={solution} setDroppableBlock={setDroppableBlock} droppableBlock = {droppableBlock} commands={commands} setCommands={setCommands} droppableListNumber={droppableListNumber} setDroppableListNumber={setDroppableListNumber} list_num={null} outer_block_id={null}/> </div>}
                     </div>
                 </DragDropContext>
             </div>

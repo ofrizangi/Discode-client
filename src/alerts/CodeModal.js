@@ -36,17 +36,15 @@ class DraggableModalDialog extends React.Component {
 	this.props.gameBoard.unmount();
   }
   
-  retryLevel = () => {
-    
-    this.hideModal()
-    this.props.retry_level()
-    this.props.gameSence.scenes[0].restart_func(this.props.best_score)
-  }
-  nextLevel = () => {
-    this.hideModal()
-    this.props.retry_level()
-    this.props.next_level()
+	retryLevel = () => {
+		this.hideModal()
+		this.props.retry_level()
+		this.props.gameSence.scenes[0].restart_func(this.props.best_score)
+	}
 
+  	nextLevel = () => {
+		this.hideModal()
+		this.props.next_level()
 	};
 
 	backToLevels = () => {
