@@ -71,3 +71,7 @@
 .bold-text {
     font-weight: bold;
 }
+
+pre{
+    font-size:medium !important;
+}

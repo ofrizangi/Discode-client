@@ -8,6 +8,9 @@ const BOMB = 'bomb'
 const NO_ENTRY = 'no_entry'
 const PAUSE = "pause"
 const STOP = "stop"
+const COLLISION_SOUND ='collision_sound'
+const COLLECT_STAR_SOUND ='collect_star_sound'
+const COLLECT_BOMB_SOUND ='collect_bomb_sound'
 
 export default class StarsQuestScene extends Phaser.Scene
 {
@@ -56,6 +59,10 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.load.image(NO_ENTRY,'assets/textures/StarsQuest/no_entry.png')
 		this.load.image(PAUSE, 'assets/textures/pause.png')
 		this.load.image(STOP, 'assets/textures/stop.png')
+		this.load.audio(COLLISION_SOUND, 'assets/sound/collision_sound.mp3')
+		this.load.audio(COLLECT_STAR_SOUND, 'assets/sound/collect_star.mp3')
+		this.load.audio(COLLECT_BOMB_SOUND, 'assets/sound/collect_bomb.mp3')
+
 
     }
 
@@ -86,7 +93,13 @@ export default class StarsQuestScene extends Phaser.Scene
 
 		this.pauseBtn = this.add.sprite(400, 0, PAUSE).setInteractive().setScale(0.065).setOrigin(0)
 		this.stopBtn = this.add.sprite(440, 0, STOP).setInteractive().setScale(0.2).setOrigin(0)
+
 		this.createObjects()
+		this.cre=
+		this.carCollisionSound = this.sound.add(COLLISION_SOUND);
+		this.carCollectStarSound = this.sound.add(COLLECT_STAR_SOUND);
+		this.carCollectBombSound = this.sound.add(COLLECT_BOMB_SOUND);
+
 		// this.physics.world.on('worldbounds', this.collide_wall, this);
         this.physics.add.collider(this.player, this.no_entrys, this.collide_no_entrys, null, this)
         this.physics.add.overlap(this.player, this.stars, this.collectScore, null, this)
@@ -184,7 +197,7 @@ export default class StarsQuestScene extends Phaser.Scene
 		//width =265*0.3 =79.5 - >477-79.5/2
 		// height=264*0.3=79.2 -> 475.2+35-79.2/2
 		if (this.player.x < 38 || this.player.x >438.5   || this.player.y < 73.5 || this.player.y > 471.5 ){
-
+			this.carCollisionSound.play();
 			this.is_run = false
 			//console.log(this.action_list[this.index].arg)
 			this.physics.pause()
@@ -195,6 +208,7 @@ export default class StarsQuestScene extends Phaser.Scene
 
 	collide_no_entrys()
 	{
+		this.carCollisionSound.play();
 		this.is_run = false
 		this.physics.pause()
 		this.gameOver("you can't enter there\n")
@@ -205,6 +219,13 @@ export default class StarsQuestScene extends Phaser.Scene
 	{
         // The two parameters passed to disableBody() tells Phaser to disable and hide the GameObject.
 		//object.disableBody(true, true)
+		if(object.name > 0){
+			this.carCollectStarSound.play();
+		}
+		else{
+			this.carCollectBombSound.play();
+		}
+		
 		object.visible = false
 		object.body.enable = false
 		this.scoreLabel.add(object.name)
