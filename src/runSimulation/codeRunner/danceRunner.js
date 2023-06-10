@@ -5,10 +5,13 @@ import * as Constants from './../../constants';
 export class DancerRunner extends BaseRunner{
 
 
-    checkSolution(solution, message_from_sence) {
+    checkSolution(solution) {
       console.log(solution)
         var len_solution = solution.length;
         var len_expected_solution = this.expected_solution.length;
+        if(len_solution === 0){
+          return { 'compare': false, 'message': <div className="modal-title"> <h3 id="blue">There is nothing to run</h3>please drag blocks</div> }
+        }
         if(len_expected_solution === 0){
           return { 'compare': true, 'message': <div className="modal-title"> <h3 id="succeeded"> Nice idea, well done </h3> </div> }
         }
@@ -16,13 +19,14 @@ export class DancerRunner extends BaseRunner{
         if(len_solution > len_expected_solution){
           return {
             'compare': false,
-            'message': <div className="modal-title"> <h3 id="fails"> Wrong solution </h3> Your solution contains {len_solution - len_expected_solution} more operations than expected </div>
+            'message': <div className="modal-title"> <h3 id="fails"> Wrong solution </h3> Your solution contains {len_solution - len_expected_solution} more actions than expected </div>
           };
         }
+        
         else if(len_expected_solution > len_solution){
           return {
             'compare': false,
-            'message': <div className="modal-title"> <h3 id="fails"> Wrong solution </h3> Your solution contains {len_expected_solution - len_solution} less operations than expected </div>
+            'message': <div className="modal-title"> <h3 id="fails"> Wrong solution </h3> Your solution contains {len_expected_solution - len_solution} less actions than expected </div>
           };
         } 
         else {

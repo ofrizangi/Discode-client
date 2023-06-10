@@ -4,8 +4,8 @@
 }
 
 #gameBoard{
-  width:100vh;
-  height: 100vh
+  /* width:100vh; */
+  /* height: 100vh */
 }
 
 .instruction{
@@ -82,7 +82,7 @@
 }
 
 .btn-group-wrapper {
-    margin-top: 1%;
+    margin-top: 3%;
     margin-left: 2%;
     width: 100%;
 }
@@ -116,5 +116,6 @@
 .nav-game {
     position: absolute; 
     top:0pt;
-    right: 0pt;
+    left: 0pt;
+    
 }

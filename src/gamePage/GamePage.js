@@ -48,7 +48,7 @@ function GamePage(props) {
     return (
         <div>
             { gameLevel !== null &&
-                <div className="row d-none d-md-flex">
+                <div className="row d-none d-md-flex game-page">
                     <div className='col-7'>
 
                         { gameLevel.blocks.length !== 0 && (

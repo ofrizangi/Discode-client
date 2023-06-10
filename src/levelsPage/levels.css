@@ -44,16 +44,6 @@
 
 
 
-.levels-grid-5{
-	width: 80%;
-	height: 80%; /* Adjust the height as needed */
-	grid-template-columns: repeat(5, 1fr);
-	grid-template-rows: repeat(3, 1fr);
-	display: inline-grid;
-	margin: 1%;
-}
-
-
 .levels-grid-4{
 	width: 65%;
 	height: 75%; /* Adjust the height as needed */

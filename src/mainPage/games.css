@@ -119,3 +119,10 @@ img {
 	display: flex;
 	justify-content: center;
 }
+
+
+.game-page{
+	margin-left:1pt !important;
+	margin-right:1pt !important;
+	margin-top:1pt !important;
+}

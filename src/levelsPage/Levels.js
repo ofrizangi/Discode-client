@@ -15,9 +15,9 @@ function Levels(props) {
 
 
     const games_information = {
-        "dancer" : ["Dancer", "levels-grid-5"],
-        "starsQuest" : ["Stars Quest", "levels-grid-4"],
-        "coder" : ["Coder", "levels-grid-4"]
+        "dancer" : ["Dancer"],
+        "starsQuest" : ["Stars Quest"],
+        "coder" : ["Coder"]
     }
 
     useEffect(() => {
@@ -53,7 +53,7 @@ function Levels(props) {
                 </ul>
                 <h1 className='page-title'> {games_information[getGame()][0]} levels</h1>
             </div>
-                <div className={games_information[getGame()][1]}>
+                <div className='levels-grid-4'>
                     {levels.map((level) => ( level.level_number === 1 ? <LevelFreeStyle key={level.level_number} game_name={level.game_name}></LevelFreeStyle> : 
                                             level.locked ? <LevelClosedButton key={level.level_number} level={level}/> : 
                                                     <LevelOpenButton key={level.level_number} level={level}/>))

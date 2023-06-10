@@ -11,7 +11,7 @@ function Game(props) {
 
   const gameSences1 = new Map([
     ['dancer', {"scene":DancePlayerScene, width:370.8, height:370.8, style: 'position: absolute;top: 135pt; right:80pt;'}],
-    ['starsQuest', {"scene":StarsQuestScene, width:477, height:475.2+35 , style:'position: absolute;top: 120pt; right:50pt;'}],
+    ['starsQuest', {"scene":StarsQuestScene, width:477, height:475.2+35 , style:'position: absolute;top: 120pt; right:38pt;'}],
     ])
 
 

@@ -3,6 +3,7 @@ import BaseRunner from "./baseRunner";
 import {post_best_score_api} from '../../gamePage/gamesAPI';
 
 import * as Constants from './../../constants';
+import { act } from "react-dom/test-utils";
 
 export class StarsQuestRunner extends BaseRunner{
 
@@ -12,6 +13,7 @@ export class StarsQuestRunner extends BaseRunner{
         this.game_board = board
         this.score = this.add_wall(board)
         this.best_score = best_score
+        this.actionsList = []
     }
 
     replace_to_names(board){
@@ -108,6 +110,9 @@ export class StarsQuestRunner extends BaseRunner{
 
    
     checkSolution(score, message_from_sence) {
+        if(this.actionsList.length === 0){
+            return { 'compare': false, 'message': <div className="modal-title"> <h3 id="blue">There is nothing to run</h3>please drag blocks</div> }
+          }
         if (message_from_sence ===  "to_check") {
             var result = this.calculateScore()
             score = result.score

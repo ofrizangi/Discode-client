@@ -73,7 +73,7 @@ export default class BaseRunner {
 		}
 	}
 
-	checkSolution(solution, message_from_sence){}
+	checkSolution(){}
 
 
     showModel(solution, message_from_sence){

@@ -246,6 +246,7 @@ export default class DancePlayerScene extends Phaser.Scene
 		if(this.stop_bool === false){
 			this.scene.pause()
 		}
+		this.stop_bool = false
 	}
 
 	gameOver()
