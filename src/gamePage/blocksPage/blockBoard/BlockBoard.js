@@ -27,6 +27,7 @@ function BlockBoard(props) {
 
     return (
         <div className="board clickable-board" onClick={handle_on_click}> 
+            {solution !== null &&
                 <Droppable droppableId={Constants.DROPPABLE_BOARD_ID + props.row_id + props.list_num} >
                     {(provided, snapshot) => (
                         <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -36,6 +37,7 @@ function BlockBoard(props) {
                             {provided.placeholder}
                         </div>)}
                 </Droppable>
+            }
         </div>
       );
 }

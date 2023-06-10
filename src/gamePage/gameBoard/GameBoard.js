@@ -88,6 +88,7 @@ function GameBoard(props) {
 
     async function next_level(){
         setRunButtonDisabled(true)
+        await props.setSolution(null)
         await props.setCommands(null)
         setLevel(props.game.level_number+1)
         const levelData = await get_game_level_data()

@@ -10,6 +10,8 @@ import loading from './../../images/loading.gif'
 import play_img from './../../images/play-button.png'
 import restart_img from './../../images/reloading.png'
 
+import { useNavigate } from 'react-router-dom'
+
 
 function OutputWindow(props) {
 
@@ -27,6 +29,8 @@ function OutputWindow(props) {
 
     const [runButtonDisabled, setRunButtonDisabled] = useState(false)
     const [nextButtonDisabled, setNextButtonDisabled] = useState(true)
+
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -56,14 +60,14 @@ function OutputWindow(props) {
     }
 
     async function restart() {
-        await props.setCommands(null)
+        await props.setSolution(null)
         const my_game = await restart_game()
         await props.setGame(my_game)
         setter(my_game)
     }
 
     async function next_level(){
-        await props.setCommands(null)
+        await props.setSolution(null)
         setLevel(props.game.level_number+1)
         const levelData = await get_game_level_data()
         await props.setGame(levelData)
@@ -110,12 +114,24 @@ function OutputWindow(props) {
         if(function_arguments.length !== 0){
             setArgs([])
         }
-
     }
+
+    async function back_to_levels(){
+        navigate('/levels')
+    }
+
 
 
 	return (
 		<div className="output-window-container">
+
+            <div className='game-nav-container'>
+                <ul className="nav nav-game">
+                    <li className="nav-item">
+                        <span className="nav-link" onClick={back_to_levels}> Levels </span>
+                    </li>
+                </ul> 
+            </div>
 
             <div className="mission-window">
 				<h2> Mission </h2>

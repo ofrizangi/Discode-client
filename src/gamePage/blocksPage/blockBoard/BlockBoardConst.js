@@ -25,7 +25,7 @@ function BlockBoardConst(props) {
 
     return (
         <div className="board" onClick={set_droppable_block}>
-                {get_solution().map((row, index) => (
+                {solution !== null && get_solution().map((row, index) => (
                     <BlockRowConst key={index} row={row} index={index} setDroppableBlock={props.setDroppableBlock} droppableBlock = {props.droppableBlock} commands={props.commands} setCommands={props.setCommands} droppableListNumber={props.droppableListNumber} setDroppableListNumber={props.setDroppableListNumber}> </BlockRowConst>
                 ))}
         </div>

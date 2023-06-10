@@ -33,7 +33,7 @@ function GamePage(props) {
     useEffect(() => {
         
         async function set_commands_server(){
-            if(gameLevel !== null && commands === null){
+            if(gameLevel !== null && solution === null){
                 const level_commands = await get_level_commands();
                 setSolution(gameLevel.solution.map(row => row._id.id))
                 setCommands(level_commands)
@@ -58,15 +58,15 @@ function GamePage(props) {
 
                         { getGame() === "coder" ? code !== null && <div className="coder-editor"> <CodeEditorWindow code={code} setCode={setCode} ></CodeEditorWindow> </div> :
                             leftSideView === 'blocks' ?  
-                            (commands !== null && solution!==null && <BlockPage gameLevel={gameLevel} commands={commands} setCommands={setCommands} solution={solution} setSolution={setSolution} setGame={setGameLevel}></BlockPage>) : 
+                            (commands !== null && <BlockPage gameLevel={gameLevel} commands={commands} setCommands={setCommands} solution={solution} setSolution={setSolution} setGame={setGameLevel}></BlockPage>) : 
                             (code !== null && <CodeEditorPage code={code} setCode={setCode} gameLevel={gameLevel} setGame={setGameLevel} commands={commands} solution={solution}></CodeEditorPage>)
                         }
                     </div>
 
                     <div className="col-5">
-                        {gameLevel !== null && 
-                            (getGame() === "coder" ? <OutputWindow code={code} game={gameLevel} setGame={setGameLevel} setCommands={setCommands}></OutputWindow> :
-                            <GameBoard game={gameLevel} setGame={setGameLevel} commands={commands} solution={solution} code={code} leftSideView={leftSideView} setCommands={setCommands}/>) }
+                        {commands !== null &&
+                            (getGame() === "coder" ? <OutputWindow code={code} game={gameLevel} setGame={setGameLevel} setSolution={setSolution}></OutputWindow> :
+                            <GameBoard game={gameLevel} setGame={setGameLevel} commands={commands} solution={solution} code={code} leftSideView={leftSideView} setSolution={setSolution} setCommands={setCommands}/>) }
                     </div>
                     <div id="model"></div>
                 </div>

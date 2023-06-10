@@ -3,10 +3,6 @@
   justify-content: center;
 }
 
-#gameBoard{
-  /* width:100vh; */
-  /* height: 100vh */
-}
 
 .instruction{
     font-family: 'Lobster', cursive;
@@ -82,7 +78,7 @@
 }
 
 .btn-group-wrapper {
-    margin-top: 3%;
+    margin-top: 3.5%;
     margin-left: 2%;
     width: 100%;
 }
@@ -117,5 +113,4 @@
     position: absolute; 
     top:0pt;
     left: 0pt;
-    
 }
