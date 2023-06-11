@@ -20,7 +20,7 @@ class DraggableModalDialog extends React.Component {
 
 	constructor(props) {
 		super(props);
-		const state_dict = { open: true}
+		const state_dict = { open: true, error:<></>}
 		for(let i=0 ; i<props.arguments_name.length; i++){
 			state_dict[props.arguments_name[i]] = ""
 		}
@@ -41,16 +41,24 @@ class DraggableModalDialog extends React.Component {
 	
 	handleSubmit(event) {
 		event.preventDefault();
-		this.setState({ open: false });
 		var args = []
-		for(let i=0 ; i<this.props.arguments_name.length; i++){
+		for(let i=0 ; i<this.props.arguments_name.length; i++) {
+			if(this.state[this.props.arguments_name[i]] === ""){
+				this.setState( {error :<div className="error-modal">you didn't enter the argument {this.props.arguments_name[i]} </div>})
+				return
+			}
 			if(isNaN(this.state[this.props.arguments_name[i]])){
+				if(this.props.arguments_name[i] !== "string" || this.props.arguments_name[i] !== "sign"){
+					this.setState( {error :<div className="error-modal">{this.props.arguments_name[i]} must be a number </div>})
+					return
+				}
 				args.push(`'${this.state[this.props.arguments_name[i]].toString()}'`)
 			}
 			else {
 				args.push(this.state[this.props.arguments_name[i]])
 			}
 		}
+		this.setState({ open: false });
 		this.props.setArgs(args)
 	}
 	
@@ -61,8 +69,9 @@ class DraggableModalDialog extends React.Component {
 			onHide={this.hideModal}
 			dialogAs={DraggableModalDialog}>
 			
-			<Modal.Header closeButton className="grab">
-				<Modal.Title> Insert code arguments </Modal.Title>
+			<Modal.Header closeButton className="grab modal-titles-container">
+				<Modal.Title className="args-modal-title"> Insert code arguments </Modal.Title>
+				{this.state.error}
 			</Modal.Header>
 			<Modal.Body className="modalBody">
 				<form onSubmit={this.handleSubmit}>

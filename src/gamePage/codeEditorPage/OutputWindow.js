@@ -114,6 +114,10 @@ function OutputWindow(props) {
         if(function_arguments.length !== 0){
             setArgs([])
         }
+
+        if(props.game.level_number === Constants.NUMBER_OF_LEVELS){
+            setNextButtonDisabled(true)
+        }
     }
 
     async function back_to_levels(){
