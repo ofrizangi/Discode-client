@@ -134,7 +134,7 @@ function ExplanationPage() {
             </code>
         </pre>
         <p className="concept-description">
-            The <code>===</code> operator checks for strict equality, while the <code>></code> and <code>&lt;</code> operators evaluate greater than and less than conditions, respectively.
+            The <code>===</code> operator checks for strict equality, while the <code></code> and <code>&lt;</code> operators evaluate greater than and less than conditions, respectively.
         </p>
     </section>
 
