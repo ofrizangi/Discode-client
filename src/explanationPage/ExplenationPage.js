@@ -130,13 +130,60 @@ function ExplanationPage() {
         </p>
         <pre className="concept-code">
             <code>
-            {`let a = 5;\nlet b = 10;\nconsole.log(a === b); // false \nconsole.log(a > b); // false\nconsole.log(a < b); // true`}
+            {`let a = 5;\nlet b = 10;\nconsole.log(a === b); // false \nconsole.log(a > b); // false\nconsole.log(a < b); // true \nconsole.log(a >= b); // false\nconsole.log(a <= b); // false`}
             </code>
         </pre>
         <p className="concept-description">
             The <code>===</code> operator checks for strict equality, while the <code>></code> and <code>&lt;</code> operators evaluate greater than and less than conditions, respectively.
         </p>
     </section>
+
+
+
+
+
+
+
+
+    <section className="concept-section">
+		<h2 className="concept-heading">Arithmetic Operators</h2>
+		<p className="concept-description">
+    In JavaScript, the symbols +, -, /, and * are used as arithmetic operators to perform addition, subtraction, division, and multiplication, respectively.
+		</p>
+		<p className="concept-description">
+    Addition (+): The addition operator + is used to add two numbers or concatenate strings. When used with numbers, it adds the values together.
+		</p>
+		<pre className="concept-code">
+			<code>
+			{`const sum = 3 + 5; // Result: 8 
+const stringConcatenation = "Hello, " + "world!"; // Result: "Hello, world!"`}
+			</code>
+		</pre>
+		<p className="concept-description">
+    Subtraction (-): The subtraction operator - is used to subtract one number from another. It subtracts the right operand from the left operand.
+		</p>
+    <pre className="concept-code">
+			<code>
+			{`const difference = 10 - 3; // Result: 7`}
+			</code>
+		</pre>
+		<p className="concept-description">
+    Division (/): The division operator / is used to divide one number by another. It divides the left operand by the right operand.
+		</p>
+		<pre className="concept-code">
+			<code>
+			{`const quotient = 15 / 3; // Result: 5`}
+			</code>
+		</pre>
+		<p className="concept-description">
+    Multiplication (*): The multiplication operator * is used to multiply two numbers. It multiplies the left operand by the right operand.
+		</p>
+    <pre className="concept-code">
+			<code>
+			{`const product = 4 * 6; // Result: 24`}
+			</code>
+		</pre>
+	</section>
 
 
 	<section className="concept-section">
