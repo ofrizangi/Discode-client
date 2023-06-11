@@ -78,7 +78,6 @@ export default class BaseRunner {
 
 
     showModel(solution, message_from_sence){
-		console.log(solution)
 		const information_on_soultion = this.checkSolution(solution, message_from_sence);
 		if (information_on_soultion.compare)
 		{

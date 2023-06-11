@@ -39,7 +39,6 @@ function Game(props) {
             arr[0][0] = 0
             data_board = arr;
         }
-		console.log("b" , data_board)
         return data_board
     }
 
@@ -73,7 +72,6 @@ function Game(props) {
             return;
         }
         phaserGameRef.current = new Phaser.Game(config);
-        console.log("game", props.data)
 		const data = getRandomData(props.data)
         phaserGameRef.current.scene.start(props.game_name, {board_data:data,best_score:props.best_score});
 		props.setDataBoard(data)

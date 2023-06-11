@@ -108,7 +108,6 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.scene.pause();
 	
 		this.pauseBtn.on('pointerdown', function () {
-			//console.log('button_pause clicked');
 			this.scene.sendToBack('starsQuest')
 			this.scene.pause('starsQuest')
 			this.scene.launch('pause', {'name':'starsQuest', x:400, y:0})
@@ -116,14 +115,12 @@ export default class StarsQuestScene extends Phaser.Scene
 
 		this.stopBtn.on('pointerdown', function () {
 			this.stop_bool = true
-			//console.log('button_stop clicked')
 			this.stopBtnClicked = true
 			this.scene.pause('starsQuest')
 		},this);
 
 
 		this.events.on('pause', function (data) {
-			//console.log("pause")
 			this.is_run = false
 			this.pauseBtn.setVisible(false)
 			this.stopBtn.setVisible(false)
@@ -139,7 +136,6 @@ export default class StarsQuestScene extends Phaser.Scene
 				this.action_list = data.list
 			}
 			this.is_run = true
-			//console.log("resume", this.action_list)
 			this.pauseBtn.setVisible(true)
 			this.stopBtn.setVisible(true)			
 		},this);
@@ -188,11 +184,6 @@ export default class StarsQuestScene extends Phaser.Scene
 	
 	check_collide_wall()
 	{
-		// //console.log(this.player.x,this.player.y )
-		 // player.setCollideWorldBounds(true)
-		// player.setSize(player.width,player.width)
-		// this.physics.world.setBounds(0, 35, 477, 475.3)
-		// player.body.onWorldBounds = true;
 		// 39.75, 39.6+35
 		//width =265*0.3 =79.5 - >477-79.5/2
 		// height=264*0.3=79.2 -> 475.2+35-79.2/2
@@ -201,7 +192,6 @@ export default class StarsQuestScene extends Phaser.Scene
 			this.stopBtn.setVisible(false)
 			this.carCollisionSound.play();
 			this.is_run = false
-			//console.log(this.action_list[this.index].arg)
 			this.physics.pause()
 			this.gameOver("you collided with a wall\n",)		
 		}
@@ -250,7 +240,6 @@ export default class StarsQuestScene extends Phaser.Scene
 		//right
 		if (this.is_run){
 			//'x': 39.75 + (x-1)*79.5 ,"y":35+39.6+(y-1)*79.2
-			// //console.log(this.player.angle)
 			
 			if (this.index>this.action_list.length-1){
 				this.scene.pause()
@@ -290,7 +279,6 @@ export default class StarsQuestScene extends Phaser.Scene
 	}
 	restart_func(last_best_score){
 		
-		////console.log("restart_func")
 		if (last_best_score > this.best_score){
 			this.best_score = last_best_score
 			this.scoreLabel.setBestScore(last_best_score)

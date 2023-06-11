@@ -104,13 +104,11 @@ function GameBoard(props) {
             setRunButtonDisabled(true)
             var runner;
             setVideoDisplay('none')
-            console.log(document.getElementById("gameBoard"))
             if (props.game.game_name === "dancer"){
                 runner= new DancerRunner(code, props.game.level_number, back_to_levels, next_level,retry_level, gameSence, props.game.blocks, leftSideView, props.game.expected_solution,solve)
             }
             else if(props.game.game_name === "starsQuest"){
                 const copied_borad =[...dataBoard.map(row => [...row])]
-                console.log(copied_borad, dataBoard)
                 runner = new StarsQuestRunner(code,props.game.level_number, back_to_levels, next_level, retry_level, gameSence,copied_borad, props.game.blocks, leftSideView, props.game.expected_solution,solve, props.game.best_score)
             }
             const ret_val = await runner.runcode()

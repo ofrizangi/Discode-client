@@ -6,7 +6,6 @@ export class DancerRunner extends BaseRunner{
 
 
     checkSolution(solution) {
-      console.log(solution)
         var len_solution = solution.length;
         var len_expected_solution = this.expected_solution.length;
         if(len_solution === 0){
@@ -15,7 +14,6 @@ export class DancerRunner extends BaseRunner{
         if(len_expected_solution === 0){
           return { 'compare': true, 'message': <div className="modal-title"> <h3 id="succeeded"> Nice idea, well done </h3> </div> }
         }
-        console.log(len_expected_solution, len_solution)
         if(len_solution > len_expected_solution){
           return {
             'compare': false,

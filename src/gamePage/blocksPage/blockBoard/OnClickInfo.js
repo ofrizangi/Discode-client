@@ -3,7 +3,6 @@ const createOnClickInfo = () => {
     let handled_click = false
 
     const setHandeledClick = () => {
-        console.log("setting")
         handled_click = true
         setTimeout(() => {
             handled_click = false

@@ -31,7 +31,6 @@ export default class DancePlayerScene extends Phaser.Scene
         // origin is center
 		// const line = this.createLine()
         this.add.image(0, 0, BACKGROUND_KEY).setScale(1.03,1.03).setOrigin(0)
-		// console.log(image.displayWidth, image.displayHeight)
 		this.pauseBtn = this.add.sprite(290, 10, PAUSE).setInteractive().setScale(0.065).setOrigin(0)
 		this.stopBtn = this.add.sprite(330, 10, STOP).setInteractive().setScale(0.2).setOrigin(0)
         this.player = this.createPlayer()
@@ -40,7 +39,6 @@ export default class DancePlayerScene extends Phaser.Scene
 
 		this.player.on('animationcomplete', function (animation) {
 			this.nextAnimation = this.actionsList.shift();
-			console.log(this.nextAnimation)
 			if (this.nextAnimation) {
 				this.player.play(this.nextAnimation);
 				}
@@ -52,21 +50,18 @@ export default class DancePlayerScene extends Phaser.Scene
 		},this );
 
 		this.pauseBtn.on('pointerdown', function () {
-			console.log('button_pause clicked');
 			this.scene.sendToBack('dancer')
 			this.scene.pause('dancer')
 			this.scene.launch('pause',{'name':'dancer', x:290, y:10})
 		  },this);
 
 		  this.stopBtn.on('pointerdown', function () {
-			console.log('button_stop clicked')
 			this.stop_bool = true
 			this.stopBtnClicked = true
 			this.scene.pause('dancer')
 		  },this);
 
 		this.events.on('pause', function (data) {
-			console.log("pause")
 			this.is_run = false
 			this.pauseBtn.setVisible(false)
 			this.stopBtn.setVisible(false)
@@ -76,18 +71,15 @@ export default class DancePlayerScene extends Phaser.Scene
         }, this)
 
 		this.events.on('resume', (scene, data) => {
-			console.log("resume")
 			if (data.runner !== undefined){
 				this.runner = data.runner
 				this.originalActionsList = [...data.list]
 				this.actionsList = data.list
 				this.nextAnimation= this.actionsList.shift()
 				if (this.nextAnimation){
-					console.log(this.nextAnimation)
 					this.player.play(this.nextAnimation);
 				}
 				else {
-					console.log("else")
 					this.scene.pause()
 					this.gameOver()
 				}
@@ -104,7 +96,6 @@ export default class DancePlayerScene extends Phaser.Scene
 	{
 		
         const player = this.physics.add.sprite(189, 155, PLAYER_KEY).setScale(1.5)
-		console.log(player.width, player.height)
 		// the player won't be able to run outside of this area - according configrition
 		player.setCollideWorldBounds(true)
 		this.physics.world.setBounds(42, 0, 286.8, 370.8)
@@ -251,7 +242,6 @@ export default class DancePlayerScene extends Phaser.Scene
 
 	gameOver()
 	{
-		console.log(this.originalActionsList)
 		this.runner.showModel(this.originalActionsList)
 	}
 

@@ -17,7 +17,6 @@ function Register(props) {
     async function add_user_to_db(event) {
         event.preventDefault();
         let user = {name : name.current.value , age : age.current.value , password: password.current.value ,confirm_password: confirm_password.current.value, email:email.current.value }
-        console.log(user)
         // Simple POST request with a JSON body using fetch
         const requestOptions = {
             method: 'POST',

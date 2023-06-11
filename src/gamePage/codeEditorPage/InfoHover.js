@@ -9,7 +9,6 @@ function InfoHover() {
 	const [data, setData] = useState('');
 
 	async function loadData(){
-		console.log("in loadddd!")
 		var response = await fetch(info_file)
 		response = await response.text()
 		setData(response)

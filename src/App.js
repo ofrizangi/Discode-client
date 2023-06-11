@@ -19,7 +19,6 @@ function App() {
   return (
       <div className="App">
         <BrowserRouter>
-        {console.log(isLogged)}
             {!isLogged && 
               <Routes>
               <Route path='/' element={<Home setIsLogged={setIsLogged}/>}></Route>

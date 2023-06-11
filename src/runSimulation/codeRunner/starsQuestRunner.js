@@ -35,11 +35,9 @@ export class StarsQuestRunner extends BaseRunner{
                     else if(board[i-1][j-1] > 0){
                         arr[i][j] =  "star"
                         if (i===1 && j===2){
-                            console.log(board[i-1][j-1], arr[i][j])
                         }
                     }
                     else{
-                        console.log(i-1,j-1,board[i-1][j-1])
                         arr[i][j] =  0
                     }
                 }
@@ -174,7 +172,6 @@ export class StarsQuestRunner extends BaseRunner{
         var angle = 0
         var board = this.board
         var score = this.score
-        console.log(board)
         const plus = function(x, number_steps) {return x+number_steps}
         const minus = function(x, number_steps) {return x-number_steps}
         const id = function(x) {return x}
@@ -235,7 +232,6 @@ export class StarsQuestRunner extends BaseRunner{
                     score[i][j] = 0            
                 }
             }
-            console.log("board" , board)
         };
 
         const turn = function(direction){
@@ -262,10 +258,8 @@ export class StarsQuestRunner extends BaseRunner{
                 return "done"
             }
             catch(error){
-                console.log(error.message)
                 if (error.message === "game failed"){
                     this.actionsList = actionsList
-                    console.log(this.actionsList)
                     this.gameSence.resume("starsQuest", {list:actionsList, runner:this})
                     return "done"
                 }

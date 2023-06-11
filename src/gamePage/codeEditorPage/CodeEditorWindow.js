@@ -31,9 +31,7 @@ function CodeEditorWindow(props) {
 
 	// autosave if changes
 	useEffect(() => {
-		console.log("in use effect")
 		if (autosave && editorRef.current.getValue() !== formerCode) {
-			console.log("in if")
 			save_code()
 			setAutosave(false); // toggle autosave off
 		}
@@ -49,7 +47,6 @@ function CodeEditorWindow(props) {
 
 	function handleEditorDidMount(editor, monaco){
 		editorRef.current = editor;
-		console.log('Editor mounted!', editorRef.current.getValue());
 	};
 
 

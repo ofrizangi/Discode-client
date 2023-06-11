@@ -13,7 +13,6 @@ function Login(props) {
     async function login_user(event) {
         event.preventDefault();
         let user = {name : userName.current.value ,password: password.current.value }
-        console.log(user)
         // Simple POST request with a JSON body using fetch
         const requestOptions = {
             method: 'POST',

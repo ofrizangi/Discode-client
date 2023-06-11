@@ -1,15 +1,12 @@
 const createBlocksProvider = () => {
 
     let _commands = JSON.parse(localStorage.getItem('COMMANDS')) || null
-    console.log(_commands)
     let _solution = JSON.parse(localStorage.getItem('SOLUTION')) || null
-    console.log(_solution)
 
 
     const set_commands = (commands) => {
         _commands = commands
 
-        console.log("setting" , commands)
         
         if(commands){
             localStorage.setItem('COMMANDS', JSON.stringify(commands))

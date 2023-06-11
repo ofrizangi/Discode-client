@@ -46,7 +46,6 @@ export class StarsQuestGenerator extends BaseGenerator {
     if_elif_else_next_step_or(block, line_number, tab) {
         // const dict = {"and" : "&&" , "or" : "||"}
         if(line_number === 0){
-            console.log(block.arguments[line_number])
             const object_type_first = block.arguments[line_number][0]
             const dirction_first = block.arguments[line_number][1]
             const object_type_second = block.arguments[line_number][2]
