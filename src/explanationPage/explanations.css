@@ -9,7 +9,6 @@
 	width: 100%;
 	height: 100%;
 	opacity: 90%;
-    /* animation: slideBackground 30s linear infinite; */
 }
 
 .background-blue {
@@ -29,7 +28,6 @@
     text-align: left;
 }
 
-
 .height-title {
     height: 15%;
     display: flex;
@@ -37,9 +35,9 @@
     align-items: center; /* Vertical center */
 }
   
-  .concept-section {
+.concept-section {
 	margin-top: 40px;
-  }
+}
   
 .concept-heading {
 	font-size: 20px;
@@ -48,9 +46,9 @@
     color: rgb(27, 132, 167); /* Set the text color */
 }
   
-  .concept-description {
+.concept-description {
 	margin-bottom: 15px;
-  }
+}
   
 .concept-code {
 	background-color: #e8eaf6;

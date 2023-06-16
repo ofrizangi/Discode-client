@@ -1,8 +1,6 @@
 import * as Constants from '../../../constants';
-
 import NumberArgument from "./numberArgument/NumberArgument";
 import SelectArgument from "./selectArgument/SelectArgument";
-
 import NumberArgumentConst from "./numberArgument/NumberArgumentConst";
 import SelectArgumentConst from "./selectArgument/SelectArgumentConst";
 
@@ -46,5 +44,4 @@ const createArgumentProvider = () => {
         getArgumentIndex
     };
 }
-
 export const {getArgument, getConstArgument, getDescriptionList, getArgumentIndex} = createArgumentProvider();

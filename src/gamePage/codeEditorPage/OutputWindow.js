@@ -5,11 +5,9 @@ import InsertArgsModal from "../../alerts/InsertArgsModal";
 import {sloved_game, get_game_level_data, post_code_api, restart_game} from '../gamesAPI';
 import {setLevel} from '../../levelsPage/LevelProvider'
 import * as Constants from './../../constants';
-
 import loading from './../../images/loading.gif'
 import play_img from './../../images/play-button.png'
 import restart_img from './../../images/reloading.png'
-
 import { useNavigate } from 'react-router-dom'
 
 
@@ -26,7 +24,6 @@ function OutputWindow(props) {
     const [success, setSuccess] = useState(false)
     const [fail, setFail] = useState(false)
     const [functionCall, setFunctionCall] = useState("")
-
     const [runButtonDisabled, setRunButtonDisabled] = useState(false)
     const [nextButtonDisabled, setNextButtonDisabled] = useState(true)
 
@@ -124,11 +121,8 @@ function OutputWindow(props) {
         navigate('/levels')
     }
 
-
-
 	return (
 		<div className="output-window-container">
-
             <div className='game-nav-container'>
                 <ul className="nav nav-game">
                     <li className="nav-item">
@@ -163,9 +157,7 @@ function OutputWindow(props) {
 
             <button className='btn btn-primary next-button' disabled={nextButtonDisabled} onClick={next_level}> Next level </button>
 
-
 		</div>
 	);
 };
-
 export default OutputWindow;

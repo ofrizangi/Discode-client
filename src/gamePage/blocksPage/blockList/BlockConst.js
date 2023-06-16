@@ -8,10 +8,8 @@ function BlockConst(props) {
 
     const block = props.block
 
-
     return (
         <div className="block block-const" style={{ backgroundColor: block.color,}}>
-
             {block.complex === 0 ?          
                 <DescriptionConst block={block} list_num={0}></DescriptionConst> 
                 :
@@ -24,6 +22,4 @@ function BlockConst(props) {
         </div>
     );
 }
-
-
 export default BlockConst;

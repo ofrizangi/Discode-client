@@ -5,7 +5,6 @@ import * as Constants from '../../../../constants';
 
 function SelectArgument(props) {
 
-
     const row = props.row
     const list_number = props.list_number
     const index = props.index
@@ -22,7 +21,6 @@ function SelectArgument(props) {
 
     function set_argument(event){
         setSelected(event.target.value)
-        // const command_index = commands.findIndex(value => value._id === row._id)
         commands[command_index].arguments[list_number][index] = event.target.value
         setCommands(commands)
         post_argument(row._id, index, list_number, event.target.value)
@@ -36,8 +34,5 @@ function SelectArgument(props) {
             </select>
         </span>
     );
-
 }
-
-
 export default SelectArgument;

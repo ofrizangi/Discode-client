@@ -1,9 +1,6 @@
 import React, { useEffect, useRef , useState} from "react";
-
 import {Editor} from "@monaco-editor/react";
-
 import { post_code_api } from "../gamesAPI";
-
 import './codeEditor.css'
 
 function CodeEditorWindow(props) {
@@ -44,12 +41,9 @@ function CodeEditorWindow(props) {
 
 	}, [autosave,  code , formerCode]); // reset when lesson changes
 
-
 	function handleEditorDidMount(editor, monaco){
 		editorRef.current = editor;
 	};
-
-
     
     function handleEditorChange(value) {
         setCode(value);
@@ -74,73 +68,4 @@ function CodeEditorWindow(props) {
         </div>
       );
 }
-
 export default CodeEditorWindow;
-
-
-
-	// function handleEditorDidMount(editor, monaco) {
-
-	// 	const constrainedInstance = constrainedEditor(monaco);
-	// 	const model = editor.getModel();
-	// 	constrainedInstance.initializeIn(editor);
-		
-
-		// constrainedInstance.addRestrictionsTo(model, [
-		// 	{
-		// 		range: [2, 1, 2, 23], // Range of Function definition
-		// 		allowMultiline: true,
-		// 		label: "funcDefinition"
-		// 	},
-		// 	{
-		// 		range: [3, 1, 3, 23], // Range of Function definition
-		// 		allowMultiline: true,
-		// 		label: "funcDefinition"
-		// 	}
-		
-		// ]);
-
-	// }
-
-	// Include constrainedEditorPlugin.js in your html.
-
-    // loader.init().then(monaco => {
-    //   	monaco.editor.defineTheme('myTheme', theme);
-	// 	// const constrainedInstance = constrainedEditor(monaco);
-
-
-    //   	// monaco.editor.loadTheme('vs-dark');
-    // });
-
-
-
-	
-    // const theme = {
-    //   base: 'vs-dark',
-    //   inherit: true,
-    //   rules: [
-    //     { token: 'comment', foreground: 'green', fontStyle: 'italic' },
-    //     { token: 'keyword', foreground: 'yellow', fontStyle: 'bold' },
-    //     { token: 'string', foreground: 'red' },
-    //     { token: 'number', foreground: 'purple' }
-    //   ]
-    // }
-
-
-    // function setEditorTheme() {
-    //   monaco.editor.defineTheme('onedark', {
-    //     base: 'vs-dark',
-    //     inherit: true,
-    //     rules: [
-    //       {
-    //         token: 'comment',
-    //         foreground: '#5d7988',
-    //         fontStyle: 'italic'
-    //       },
-    //       { token: 'constant', foreground: '#e06c75' }
-    //     ],
-    //     colors: {
-    //       'editor.background': '#21252b'
-    //     }
-    //   });
-    // }

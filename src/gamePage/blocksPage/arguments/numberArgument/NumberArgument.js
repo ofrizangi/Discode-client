@@ -15,8 +15,7 @@ function NumberArgument(props) {
     const command_index = commands.findIndex(value => value._id === row._id)
 
     const [val, setVal] = useState(row.arguments[list_number][index])
-
-    
+   
     useEffect(() => {
         setVal(commands[command_index].arguments[list_number][index])
     }, [commands, command_index, index, list_number]);
@@ -35,6 +34,4 @@ function NumberArgument(props) {
     );
 
 }
-
-
 export default NumberArgument;

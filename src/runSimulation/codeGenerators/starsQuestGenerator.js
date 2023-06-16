@@ -19,7 +19,6 @@ export class StarsQuestGenerator extends BaseGenerator {
         return `${word} (board[get_next_row("${dirction}")][get_next_col("${dirction}")] === "${object_type}") `
     }
 
-
     if_elif_elif_else_next_step(block, line_number) {
         if(line_number === 0){
             return this.condition("if",block, line_number)
@@ -30,7 +29,6 @@ export class StarsQuestGenerator extends BaseGenerator {
             return 'else '
         }
     }
-
     
     if_elif_else_next_step(block, line_number) {
         if(line_number === 0){
@@ -44,7 +42,6 @@ export class StarsQuestGenerator extends BaseGenerator {
     }
 
     if_elif_else_next_step_or(block, line_number, tab) {
-        // const dict = {"and" : "&&" , "or" : "||"}
         if(line_number === 0){
             const object_type_first = block.arguments[line_number][0]
             const dirction_first = block.arguments[line_number][1]
@@ -57,7 +54,6 @@ export class StarsQuestGenerator extends BaseGenerator {
             return 'else '
         }
     }
-
     
     if_score(block, line_number, tab) {
         const dict = {"bigger" : ">" , "smaller" : "<"}
@@ -67,7 +63,6 @@ export class StarsQuestGenerator extends BaseGenerator {
             const second_direction = block.arguments[line_number][2]
             return `if (score[get_next_row("${first_direction}")][get_next_col("${first_direction}")] ${dict[opertor]}\n${tab} score[get_next_row("${second_direction}")][get_next_col("${second_direction}")]) `
         }
-        
     }
 
     drive_number_of_steps(block, line_number){
@@ -82,5 +77,4 @@ export class StarsQuestGenerator extends BaseGenerator {
         const number = block.arguments[line_number][0]
         return `number_steps = number_steps -  ${number};`
     }
-
 }

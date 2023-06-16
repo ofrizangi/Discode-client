@@ -5,11 +5,8 @@ import CodeEditorWindow from "./CodeEditorWindow";
 import { rec_translate_blocks } from "../../runSimulation/CodeCreator";
 import { DancerGenerator } from "../../runSimulation/codeGenerators/dancerGenerator";
 import { StarsQuestGenerator } from "../../runSimulation/codeGenerators/starsQuestGenerator";
-
 import { restart_game } from '../gamesAPI';
-
 import restart_img from './../../images/reloading.png'
-
 import * as Constants from '../../constants';
 
 
@@ -76,7 +73,6 @@ function CodeEditorPage(props) {
 
     }
 
-
     function generate_code(){
         setCode(create_function_comment() + `function ${get_main_function_call()} {\n${rec_translate_blocks(commands, solution, generator, "\t")}\n}`)
     }
@@ -88,7 +84,6 @@ function CodeEditorPage(props) {
         await props.setGame(my_game)
     }
 
-
     return(
         <div>
             <div className='upper-row'>
@@ -98,7 +93,5 @@ function CodeEditorPage(props) {
             <CodeEditorWindow code={code} setCode={setCode}> </CodeEditorWindow>
         </div>
     )
-
 }
-
 export default CodeEditorPage;

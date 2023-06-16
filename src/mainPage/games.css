@@ -32,7 +32,6 @@ div.polaroid {
     cursor: pointer;
 }
 
-
 .games_names {
 	text-align: center;
 }
@@ -119,7 +118,6 @@ img {
 	display: flex;
 	justify-content: center;
 }
-
 
 .game-page{
 	margin-left:1pt !important;

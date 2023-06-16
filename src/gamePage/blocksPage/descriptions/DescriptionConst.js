@@ -15,10 +15,7 @@ function DescriptionConst(props) {
                                 <span key={index}> {item} </span> : 
                                 (<span key={index}> {getConstArgument(block.arguments_type, list_num, getArgumentIndex(index, getDescriptionList(block.description[list_num])), row)} </span> )})
         }
-
         </div>
     )
 }
-
-
 export default DescriptionConst;

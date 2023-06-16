@@ -5,6 +5,12 @@ import * as Constants from './../constants';
 
 const BACKGROUND = 'background'
 const CAR = "car"
+const PAUSE = "pause"
+const STOP = "stop"
+const COLLISION_SOUND ='collision_sound'
+const COLLECT_STAR_SOUND ='collect_star_sound'
+const COLLECT_BOMB_SOUND ='collect_bomb_sound'
+
 export const WALL = 'wall'
 export const STAR = 'star'
 export const BOMB = 'bomb'
@@ -16,11 +22,7 @@ export const NO_ENTRY_SIGN = "*"
 export const NO_ENTRY_MESSAGE = "you can't enter there\n"
 export const WALL_MESSAGE = "you collided with a wall\n"
 export const BOARD_SIZE = 6
-const PAUSE = "pause"
-const STOP = "stop"
-const COLLISION_SOUND ='collision_sound'
-const COLLECT_STAR_SOUND ='collect_star_sound'
-const COLLECT_BOMB_SOUND ='collect_bomb_sound'
+
 
 export default class StarsQuestScene extends Phaser.Scene
 {
@@ -34,7 +36,6 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.no_entrys = undefined
 		this.scoreLabel = undefined
 		
-
 		this.typeStars = new Map([
 			[1,Phaser.Display.Color.GetColor(123,104,238)],
 			[2,Phaser.Display.Color.GetColor(30,144,255)],
@@ -60,32 +61,27 @@ export default class StarsQuestScene extends Phaser.Scene
 		])
 	}
 
-	preload()
-	{
-		this.load.image(CAR, 'assets/animations/car1.png')
+	preload(){
+		this.load.image(CAR, 'assets/animations/car.png')
 		this.load.image(BACKGROUND,'assets/textures/StarsQuest/block.png')
 		this.load.image(STAR,'assets/textures/StarsQuest/star.png')
 		this.load.image(BOMB,'assets/textures/StarsQuest/bomb.png')
 		this.load.image(NO_ENTRY,'assets/textures/StarsQuest/no_entry.png')
-		this.load.image(PAUSE, 'assets/textures/pause.png')
-		this.load.image(STOP, 'assets/textures/stop.png')
+		this.load.image(PAUSE, 'assets/textures/buttons/pause.png')
+		this.load.image(STOP, 'assets/textures/buttons/stop.png')
 		this.load.audio(COLLISION_SOUND, 'assets/sound/collision_sound.mp3')
 		this.load.audio(COLLECT_STAR_SOUND, 'assets/sound/collect_star.mp3')
 		this.load.audio(COLLECT_BOMB_SOUND, 'assets/sound/collect_bomb.mp3')
-
-
     }
 
 	initialization_objects(){
 		this.physics.resume()
-	
 		this.stop_bool = false
 		this.start = true
 		this.pauseBtnClicked = false
 		this.stopBtnClicked = false
 		this.index = 0
 		this.is_run = false
-	
 	}
 
 
@@ -105,7 +101,6 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.stopBtn = this.add.sprite(440, 0, STOP).setInteractive().setScale(0.2).setOrigin(0)
 
 		this.createObjects()
-		this.cre=
 		this.carCollisionSound = this.sound.add(COLLISION_SOUND);
 		this.carCollectStarSound = this.sound.add(COLLECT_STAR_SOUND);
 		this.carCollectBombSound = this.sound.add(COLLECT_BOMB_SOUND);
@@ -149,15 +144,11 @@ export default class StarsQuestScene extends Phaser.Scene
 			this.pauseBtn.setVisible(true)
 			this.stopBtn.setVisible(true)			
 		},this);
-
-		
 	}
 
-	createPlayer()
-	{
+	createPlayer(){
 		const player = this.physics.add.sprite(39.75, 39.6+35, CAR).setScale(0.03)
 		player.setDepth(2)
-
 		return player
 	}
 
@@ -165,8 +156,7 @@ export default class StarsQuestScene extends Phaser.Scene
 		return this.add.sprite(39.75 + j*79.5, 39.6 +35+i*79.2, key).setName(data_child)
 	}
 
-	createObjects()
-	{
+	createObjects(){
 		this.stars = this.physics.add.group()
 		this.bombs = this.physics.add.group()
 		this.no_entrys = this.physics.add.staticGroup()
@@ -192,11 +182,9 @@ export default class StarsQuestScene extends Phaser.Scene
 		}
 	}
 	
-	check_collide_wall()
-	{
-		// 39.75, 39.6+35
-		//width =265*0.3 =79.5 - >477-79.5/2
-		// height=264*0.3=79.2 -> 475.2+35-79.2/2
+	check_collide_wall(){
+		//width =79.5 -> 477-79.5/2=435.25
+		//height==79.2 -> 475.2+35-79.2/2=467.6
 		if (this.player.x < 38 || this.player.x >438.5   || this.player.y < 73.5 || this.player.y > 471.5 ){
 			this.pauseBtn.setVisible(false)
 			this.stopBtn.setVisible(false)
@@ -208,8 +196,7 @@ export default class StarsQuestScene extends Phaser.Scene
 		
 	}
 
-	collide_no_entrys()
-	{
+	collide_no_entrys(){
 		this.pauseBtn.setVisible(false)
 		this.stopBtn.setVisible(false)
 		this.carCollisionSound.play();
@@ -219,38 +206,28 @@ export default class StarsQuestScene extends Phaser.Scene
 		
 	}
 
-	collectScore(player, object)
-	{
-        // The two parameters passed to disableBody() tells Phaser to disable and hide the GameObject.
-		//object.disableBody(true, true)
+	collectScore(player, object){
 		if(object.name > 0){
 			this.carCollectStarSound.play();
 		}
 		else{
 			this.carCollectBombSound.play();
 		}
-		
 		object.visible = false
 		object.body.enable = false
 		this.scoreLabel.add(object.name)
 	}
 
-	createScoreLabel(x, y, score, best_score)
-	{
+	createScoreLabel(x, y, score, best_score){
 		const style = { fontSize: '17px', fill: '#000000' }
 		const label = new ScoreLabel(this, x, y, score, best_score, style)
-
 		this.add.existing(label)
-
 		return label
 	}
 
 
 	update(){
-		//right
 		if (this.is_run){
-			//'x': 39.75 + (x-1)*79.5 ,"y":35+39.6+(y-1)*79.2
-			
 			if (this.index>this.action_list.length-1){
 				this.scene.pause()
 				this.is_run=false
@@ -264,31 +241,29 @@ export default class StarsQuestScene extends Phaser.Scene
 			}
 			var next_x = 39.7 + this.action_list[this.index].arg.x*79.5
 			var next_y = 35+39.6+ this.action_list[this.index].arg.y*79.2
-
-			//drive
 			this.check_collide_wall()
+			//drive
 			if(this.player.angle === 0 && this.player.x < next_x){
-					this.player.x+=0.7
-					return
+				this.player.x+=0.7
+				return
 			}
 			if(this.player.angle === 90 && this.player.y < next_y){
-					this.player.y+=0.7
-					return
+				this.player.y+=0.7
+				return
 			}
 			if(this.player.angle === -180 && this.player.x > next_x){
-					this.player.x-=0.7
-					return
+				this.player.x-=0.7
+				return
 			}
 			if(this.player.angle === -90 && this.player.y > next_y){
-					this.player.y-=0.7
-					return
+				this.player.y-=0.7
+				return
 			}
 			this.index++
 		}
-		
 	}
+
 	restart_func(last_best_score){
-		
 		if (last_best_score > this.best_score){
 			this.best_score = last_best_score
 			this.scoreLabel.setBestScore(last_best_score)
@@ -314,8 +289,7 @@ export default class StarsQuestScene extends Phaser.Scene
 	  }
 
 
-	gameOver(message)
-	{
+	gameOver(message){
 		this.pauseBtn.setVisible(false)
 		this.stopBtn.setVisible(false)
 		this.runner.showModel(this.scoreLabel.getScore(),message)

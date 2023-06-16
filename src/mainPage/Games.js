@@ -65,5 +65,4 @@ function Games(props) {
         </div>
       );
   }
-  
-  export default Games;
+export default Games;

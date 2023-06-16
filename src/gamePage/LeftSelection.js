@@ -1,7 +1,4 @@
-
-
 function LeftSelection(props){
-
 
     const setLeftSideView = props.setLeftSideView;
 
@@ -16,7 +13,5 @@ function LeftSelection(props){
             </div>
         </div>
     );
-
 }
-
 export default LeftSelection;

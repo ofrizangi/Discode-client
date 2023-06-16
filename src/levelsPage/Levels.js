@@ -58,5 +58,4 @@ function Levels(props) {
         </div>
       );
   }
-  
   export default Levels;

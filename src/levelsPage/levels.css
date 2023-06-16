@@ -35,14 +35,10 @@
 	display: inline;
 }
 
-
-
 .lock-img{
 	width: 70%;
 	height: 90%;
 }
-
-
 
 .levels-grid-4{
 	width: 65%;
@@ -52,7 +48,6 @@
 	display: inline-grid;
 	margin: 1%;
 }
-
 
 .icon-img {
 	padding-top: 10%;

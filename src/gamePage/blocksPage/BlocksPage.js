@@ -216,5 +216,4 @@ function BlocksPage(props) {
         </div>
       );
 }
-  
 export default BlocksPage;

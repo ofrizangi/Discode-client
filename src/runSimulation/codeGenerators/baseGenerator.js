@@ -1,7 +1,6 @@
 
 export default class BaseGenerator {
 
-
     repeat(block, line_number){
         const times = block.arguments[line_number][0]
         return `for (let iteration = 1; iteration <= ${times}; iteration++) `
@@ -11,14 +10,12 @@ export default class BaseGenerator {
         const number = block.arguments[line_number][0]
         return `if (iteration === ${number}) `
     }
-
     
     if_mod_iteration(block, line_number) {
         const dict = {"odd" : 1 , "even" : 0}
         const type = block.arguments[line_number][0]
         return `if (iteration % 2 === ${dict[type]}) `
     }
-
 
     if_else_mod_iteration(block, line_number) {
         if(line_number === 0){
@@ -30,8 +27,6 @@ export default class BaseGenerator {
             return 'else '
         }
     }
-
-
 
     if_elif_else_range_iteration(block, line_number) {
         if(line_number === 0){
@@ -47,6 +42,4 @@ export default class BaseGenerator {
             return 'else '
         }
     }
-
-
 }

@@ -29,5 +29,4 @@ function LevelFreeStyle(props) {
         </div>
       );
   }
-  
   export default LevelFreeStyle;

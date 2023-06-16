@@ -3,7 +3,6 @@ import BaseGenerator from './baseGenerator'
 
 export class DancerGenerator extends BaseGenerator {
 
-
     jump(block, line_number){
         const hands = block.arguments[line_number][0]
         return `jump('${hands}');`
@@ -18,12 +17,10 @@ export class DancerGenerator extends BaseGenerator {
         return "cartwheel();"
     }
 
-
     stomp(block, line_number){
         const direction = block.arguments[line_number][0]
         return `stomp('${direction}');`
     }
-
 
     wiggle(block, line_number){
         const direction = block.arguments[line_number][0]
@@ -44,6 +41,4 @@ export class DancerGenerator extends BaseGenerator {
         const angle = block.arguments[line_number][1]
         return `turn_by('${direction}' , '${angle}');`
     }
-
-
 }

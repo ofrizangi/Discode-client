@@ -23,5 +23,4 @@ const createLevelProvider = () => {
         getLevel,
     };
 }
-
 export const {setLevel, getLevel} = createLevelProvider();

@@ -52,19 +52,19 @@ export class StarsQuestRunner extends BaseRunner{
         let arr = [];
         for (let i = 0; i < numbers_rows; i++) {
             arr[i] = [];
-                for (let j = 0; j < numbers_cols; j++) {
-                    if (i === 0 || i === numbers_rows-1 || j===0 || j ===numbers_cols-1){
-                        arr[i][j] = -200;
+            for (let j = 0; j < numbers_cols; j++) {
+                if (i === 0 || i === numbers_rows-1 || j===0 || j ===numbers_cols-1){
+                    arr[i][j] = -200;
+                }
+                else{
+                    if (board[i-1][j-1] === GameConstants.NO_ENTRY_SIGN){
+                        arr[i][j] = -100
                     }
-                    else{
-                        if (board[i-1][j-1] === GameConstants.NO_ENTRY_SIGN){
-                            arr[i][j] = -100
-                        }
-                        else {
-                            arr[i][j] =  board[i-1][j-1]
-                        }
+                    else {
+                        arr[i][j] =  board[i-1][j-1]
                     }
                 }
+            }
         }
         return arr  
     }
@@ -75,6 +75,7 @@ export class StarsQuestRunner extends BaseRunner{
         var y = 0
         var angle = 0
         var score = 0
+
         for(var i = 0; i < this.actionsList.length; i++){
             if(this.actionsList[i].name === "turn" ){
                 if  (this.actionsList[i].arg === GameConstants.GO_RIGHT){angle = (angle +90)%360; }
@@ -87,12 +88,14 @@ export class StarsQuestRunner extends BaseRunner{
 
             for(let i=y; i<= Math.min(next_y, GameConstants.BOARD_SIZE-1); i++){
                 for(let j=x; j<= Math.min(next_x, GameConstants.BOARD_SIZE-1) ; j++){
-                    if(this.game_board[i][j] === GameConstants.NO_ENTRY_SIGN) {return {"score": 0, "message":`Game Over - ${GameConstants.NO_ENTRY_MESSAGE}`}}
+                    if(this.game_board[i][j] === GameConstants.NO_ENTRY_SIGN) {
+                        return {"score": 0, "message":`Game Over - ${GameConstants.NO_ENTRY_MESSAGE}`}
+                    }
                 }
             }
-
-            if (next_x < 0 || next_x >= GameConstants.BOARD_SIZE  || next_y < 0 || next_y >= GameConstants.BOARD_SIZE ){ return {"score": 0, "message":`Game Over - ${GameConstants.WALL_MESSAGE}`}}
-
+            if (next_x < 0 || next_x >= GameConstants.BOARD_SIZE  || next_y < 0 || next_y >= GameConstants.BOARD_SIZE ){
+                return {"score": 0, "message":`Game Over - ${GameConstants.WALL_MESSAGE}`}
+            }
             //drive
             while (x !== next_x || y !== next_y){
                 if(angle === 0 && x < next_x){x+=1;}
@@ -110,9 +113,14 @@ export class StarsQuestRunner extends BaseRunner{
     }
 
 
+   
     checkSolution(score, message_from_sence) {
         if(this.actionsList.length === 0){
-            return { 'compare': false, 'message': <div className="modal-title"> <h3 id="blue">There is nothing to run</h3>please drag blocks</div> }
+            return { 
+                'compare': false,
+                'message': <div className="modal-title"> <h3 id="blue">There is nothing to run</h3>please drag blocks</div>,
+                'best_score':this.best_score
+            }
         }
         if (message_from_sence ===  Constants.SCENE_MESSAGE) {
             var result = this.calculateScore()
@@ -136,26 +144,26 @@ export class StarsQuestRunner extends BaseRunner{
                 'compare': true,
                 'message':  <div className="modal-title"> <h3 id="blue">Nice try</h3> your score is {score} </div>,
                 'best_score':this.best_score
-              }
+            }
         }
         if (score < this.expected_solution){
             return {
                 'compare': false,
                 'message': <div className="modal-title"> <h3 id="blue"> Nice try </h3> your score is {score}, Now we expect you to reach {this.expected_solution} points </div>,
                 'best_score':this.best_score
-              }
+            }
         }
         if(score >= this.expected_solution && score > best_score){
             return {
                 'compare': true,
                 'message':  <div className="modal-title"> <h3 id="succeeded"> Well done</h3> your score is {score}. you broke your record, keep it up! </div>,
                 'best_score':this.best_score
-              }
+            }
         }
         return {
-                'compare': true,
-                'message':  <div className="modal-title"> <h3 id="succeeded"> Well done</h3> your score is {score} </div>,
-                'best_score':this.best_score
+            'compare': true,
+            'message':  <div className="modal-title"> <h3 id="succeeded"> Well done</h3> your score is {score} </div>,
+            'best_score':this.best_score
         }
     }
 

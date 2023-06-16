@@ -1,6 +1,5 @@
 import * as Constants from '../../../constants';
 import {Droppable } from 'react-beautiful-dnd';
-
 import Block from './Block';
 import React from 'react';
 import BlockConst from './BlockConst';
@@ -26,9 +25,7 @@ function BlockList(props) {
                         {provided.placeholder}
                     </div>)}
             </Droppable>
-
         </>
       );
 }
-
 export default BlockList;

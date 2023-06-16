@@ -58,7 +58,7 @@ export class DancerRunner extends BaseRunner{
 			actionsList.push(actionName)
         }
           
-        function jump(){ writeActions(jump.name, arguments)}
+        const jump =  function(){writeActions(jump.name, arguments)};
         const swing =  function(){writeActions(swing.name, arguments)};
         const cartwheel =  function(){writeActions(cartwheel.name, arguments)};
         const stomp =  function(){writeActions(stomp.name, arguments)};
@@ -83,7 +83,5 @@ export class DancerRunner extends BaseRunner{
 			}
 		}
     }
-
-   
 }
 

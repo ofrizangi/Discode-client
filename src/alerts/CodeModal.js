@@ -14,9 +14,9 @@ class DraggableModalDialog extends React.Component {
 		</Draggable>
 		);
 	}
-	}
+}
 
-	class CodeModal extends React.Component {
+class CodeModal extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -85,5 +85,4 @@ class DraggableModalDialog extends React.Component {
     );
   }
 }
-
 export default CodeModal

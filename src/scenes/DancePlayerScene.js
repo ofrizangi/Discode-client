@@ -16,11 +16,10 @@ export default class DancePlayerScene extends Phaser.Scene
 	}
 
 	// Phaser will automatically look for this function when it starts and load anything defined within it.
-	preload()
-	{
+	preload(){
 		this.load.image(BACKGROUND_KEY, 'assets/textures/background-dance-robot.png')
-		this.load.image(PAUSE, 'assets/textures/pause.png')
-		this.load.image(STOP, 'assets/textures/stop.png')
+		this.load.image(PAUSE, 'assets/textures/buttons/pause.png')
+		this.load.image(STOP, 'assets/textures/buttons/stop.png')
 
 		this.load.spritesheet(PLAYER_KEY, 'assets/animations/player.png',{
 			frameWidth: 110,
@@ -28,10 +27,7 @@ export default class DancePlayerScene extends Phaser.Scene
 			})
 	}
 
-    create()
-	{  
-        // origin is center
-		// const line = this.createLine()
+    create(){  
         this.add.image(0, 0, BACKGROUND_KEY).setScale(1.03,1.03).setOrigin(0)
 		this.pauseBtn = this.add.sprite(290, 10, PAUSE).setInteractive().setScale(0.065).setOrigin(0)
 		this.stopBtn = this.add.sprite(330, 10, STOP).setInteractive().setScale(0.2).setOrigin(0)
@@ -94,8 +90,7 @@ export default class DancePlayerScene extends Phaser.Scene
 	}
 	
 
-	createPlayer()
-	{
+	createPlayer(){
 		
         const player = this.physics.add.sprite(189, 155, PLAYER_KEY).setScale(1.5)
 		// the player won't be able to run outside of this area - according configrition
@@ -242,8 +237,7 @@ export default class DancePlayerScene extends Phaser.Scene
 		this.stop_bool = false
 	}
 
-	gameOver()
-	{
+	gameOver(){
 		this.runner.showModel(this.originalActionsList)
 	}
 	

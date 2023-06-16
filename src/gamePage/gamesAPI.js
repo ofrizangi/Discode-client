@@ -4,8 +4,6 @@ import { getLevel } from '../levelsPage/LevelProvider';
 import { getToken } from '../userManagment/authorization';
 import { getGame } from '../mainPage/GameProvider';
 
-
-
 const gamesAPI = () => {
 
     async function get_game_level_data(){
@@ -51,22 +49,6 @@ const gamesAPI = () => {
             return await response.json();
         }
     }
-
-
-    /*
-    currently unrelevent because a change in implementation
-
-    async function get_game_blocks(){
-        const requestOptions = {
-            method: 'GET',
-            headers: { 'Authorization': 'Bearer ' + getToken() },
-        };
-        const response = await fetch(`${process.env.REACT_APP_SERVER_API}/games/get/${getGame()}/blocks`, requestOptions)
-        if (response.ok) {
-            return await response.json();
-        }
-    }
-    */
 
     async function post_command(block, dest_index){
         const requestOptions = {
@@ -145,8 +127,6 @@ const gamesAPI = () => {
         await fetch(`${process.env.REACT_APP_SERVER_API}/${getGame()}/levels/postBestScore/${getLevel()}`, requestOptions)
     }
 
-
-
     return {
         get_game_level_data,
         swap_command_api,
@@ -164,7 +144,5 @@ const gamesAPI = () => {
 
 
 }
-
-
 export const {get_game_level_data, swap_command_api, post_command, delete_command_api, post_inner_command, delete_inner_command_api,
             swap_inner_command_api, get_level_commands, sloved_game, restart_game, post_code_api,post_best_score_api} = gamesAPI();

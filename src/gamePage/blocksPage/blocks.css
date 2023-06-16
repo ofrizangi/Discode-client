@@ -12,7 +12,6 @@
     border-color: #c8c8c0;
 }
 
-
 .block-const {
     opacity:0.6;
 }
@@ -27,7 +26,6 @@
     font-size: large;
     margin: 0% auto;
 }
-
 
 .block-list {
     overflow: auto;
@@ -47,7 +45,6 @@
 .clickable-board {
     border-style: solid;
 }
-
 
 .upper-row{
     display: flex;

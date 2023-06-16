@@ -1,8 +1,6 @@
 import { DancerGenerator } from './codeGenerators/dancerGenerator'
 import { StarsQuestGenerator } from './codeGenerators/starsQuestGenerator'
-
 import { getGame } from '../mainPage/GameProvider'
-
 import * as Constants from './../constants';
 
 

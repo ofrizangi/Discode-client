@@ -11,7 +11,6 @@ export class CodeRunner {
         this.function_call = this.create_function_call()
 	}
 
-    
     async run_code() {
         var solution = await this.code_runner(this.code)
         this.output= this.add_space_to_console_arr(solution[0])
@@ -21,7 +20,6 @@ export class CodeRunner {
         }
         return await this.compare_solution()
     }
-
 
     create_function_call(){
         var function_call = "main("
@@ -75,7 +73,6 @@ export class CodeRunner {
 		}
 	}
 
-
     async code_runner(code) {
         var output = []
         var error = ""
@@ -121,5 +118,4 @@ export class CodeRunner {
         }
         return array
     }
-
 }

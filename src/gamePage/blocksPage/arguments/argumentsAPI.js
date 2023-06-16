@@ -5,9 +5,7 @@ import { getToken } from '../../../userManagment/authorization';
 import { getGame } from '../../../mainPage/GameProvider';
 
 
-
 const argumentsAPI = () => {
-
 
     async function post_argument(row_id, index, list_number, value){
         const requestOptions = {
@@ -21,13 +19,8 @@ const argumentsAPI = () => {
         }
     }
 
-
     return {
         post_argument
     };
-
-
 }
-
-
 export const {post_argument} = argumentsAPI();

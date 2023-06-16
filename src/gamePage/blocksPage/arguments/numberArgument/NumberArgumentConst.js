@@ -12,6 +12,4 @@ function NumberArgumentConst(props) {
     );
 
 }
-
-
 export default NumberArgumentConst;

@@ -35,5 +35,4 @@ function GameButton(props) {
         </div> 
       );
   }
-  
   export default GameButton;

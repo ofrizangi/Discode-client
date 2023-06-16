@@ -50,6 +50,4 @@ const createTokenProvider = () => {
          setToken,
     };
 }
-
 export const {getToken, setToken, isLoggedIn} = createTokenProvider();
-

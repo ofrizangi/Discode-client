@@ -1,11 +1,8 @@
 import './App.css';
-import Register from './userManagment/Register';
-import Login from './userManagment/Login';
 import Home from './Home';
 import Games from './mainPage/Games';
 import Levels from './levelsPage/Levels';
 import GamePage from './gamePage/GamePage'
-import ForumPage from './forumPage/ForumPage'
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import { isLoggedIn } from './userManagment/authorization';
 import { useState } from 'react';
@@ -30,8 +27,6 @@ function App() {
                <Route path='/levels' element={<Levels/>}></Route>
                <Route path='/explanation' element={<ExplanationPage/>}></Route>
                <Route path='/game' element={<GamePage/>}></Route>
-               <Route path='/forum' element={<ForumPage/>}></Route>
-
               </Routes>
             }
         </BrowserRouter>  

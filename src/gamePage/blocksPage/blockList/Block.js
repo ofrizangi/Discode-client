@@ -9,8 +9,6 @@ function Block(props) {
 
     const block = props.block
 
-    // const desctiption_list = getDescriptionList(block.description[0])
-
     return (
         <>
         <Draggable draggableId={Constants.DRAGGABLE_BLOCK_ID + props.index} index={props.index} >
@@ -33,6 +31,4 @@ function Block(props) {
         </>
     );
 }
-
-
 export default Block;

@@ -14,20 +14,10 @@ const VideoHover = ({ imageSrc, videoSrc }) => {
 
   return (
     <div
-      className="container" id='no_padding'
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+      className="container" id='no_padding' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <img src={imageSrc} alt="error"/>
-		<video
-			className="video"
-			src={videoSrc}
-			autoPlay={false}
-			muted
-			ref={videoRef}
-		></video>
+		  <video className="video" src={videoSrc} autoPlay={false} muted ref={videoRef}></video>
     </div>
   );
 };
-
 export default VideoHover;

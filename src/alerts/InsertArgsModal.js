@@ -14,9 +14,9 @@ class DraggableModalDialog extends React.Component {
 		</Draggable>
 		);
 	}
-	}
+}
 
-	class InsertArgsModal extends React.Component {
+class InsertArgsModal extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -93,5 +93,4 @@ class DraggableModalDialog extends React.Component {
 		);
 	}
 }
-
 export default InsertArgsModal

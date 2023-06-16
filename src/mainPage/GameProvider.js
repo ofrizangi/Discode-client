@@ -23,5 +23,4 @@ const createGameProvider = () => {
         getGame,
     };
 }
-
 export const {setGame, getGame} = createGameProvider();
