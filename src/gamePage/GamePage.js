@@ -10,16 +10,17 @@ import { getGame } from '../mainPage/GameProvider';
 import OutputWindow from './codeEditorPage/OutputWindow';
 import LeftSelection from './LeftSelection'
 import CodeEditorWindow from './codeEditorPage/CodeEditorWindow';
+import * as Constants from '../constants';
 
 
-function GamePage(props) {
+function GamePage() {
 
     // contains the data of this specific game level
     const [gameLevel, setGameLevel] = useState(null)
     const [commands , setCommands ] = useState(null)
     const [solution , setSolution ] = useState(null)
     const [code, setCode] = useState(null)
-    const [leftSideView, setLeftSideView] = useState(getGame() === "coder" ? "editor" : "blocks")
+    const [leftSideView, setLeftSideView] = useState(getGame() === Constants.CODER_GAME ? Constants.EDITOR_VIEW : Constants.BLOCKS_VIEW)
 
 
     useEffect(() => {
@@ -56,16 +57,16 @@ function GamePage(props) {
                             <LeftSelection setLeftSideView={setLeftSideView}/>)}
 
 
-                        { getGame() === "coder" ? code !== null && <div className="coder-editor"> <CodeEditorWindow code={code} setCode={setCode} ></CodeEditorWindow> </div> :
-                            leftSideView === 'blocks' ?  
+                        { getGame() === Constants.CODER_GAME ? code !== null && <div className="coder-editor"> <CodeEditorWindow code={code} setCode={setCode} ></CodeEditorWindow> </div> :
+                            leftSideView === Constants.BLOCKS_VIEW ?  
                             (commands !== null && <BlockPage gameLevel={gameLevel} commands={commands} setCommands={setCommands} solution={solution} setSolution={setSolution} setGame={setGameLevel}></BlockPage>) : 
-                            (code !== null && <CodeEditorPage code={code} setCode={setCode} gameLevel={gameLevel} setGame={setGameLevel} commands={commands} solution={solution}></CodeEditorPage>)
+                            (code !== null && <CodeEditorPage code={code} setCode={setCode} gameLevel={gameLevel} setGame={setGameLevel} commands={commands} solution={solution} setSolution={setSolution}></CodeEditorPage>)
                         }
                     </div>
 
                     <div className="col-5">
                         {
-                            (getGame() === "coder" ? <OutputWindow code={code} game={gameLevel} setGame={setGameLevel} setSolution={setSolution}></OutputWindow> :
+                            (getGame() === Constants.CODER_GAME ? <OutputWindow code={code} game={gameLevel} setGame={setGameLevel} setSolution={setSolution}></OutputWindow> :
                             <GameBoard game={gameLevel} setGame={setGameLevel} commands={commands} solution={solution} code={code} leftSideView={leftSideView} setSolution={setSolution} setCommands={setCommands}/>) }
                     </div>
                     <div id="model"></div>

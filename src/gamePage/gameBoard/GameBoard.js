@@ -8,7 +8,7 @@ import Video from './Video'
 
 import {React,useState, useEffect} from 'react';
 
-import {sloved_game, get_game_level_data, post_code_api, get_level_commands} from '../gamesAPI';
+import {sloved_game, get_game_level_data, post_code_api} from '../gamesAPI';
 import {setLevel} from '../../levelsPage/LevelProvider'
 
 import { useNavigate } from 'react-router-dom'
@@ -43,8 +43,8 @@ function GameBoard(props) {
 
     // const disription_game = {'dancer':"Dance with me",  'starsQuest':"Collect many stars"};
     const disription_game = new Map([
-        ['dancer', "Dance with me"],
-        ['starsQuest', "Collect many stars"],
+        [Constants.DNACER_GAME, "Dance with me"],
+        [Constants.STARS_QUEST_GAME, "Collect many stars"],
     ])
 
 
@@ -74,7 +74,7 @@ function GameBoard(props) {
 
     
     async function solve() {
-        if(leftSideView === 'editor'){
+        if(leftSideView === Constants.EDITOR_VIEW){
             await post_code_api(editor_code)
         }
         const my_game = await sloved_game()
@@ -96,7 +96,7 @@ function GameBoard(props) {
 
     async function get_code() {
         setError("")
-        const code = leftSideView === "blocks" ? await translate_blocks(commands, solution) : editor_code
+        const code = leftSideView === Constants.BLOCKS_VIEW ? await translate_blocks(commands, solution) : editor_code
         if(code.includes(Constants.COMPILATION_ERROR)){
             setError(code)
         }
@@ -104,10 +104,10 @@ function GameBoard(props) {
             setRunButtonDisabled(true)
             var runner;
             setVideoDisplay('none')
-            if (props.game.game_name === "dancer"){
+            if (props.game.game_name === Constants.DNACER_GAME){
                 runner= new DancerRunner(code, props.game.level_number, back_to_levels, next_level,retry_level, gameSence, props.game.blocks, leftSideView, props.game.expected_solution,solve)
             }
-            else if(props.game.game_name === "starsQuest"){
+            else if(props.game.game_name === Constants.STARS_QUEST_GAME){
                 const copied_borad =[...dataBoard.map(row => [...row])]
                 runner = new StarsQuestRunner(code,props.game.level_number, back_to_levels, next_level, retry_level, gameSence,copied_borad, props.game.blocks, leftSideView, props.game.expected_solution,solve, props.game.best_score)
             }
@@ -152,7 +152,7 @@ function GameBoard(props) {
                 <button className='game-button' onClick={get_code} disabled={runButtonDisabled}> <img src={play_img} alt="error"/></button>
                 </div> 
           
-                {props.game.game_name === 'starsQuest' &&
+                {props.game.game_name === Constants.STARS_QUEST_GAME &&
                 <OverlayTrigger trigger={['hover', 'focus']} placement="bottom" overlay={popoverHoverFocus} >
                     <i className="information bi bi-info-circle info-icon"></i>
                 </OverlayTrigger>} 

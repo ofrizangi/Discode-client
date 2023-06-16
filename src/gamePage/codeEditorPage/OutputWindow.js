@@ -75,7 +75,7 @@ function OutputWindow(props) {
     }
 
     async function run_code(){
-        const code_runner = new CodeRunner(editor_code, expected_solution, args === null?[]:args)
+        const code_runner = new CodeRunner(editor_code, expected_solution, args === null? [] : args)
         const correct = await code_runner.run_code()
         if(code_runner.error !== ""){
             if(code_runner.error.includes(Constants.INFINITE_CODE)){

@@ -39,7 +39,7 @@ function CodeEditorPage(props) {
         const game_blocks_id = game_blocks.map(obj => obj._id)
         const blocks_id = blocks.map(obj => obj._id)
         if(blocks_id.some((element) => Constants.board_and_score_conditions.includes(element))){
-            return "main("+ game_blocks_id.join(',') + ",get_next_col,get_next_row,score,board)"
+            return "main("+ game_blocks_id.join(',') + Constants.board_and_score
         }
         return "main("+ game_blocks_id.join(',') + ")"
     }
@@ -82,6 +82,8 @@ function CodeEditorPage(props) {
     }
 
     async function restart() {
+        await props.setSolution(null)
+        await setCode(create_function_comment() + `function ${get_main_function_call()} {\n\n}`)
         const my_game = await restart_game()
         await props.setGame(my_game)
     }

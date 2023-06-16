@@ -56,7 +56,7 @@ export class CodeRunner {
                 reject(Constants.INFINITE_CODE);
                 worker.terminate();
                 worker = null;
-            }, 300);
+            }, 400);
         });
     }
 

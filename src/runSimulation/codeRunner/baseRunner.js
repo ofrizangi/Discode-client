@@ -13,7 +13,7 @@ export default class BaseRunner {
         this.gameSence = gameSence
 		this.blocks = blocks
 		this.leftSideView = leftSideView
-		this.code = this.leftSideView === 'editor' ? this.get_main_function_call() + ";" + code : code
+		this.code = this.leftSideView === Constants.EDITOR_VIEW ? this.get_main_function_call() + ";" + code : code
 		this.expected_solution = expected_solution
 		this.solve_in_server_function = solve_in_server_function
 		this.level_number = level_number
@@ -25,7 +25,7 @@ export default class BaseRunner {
         const game_blocks_id = game_blocks.map(obj => obj._id)
         const blocks_id = this.blocks.map(obj => obj._id)
 		if(blocks_id.some((element) => Constants.board_and_score_conditions.includes(element))){
-            return "main("+ game_blocks_id.join(',') + ",get_next_col,get_next_row,score,board)"
+            return "main("+ game_blocks_id.join(',') + Constants.board_and_score
         }
         return "main("+ game_blocks_id.join(',') + ")"
     }
@@ -124,7 +124,7 @@ export default class BaseRunner {
                 worker = null;
                 reject(Constants.INFINITE_CODE);
 
-            }, 300);
+            }, 400);
         });
     }
 

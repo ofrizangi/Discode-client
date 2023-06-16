@@ -46,7 +46,7 @@ export class DancerRunner extends BaseRunner{
 
     async runcode(){
       	const blocks = this.blocks
-		const validate_arguments = this.leftSideView === "editor" ? this.validate_arguments : function(){}
+		const validate_arguments = this.leftSideView === Constants.EDITOR_VIEW ? this.validate_arguments : function(){}
 
 		var actionsList = []
         function writeActions() {
@@ -58,14 +58,14 @@ export class DancerRunner extends BaseRunner{
 			actionsList.push(actionName)
         }
           
-        function jump(){ writeActions("jump", arguments)}
-        const swing =  function(){writeActions("swing", arguments)};
-        const cartwheel =  function(){writeActions("cartwheel", arguments)};
-        const stomp =  function(){writeActions("stomp", arguments)};
-        const wiggle =  function(){writeActions("wiggle", arguments)};
-        const shrink =  function(){writeActions("shrink", arguments)};
-        const slide =  function(){writeActions("slide", arguments)};
-        const turn_by = function(){writeActions("turn_by", arguments)};
+        function jump(){ writeActions(jump.name, arguments)}
+        const swing =  function(){writeActions(swing.name, arguments)};
+        const cartwheel =  function(){writeActions(cartwheel.name, arguments)};
+        const stomp =  function(){writeActions(stomp.name, arguments)};
+        const wiggle =  function(){writeActions(wiggle.name, arguments)};
+        const shrink =  function(){writeActions(shrink.name, arguments)};
+        const slide =  function(){writeActions(slide.name, arguments)};
+        const turn_by = function(){writeActions(turn_by.name, arguments)};
 
 		const infinite_code = await this.if_infinite_code()
 
@@ -75,10 +75,8 @@ export class DancerRunner extends BaseRunner{
 		else {
 			try {
 				eval(this.code)
-        // if (actionsList.length > 0){
-        this.gameSence.resume("dancer", {list:actionsList, runner:this})
-        // }
-				return "done"
+        		this.gameSence.resume(Constants.DNACER_GAME, {list:actionsList, runner:this})
+				return Constants.DONE_RUNNING
 			}
 			catch(message){
 				return this.check_errors(message)
@@ -86,6 +84,6 @@ export class DancerRunner extends BaseRunner{
 		}
     }
 
-    
+   
 }
 

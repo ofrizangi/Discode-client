@@ -1,14 +1,16 @@
+import * as Constants from '../constants';
+
 const createGameProvider = () => {
 
-    let _game_name = JSON.parse(localStorage.getItem('GAME_NAME')) || null
+    let _game_name = JSON.parse(localStorage.getItem(Constants.GAME)) || null
 
     const setGame = (game_name) => {
         _game_name = game_name
         if(game_name){
-            localStorage.setItem('GAME_NAME', JSON.stringify(game_name))
+            localStorage.setItem(Constants.GAME, JSON.stringify(game_name))
         }
         else{
-            localStorage.removeItem('GAME_NAME')
+            localStorage.removeItem(Constants.GAME)
         }
     }
 

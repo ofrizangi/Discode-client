@@ -1,14 +1,16 @@
+import * as Constants from '../constants';
+
 const createLevelProvider = () => {
 
-    let _level_number = JSON.parse(localStorage.getItem('LEVEL_NUMBER')) || null
+    let _level_number = JSON.parse(localStorage.getItem(Constants.LEVEL)) || null
 
     const setLevel = (level_number) => {
         _level_number = level_number
         if(level_number){
-            localStorage.setItem('LEVEL_NUMBER', JSON.stringify(level_number))
+            localStorage.setItem(Constants.LEVEL, JSON.stringify(level_number))
         }
         else{
-            localStorage.removeItem('LEVEL_NUMBER')
+            localStorage.removeItem(Constants.LEVEL)
         }
     }
 

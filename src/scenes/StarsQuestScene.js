@@ -1,11 +1,21 @@
 import Phaser from 'phaser'
 import ScoreLabel from './ui/SorceLabel'
 
+import * as Constants from './../constants';
+
 const BACKGROUND = 'background'
 const CAR = "car"
-const STAR = 'star'
-const BOMB = 'bomb'
-const NO_ENTRY = 'no_entry'
+export const WALL = 'wall'
+export const STAR = 'star'
+export const BOMB = 'bomb'
+export const NO_ENTRY = 'no_entry'
+export const GO_RIGHT = "right"
+export const GO_LEFT = "left"
+export const GO_FRONT = "front"
+export const NO_ENTRY_SIGN = "*"
+export const NO_ENTRY_MESSAGE = "you can't enter there\n"
+export const WALL_MESSAGE = "you collided with a wall\n"
+export const BOARD_SIZE = 6
 const PAUSE = "pause"
 const STOP = "stop"
 const COLLISION_SOUND ='collision_sound'
@@ -16,7 +26,7 @@ export default class StarsQuestScene extends Phaser.Scene
 {
     constructor()
 	{
-		super('starsQuest')
+		super(Constants.STARS_QUEST_GAME)
 		this.board = undefined
 		this.player = undefined
 		this.stars = undefined
@@ -41,8 +51,8 @@ export default class StarsQuestScene extends Phaser.Scene
 			[270,2054.2]
 		])
 		this.angles = new Map([
-			["right",90],
-			["left",-90],
+			[GO_RIGHT,90],
+			[GO_LEFT,-90],
 		])
 		this.bombs_scale = new Map([
 			[-2,0.11],
@@ -108,15 +118,16 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.scene.pause();
 	
 		this.pauseBtn.on('pointerdown', function () {
-			this.scene.sendToBack('starsQuest')
-			this.scene.pause('starsQuest')
-			this.scene.launch('pause', {'name':'starsQuest', x:400, y:0})
+			//console.log('button_pause clicked');
+			this.scene.sendToBack(Constants.STARS_QUEST_GAME)
+			this.scene.pause(Constants.STARS_QUEST_GAME)
+			this.scene.launch('pause', {'name':Constants.STARS_QUEST_GAME, x:400, y:0})
 		},this);
 
 		this.stopBtn.on('pointerdown', function () {
 			this.stop_bool = true
 			this.stopBtnClicked = true
-			this.scene.pause('starsQuest')
+			this.scene.pause(Constants.STARS_QUEST_GAME)
 		},this);
 
 
@@ -125,7 +136,7 @@ export default class StarsQuestScene extends Phaser.Scene
 			this.pauseBtn.setVisible(false)
 			this.stopBtn.setVisible(false)
 			if(this.stop_bool){
-				this.gameOver("to_check")
+				this.gameOver(Constants.SCENE_MESSAGE)
 			}
 	        }, this)
 
@@ -161,10 +172,10 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.bombs = this.physics.add.group()
 		this.no_entrys = this.physics.add.staticGroup()
 
-		for (let i = 0; i <6; i++){
-			for (let j = 0; j <6; j++){
+		for (let i = 0; i <BOARD_SIZE; i++){
+			for (let j = 0; j <BOARD_SIZE; j++){
 				let data_child = this.board_data[i][j]
-				if(data_child === "*"){
+				if(data_child === NO_ENTRY_SIGN){
 					this.no_entrys.create(39.75 +  j*79.5, 39.6 + 35 + i*79.2, NO_ENTRY).setScale(0.03).refreshBody()
 				}
 				else if(data_child > 0){
@@ -193,7 +204,7 @@ export default class StarsQuestScene extends Phaser.Scene
 			this.carCollisionSound.play();
 			this.is_run = false
 			this.physics.pause()
-			this.gameOver("you collided with a wall\n",)		
+			this.gameOver(WALL_MESSAGE)		
 		}
 		
 	}
@@ -205,7 +216,7 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.carCollisionSound.play();
 		this.is_run = false
 		this.physics.pause()
-		this.gameOver("you can't enter there\n")
+		this.gameOver(NO_ENTRY_MESSAGE)
 		
 	}
 

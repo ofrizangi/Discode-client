@@ -4,6 +4,8 @@ import {post_best_score_api} from '../../gamePage/gamesAPI';
 
 import * as Constants from './../../constants';
 
+import * as GameConstants from './../../scenes/StarsQuestScene';
+
 export class StarsQuestRunner extends BaseRunner{
 
     constructor(code, level_number,back_to_levels, next_level, retry_level, gameSence,board,  blocks, leftSideView,expected_solution, solve_in_server_function, best_score){
@@ -20,22 +22,20 @@ export class StarsQuestRunner extends BaseRunner{
         let numbers_cols = board[0].length + 2
         let arr = [];
         for (let i = 0; i < numbers_rows; i++) {
-            arr[i] = [0,0,0,0,0,0,0,0];
+            arr[i] = [];
             for (let j = 0; j < numbers_cols; j++) {
                 if (i === 0 || i === numbers_rows-1 || j===0 || j ===numbers_cols-1){
-                    arr[i][j] = "wall";
+                    arr[i][j] = GameConstants.WALL
                 }
                 else{
-                    if (board[i-1][j-1] === "*"){
-                        arr[i][j] =  "no entry sign"
+                    if (board[i-1][j-1] === GameConstants.NO_ENTRY_SIGN){
+                        arr[i][j] = GameConstants.NO_ENTRY
                     }
                     else if (board[i-1][j-1] < 0){
-                        arr[i][j] =  "bomb"
+                        arr[i][j] =  GameConstants.BOMB
                     }
                     else if(board[i-1][j-1] > 0){
-                        arr[i][j] =  "star"
-                        if (i===1 && j===2){
-                        }
+                        arr[i][j] = GameConstants.STAR
                     }
                     else{
                         arr[i][j] =  0
@@ -45,8 +45,6 @@ export class StarsQuestRunner extends BaseRunner{
         }
         return arr
     }
-
-    
 
     add_wall(board) {
         let numbers_rows = board.length + 2
@@ -59,7 +57,7 @@ export class StarsQuestRunner extends BaseRunner{
                         arr[i][j] = -200;
                     }
                     else{
-                        if (board[i-1][j-1] === "*"){
+                        if (board[i-1][j-1] === GameConstants.NO_ENTRY_SIGN){
                             arr[i][j] = -100
                         }
                         else {
@@ -79,7 +77,7 @@ export class StarsQuestRunner extends BaseRunner{
         var score = 0
         for(var i = 0; i < this.actionsList.length; i++){
             if(this.actionsList[i].name === "turn" ){
-                if  (this.actionsList[i].arg === "right"){angle = (angle +90)%360; }
+                if  (this.actionsList[i].arg === GameConstants.GO_RIGHT){angle = (angle +90)%360; }
                 else{angle = (angle -90+360)%360}
                 continue
             }
@@ -87,12 +85,16 @@ export class StarsQuestRunner extends BaseRunner{
             var next_x = this.actionsList[i].arg.x
             var next_y = this.actionsList[i].arg.y
 
-            if (next_x < 0 || next_x > 5  || next_y < 0 || next_y > 5 ){ return {"score": 0, "message":"Game Over - you collided with a wall\n"}}
-            if ( this.game_board[y][x] === '*') {return {"score": 0, "message":"Game Over - you can't enter there\n"}}
+            for(let i=y; i<= Math.min(next_y, GameConstants.BOARD_SIZE-1); i++){
+                for(let j=x; j<= Math.min(next_x, GameConstants.BOARD_SIZE-1) ; j++){
+                    if(this.game_board[i][j] === GameConstants.NO_ENTRY_SIGN) {return {"score": 0, "message":`Game Over - ${GameConstants.NO_ENTRY_MESSAGE}`}}
+                }
+            }
+
+            if (next_x < 0 || next_x >= GameConstants.BOARD_SIZE  || next_y < 0 || next_y >= GameConstants.BOARD_SIZE ){ return {"score": 0, "message":`Game Over - ${GameConstants.WALL_MESSAGE}`}}
 
             //drive
             while (x !== next_x || y !== next_y){
-                
                 if(angle === 0 && x < next_x){x+=1;}
                 else if(angle === 90 && y < next_y){y+=1; }
                 else if (angle === 180 && x > next_x){x-=1;}
@@ -108,15 +110,11 @@ export class StarsQuestRunner extends BaseRunner{
     }
 
 
-
-			
-
-   
     checkSolution(score, message_from_sence) {
         if(this.actionsList.length === 0){
             return { 'compare': false, 'message': <div className="modal-title"> <h3 id="blue">There is nothing to run</h3>please drag blocks</div> }
-          }
-        if (message_from_sence ===  "to_check") {
+        }
+        if (message_from_sence ===  Constants.SCENE_MESSAGE) {
             var result = this.calculateScore()
             score = result.score
             message_from_sence=result.message
@@ -161,11 +159,9 @@ export class StarsQuestRunner extends BaseRunner{
         }
     }
 
-
-
     async runcode(){
         const blocks = this.blocks
-		const validate_arguments = this.leftSideView === "editor" ? this.validate_arguments : function(){}
+		const validate_arguments = this.leftSideView === Constants.EDITOR_VIEW ? this.validate_arguments : function(){}
         var actionsList = []
         var x = 1
         var y = 1
@@ -188,62 +184,53 @@ export class StarsQuestRunner extends BaseRunner{
 
         const get_next_row_n_steps = function(direction, number_steps){
             return dict_row[angle][direction](y,number_steps)
-        };
+        }
 
         const get_next_col = function(direction){
-            if(direction !== "left" && direction !== "front" && direction !== "right"){
+            if(direction !== GameConstants.GO_LEFT && direction !== GameConstants.GO_FRONT && direction !== GameConstants.GO_RIGHT){
                 throw new Error(`argument "${direction}" is not valid`)
             }
             return get_next_col_n_steps(direction,1)
         }
 
         const get_next_row = function(direction) {
-            if(direction !== "left" && direction !== "front" && direction !== "right"){
+            if(direction !== GameConstants.GO_LEFT && direction !== GameConstants.GO_FRONT && direction !== GameConstants.GO_RIGHT){
                 throw new Error(`argument "${direction}" is not valid`)
             }
             return get_next_row_n_steps(direction,1)
-        };
-
-        const writeActions = function() {
-            validate_arguments(blocks, arguments[0], [arguments[1].number_steps])
-			actionsList.push({name: arguments[0] , arg : arguments[1] })
         }
 
-
-        const drive =  function(number_steps){
-
+        const drive =  function(number_steps) {
             let prev_x = x
             let prev_y = y
 
-            x = get_next_col_n_steps("front",number_steps)
-            y = get_next_row_n_steps("front",number_steps)
+            x = get_next_col_n_steps(GameConstants.GO_FRONT,number_steps)
+            y = get_next_row_n_steps(GameConstants.GO_FRONT,number_steps)
 
-            validate_arguments(blocks, "drive", [number_steps])
-            actionsList.push({name: "drive" , arg : {'x': x-1 ,"y":y-1} })
+            validate_arguments(blocks, drive.name , [number_steps])
+            actionsList.push({name: drive.name , arg : {'x': x-1 ,"y":y-1} })
 
-            writeActions("drive", {'x': x-1 ,"y":y-1, "number_steps":number_steps})
-            if (x>=7 || x<=0 || y<=0 || y>=7 || board[y][x] === "no entry sign"){
-                throw new Error(`game failed`)
+            if (x>=GameConstants.BOARD_SIZE + 1 || x<=0 || y<=0 || y>=GameConstants.BOARD_SIZE + 1 || board[y][x] === GameConstants.NO_ENTRY){
+                throw new Error(Constants.GAME_FAILED)
             }
-
-            for(let i=prev_y;  i <=y; i++){
+            for(let i=prev_y; i<=y; i++){
                 for(let j= prev_x; j<=x ; j++){
                     board[i][j] = 0
                     score[i][j] = 0            
                 }
             }
-        };
+        }
 
         const turn = function(direction){
-            if (direction === "right"){
+            if (direction === GameConstants.GO_RIGHT){
                 angle = (angle +90)%360
             }
             else{
                 angle = (angle -90+360)%360
             }
-            validate_arguments(blocks, "turn", [direction])
-			actionsList.push({name: "turn" , arg : direction })
-        };
+            validate_arguments(blocks, turn.name, [direction])
+			actionsList.push({name: turn.name , arg : direction })
+        }
 
         const infinite_code = await this.if_infinite_code()
 
@@ -254,14 +241,14 @@ export class StarsQuestRunner extends BaseRunner{
             try {
                 eval(this.code)
                 this.actionsList = actionsList
-                this.gameSence.resume("starsQuest", {list:actionsList, runner:this})
-                return "done"
+                this.gameSence.resume(Constants.STARS_QUEST_GAME, {list:actionsList, runner:this})
+                return Constants.DONE_RUNNING
             }
             catch(error){
-                if (error.message === "game failed"){
+                if (error.message === Constants.GAME_FAILED){
                     this.actionsList = actionsList
-                    this.gameSence.resume("starsQuest", {list:actionsList, runner:this})
-                    return "done"
+                    this.gameSence.resume(Constants.STARS_QUEST_GAME, {list:actionsList, runner:this})
+                    return Constants.DONE_RUNNING
                 }
                 else {
                     return this.check_errors(error)

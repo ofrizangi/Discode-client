@@ -1,5 +1,7 @@
 import Phaser from 'phaser'
 
+import * as Constants from './../constants';
+
 const PLAYER_KEY = 'player'
 const BACKGROUND_KEY = 'background'
 const PAUSE = "pause"
@@ -9,7 +11,7 @@ export default class DancePlayerScene extends Phaser.Scene
 {
     constructor()
 	{
-		super('dancer')
+		super(Constants.DNACER_GAME)
         this.player = undefined	
 	}
 
@@ -50,15 +52,15 @@ export default class DancePlayerScene extends Phaser.Scene
 		},this );
 
 		this.pauseBtn.on('pointerdown', function () {
-			this.scene.sendToBack('dancer')
-			this.scene.pause('dancer')
-			this.scene.launch('pause',{'name':'dancer', x:290, y:10})
+			this.scene.sendToBack(Constants.DNACER_GAME)
+			this.scene.pause(Constants.DNACER_GAME)
+			this.scene.launch('pause',{'name': Constants.DNACER_GAME, x:290, y:10})
 		  },this);
 
 		  this.stopBtn.on('pointerdown', function () {
 			this.stop_bool = true
 			this.stopBtnClicked = true
-			this.scene.pause('dancer')
+			this.scene.pause(Constants.DNACER_GAME)
 		  },this);
 
 		this.events.on('pause', function (data) {
@@ -244,7 +246,5 @@ export default class DancePlayerScene extends Phaser.Scene
 	{
 		this.runner.showModel(this.originalActionsList)
 	}
-
-	
 	
 }

@@ -1,3 +1,5 @@
+import * as Constants from '../../constants';
+
 import React from 'react';
 import Phaser from 'phaser';
 
@@ -10,14 +12,14 @@ import { useEffect, useRef } from 'react';
 function Game(props) {
 
   const gameSences1 = new Map([
-    ['dancer', {"scene":DancePlayerScene, width:370.8, height:370.8, style: 'position: absolute;top: 135pt; right:80pt;'}],
-    ['starsQuest', {"scene":StarsQuestScene, width:477, height:475.2+35 , style:'position: absolute;top: 120pt; right:38pt;'}],
+    [Constants.DNACER_GAME, {"scene":DancePlayerScene, width:370.8, height:370.8, style: 'position: absolute;top: 135pt; right:80pt;'}],
+    [Constants.STARS_QUEST_GAME, {"scene":StarsQuestScene, width:477, height:475.2+35 , style:'position: absolute;top: 120pt; right:38pt;'}],
     ])
 
 
 	function getRandomData(data_board){
         
-        if (data_board && data_board[0] && data_board[0][0] && data_board[0][0] === "no_data"  ){
+        if (data_board && data_board[0] && data_board[0][0] && data_board[0][0] === Constants.NO_GAME_BOARD){
 
             let posotive_values = [0,1,2,3,4,5,6]
             let other_values = ["*",-2,-4,0]

@@ -35,10 +35,6 @@ function Levels(props) {
         get_all_game_levels()
     }, []);
 
-    function goto_fourm(event){
-        navigate('/forum')
-    }
-
     function goto_games(){
         navigate('/')
     }
@@ -54,7 +50,7 @@ function Levels(props) {
                 <h1 className='page-title'> {games_information[getGame()][0]} levels</h1>
             </div>
                 <div className='levels-grid-4'>
-                    {levels.map((level) => ( level.level_number === 1 ? <LevelFreeStyle key={level.level_number} game_name={level.game_name}></LevelFreeStyle> : 
+                    {levels.map((level) => ( level.level_number === Constants.FREE_STYLE_LEVEL ? <LevelFreeStyle key={level.level_number} game_name={level.game_name}></LevelFreeStyle> : 
                                             level.locked ? <LevelClosedButton key={level.level_number} level={level}/> : 
                                                     <LevelOpenButton key={level.level_number} level={level}/>))
                 }
