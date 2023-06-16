@@ -48,7 +48,7 @@ class DraggableModalDialog extends React.Component {
 				return
 			}
 			if(isNaN(this.state[this.props.arguments_name[i]])){
-				if(this.props.arguments_name[i] !== "string" || this.props.arguments_name[i] !== "sign"){
+				if(this.props.arguments_name[i] !== "string" && this.props.arguments_name[i] !== "sign"){
 					this.setState( {error :<div className="error-modal">{this.props.arguments_name[i]} must be a number </div>})
 					return
 				}
