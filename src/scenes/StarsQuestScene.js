@@ -118,7 +118,6 @@ export default class StarsQuestScene extends Phaser.Scene
 		this.scene.pause();
 	
 		this.pauseBtn.on('pointerdown', function () {
-			//console.log('button_pause clicked');
 			this.scene.sendToBack(Constants.STARS_QUEST_GAME)
 			this.scene.pause(Constants.STARS_QUEST_GAME)
 			this.scene.launch('pause', {'name':Constants.STARS_QUEST_GAME, x:400, y:0})
