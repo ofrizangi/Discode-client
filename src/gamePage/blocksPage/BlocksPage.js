@@ -126,14 +126,6 @@ function BlocksPage(props) {
 
 
     async function dragEndHandler(draggable_block){
-
-        // if(draggable_block.source.droppableId.includes(Constants.DROPPABLE_LIST_ID) && draggable_block.destination.droppableId.includes(Constants.DROPPABLE_BOARD_ID)){
-        //     if(commands.length >= max_row_number) {
-        //         alert("to many blocks")
-        //         return
-        //     }
-        // }
-
         const src_index = draggable_block.source.index
         const dest_index = draggable_block.destination === null ? null : draggable_block.destination.index
 

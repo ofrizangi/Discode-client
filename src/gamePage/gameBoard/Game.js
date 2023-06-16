@@ -55,10 +55,7 @@ function Game(props) {
         pixleArt: false,
         physics: {
             default: 'arcade',
-            arcade: {
-                //gravity: { y: 300 },
-                // debug: true
-            }
+            arcade: {}
         },
         scene: [gameSences1.get(props.game_name).scene, PauseScene]
     }

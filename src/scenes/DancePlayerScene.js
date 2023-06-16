@@ -6,6 +6,8 @@ const PLAYER_KEY = 'player'
 const BACKGROUND_KEY = 'background'
 const PAUSE = "pause"
 const STOP = "stop"
+const SLIDE_LEFT = "slide left"
+const SLIDE_RIGHT = "slide right"
 
 export default class DancePlayerScene extends Phaser.Scene
 {
@@ -219,16 +221,16 @@ export default class DancePlayerScene extends Phaser.Scene
 
 
 	update(){
-		if(this.nextAnimation === "slide left"){
+		if(this.nextAnimation === SLIDE_LEFT){
 			this.player.x-=0.7
 		}
-		else if(this.nextAnimation === "slide right"){
+		else if(this.nextAnimation === SLIDE_RIGHT){
 			this.player.x+=0.7
 		}
 	}
 
 	restart_func(){
-		this.player.anims.play('stop')
+		this.player.anims.play(STOP)
 		this.player.x = 189
 		this.player.y = 155
 		if(this.stop_bool === false){
