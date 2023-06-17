@@ -118,7 +118,7 @@ export class StarsQuestRunner extends BaseRunner{
         if(this.actionsList.length === 0){
             return { 
                 'compare': false,
-                'message': <div className="modal-title"> <h3 id="blue">There is nothing to run</h3>please drag blocks</div>,
+                'message': <div className="modal-title"> <h3 id="blue">There is nothing to run</h3> {this.leftSideView === Constants.BLOCKS_VIEW && <div> please drag blocks </div> }</div>,
                 'best_score':this.best_score
             }
         }

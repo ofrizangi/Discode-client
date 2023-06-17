@@ -9,7 +9,7 @@ export class DancerRunner extends BaseRunner{
         var len_solution = solution.length;
         var len_expected_solution = this.expected_solution.length;
         if(len_solution === 0){
-          return { 'compare': false, 'message': <div className="modal-title"> <h3 id="blue">There is nothing to run</h3>please drag blocks</div> }
+          return { 'compare': false, 'message': <div className="modal-title"> <h3 id="blue">There is nothing to run</h3> {this.leftSideView === Constants.BLOCKS_VIEW && <div> please drag blocks </div> }</div> }
         }
         if(len_expected_solution === 0){
           return { 'compare': true, 'message': <div className="modal-title"> <h3 id="succeeded"> Nice idea, well done </h3> </div> }
