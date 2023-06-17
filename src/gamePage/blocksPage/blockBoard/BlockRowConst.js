@@ -10,7 +10,6 @@ function BlockRowConst(props) {
     const row = props.row
     const block = row.block
     
-
     function get_inner_blocks(row_id, list_num){
         const index = props.commands.findIndex(element => element._id === row_id)
         return props.commands[index].inner_blocks[list_num]

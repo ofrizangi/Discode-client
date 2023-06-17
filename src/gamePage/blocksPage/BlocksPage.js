@@ -26,6 +26,7 @@ function BlocksPage(props) {
 
     // droppableBlock is the current outer block we are putting inside blocks
     const [droppableBlock , setDroppableBlock] = useState(null)
+    // droppableListNumber is the current list inside droppableBlock where we are putting inside blocks
     const [droppableListNumber , setDroppableListNumber] = useState(null)
 
 
@@ -78,7 +79,7 @@ function BlocksPage(props) {
     /*
     functions handling deleting commands
     */
-    //helper function to remove all the commands inside me
+    //helper function to remove all the inner commands
     function delete_inner_commands(deleted_command_id, commands){
         const index = commands.findIndex(element => element._id === deleted_command_id)
         const inner_commands = commands[index].inner_blocks
@@ -125,6 +126,9 @@ function BlocksPage(props) {
     }
 
 
+    /* function that get called in each event of dragging a block.
+        we can recognize which block we moved by draggableId, dorppableId.   
+    */
     async function dragEndHandler(draggable_block){
         const src_index = draggable_block.source.index
         const dest_index = draggable_block.destination === null ? null : draggable_block.destination.index
@@ -133,6 +137,7 @@ function BlocksPage(props) {
         if(droppableBlock !== null) {
             const outer_command_index = commands.findIndex(element => element._id === droppableBlock)
 
+            // when destination is null, the block is removed
             if (dest_index === null) {
                 if (draggable_block.draggableId.includes(Constants.DRAGGABLE_ROW_ID)) {
                     const src_string = draggable_block.source.droppableId
@@ -162,21 +167,19 @@ function BlocksPage(props) {
                     await remove_commands(src_index)
                 }
             }
-            // if the blocks is from block_list
+            // adding a command will happen only for a block dragged from block_list
             else if (draggable_block.draggableId.includes(Constants.DRAGGABLE_BLOCK_ID) ){
                 // checking if we dragged the block to another list and not the same one
                 if(draggable_block.source.droppableId !== draggable_block.destination.droppableId) {
                     await add_new_command(src_index, dest_index)
                 }
             }
-            // swapping command
             else {
                 await swap_commands(src_index, dest_index)
             }
         }
 
     }
-
 
     async function restart() {
         await setSolution(null)
@@ -192,8 +195,7 @@ function BlocksPage(props) {
                 <div className='blocks-left-capacity'> you have {max_row_number - commands.length} blocks left </div>
             </div>              
 
-            
-            <div > 
+            <div> 
                 <DragDropContext onDragEnd={(param) => dragEndHandler(param)} >
                     <div className="row d-none d-md-flex">
                         <div className="col-6"> <BlockList blocks={blocks} max_row_number={max_row_number} commands={commands}/> </div>

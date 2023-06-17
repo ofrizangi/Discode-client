@@ -5,6 +5,7 @@ import {getHandeledClick, setHandeledClick} from './OnClickInfo'
 
 function BlockBoardConst(props) {
 
+    // solution is only indeces
     const solution = props.solution
 
     function get_solution(){
@@ -15,6 +16,7 @@ function BlockBoardConst(props) {
         return my_solution
     }
 
+    // only the board that calles this function will be setted to `DroppableBlock`
     function set_droppable_block(event){
         if(getHandeledClick() === false) {
             setHandeledClick()
