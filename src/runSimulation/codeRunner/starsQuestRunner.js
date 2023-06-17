@@ -29,7 +29,7 @@ export class StarsQuestRunner extends BaseRunner{
                 }
                 else{
                     if (board[i-1][j-1] === GameConstants.NO_ENTRY_SIGN){
-                        arr[i][j] = GameConstants.NO_ENTRY
+                        arr[i][j] = GameConstants.NO_ENTRY_
                     }
                     else if (board[i-1][j-1] < 0){
                         arr[i][j] =  GameConstants.BOMB
@@ -218,7 +218,7 @@ export class StarsQuestRunner extends BaseRunner{
             validate_arguments(blocks, drive.name , [number_steps])
             actionsList.push({name: drive.name , arg : {'x': x-1 ,"y":y-1} })
 
-            if (x>=GameConstants.BOARD_SIZE + 1 || x<=0 || y<=0 || y>=GameConstants.BOARD_SIZE + 1 || board[y][x] === GameConstants.NO_ENTRY){
+            if (x>=GameConstants.BOARD_SIZE + 1 || x<=0 || y<=0 || y>=GameConstants.BOARD_SIZE + 1 || board[y][x] === GameConstants.NO_ENTRY_){
                 throw new Error(Constants.GAME_FAILED)
             }
             for(let i=prev_y; i<=y; i++){

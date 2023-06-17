@@ -15,6 +15,7 @@ export const WALL = 'wall'
 export const STAR = 'star'
 export const BOMB = 'bomb'
 export const NO_ENTRY = 'no_entry'
+export const NO_ENTRY_ = 'no entry sign'
 export const GO_RIGHT = "right"
 export const GO_LEFT = "left"
 export const GO_FRONT = "front"
