@@ -17,7 +17,9 @@ export default class DancePlayerScene extends Phaser.Scene
         this.player = undefined	
 	}
 
-	// Phaser will automatically look for this function when it starts and load anything defined within it.
+	/*
+	This function is called first. It is responsible for loading all the required assets before the game starts
+	*/
 	preload(){
 		this.load.image(BACKGROUND_KEY, 'assets/textures/background-dance-robot.png')
 		this.load.image(PAUSE, 'assets/textures/buttons/pause.png')
@@ -29,6 +31,11 @@ export default class DancePlayerScene extends Phaser.Scene
 			})
 	}
 
+	/*
+	Once the preload function has finished loading all the assets, the create function is called.
+	This function is responsible for setting up the initial state of the game,
+	initializing game objects, and performing any necessary setup tasks. It is called only once.
+	*/
     create(){  
         this.add.image(0, 0, BACKGROUND_KEY).setScale(1.03,1.03).setOrigin(0)
 		this.pauseBtn = this.add.sprite(290, 10, PAUSE).setInteractive().setScale(0.065).setOrigin(0)
@@ -77,6 +84,7 @@ export default class DancePlayerScene extends Phaser.Scene
 				this.actionsList = data.list
 				this.nextAnimation= this.actionsList.shift()
 				if (this.nextAnimation){
+					// start action list
 					this.player.play(this.nextAnimation);
 				}
 				else {
@@ -219,7 +227,11 @@ export default class DancePlayerScene extends Phaser.Scene
         return player
 	}
 
-
+	/*
+	After the create function is called, the update function is continuously called by Phaser in a game loop,
+	Phaser aims to run the game at 60 frames per second (60 FPS). This means that the update function will
+	be called approximately 60 times per second
+	*/
 	update(){
 		if(this.nextAnimation === SLIDE_LEFT){
 			this.player.x-=0.7

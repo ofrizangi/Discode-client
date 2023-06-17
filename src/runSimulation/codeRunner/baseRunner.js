@@ -76,7 +76,7 @@ export default class BaseRunner {
 
 	checkSolution(){}
 
-
+	// The function is called after the animation is finished and shows the user feedback on the code he wrote
     showModel(solution, message_from_sence){
 		const information_on_soultion = this.checkSolution(solution, message_from_sence);
 		if (information_on_soultion.compare)

@@ -4,7 +4,7 @@ import * as Constants from './../../constants';
 
 export class DancerRunner extends BaseRunner{
 
-
+	// Comparison between the user's solution and the expected solution
     checkSolution(solution) {
         var len_solution = solution.length;
         var len_expected_solution = this.expected_solution.length;
@@ -57,7 +57,8 @@ export class DancerRunner extends BaseRunner{
 			}
 			actionsList.push(actionName)
         }
-          
+        
+		// translate the code to acrion list
         const jump =  function(){writeActions(jump.name, arguments)};
         const swing =  function(){writeActions(swing.name, arguments)};
         const cartwheel =  function(){writeActions(cartwheel.name, arguments)};
@@ -74,7 +75,9 @@ export class DancerRunner extends BaseRunner{
 		}
 		else {
 			try {
+				//run code of user
 				eval(this.code)
+				//resume animation
         		this.gameSence.resume(Constants.DNACER_GAME, {list:actionsList, runner:this})
 				return Constants.DONE_RUNNING
 			}

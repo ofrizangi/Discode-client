@@ -102,8 +102,8 @@ function GameBoard(props) {
         }
         else {
             setRunButtonDisabled(true)
-            var runner;
             setVideoDisplay('none')
+            var runner;
             if (props.game.game_name === Constants.DNACER_GAME){
                 runner= new DancerRunner(code, props.game.level_number, back_to_levels, next_level,retry_level, gameSence, props.game.blocks, leftSideView, props.game.expected_solution,solve)
             }
@@ -148,7 +148,8 @@ function GameBoard(props) {
         
             <div id={`game-screen-${props.game.game_name}`}>
                 <div className={`controls`}>
-                < span className='instruction'>{disription_game.get(props.game.game_name)}</span>
+                <span className='instruction'>{disription_game.get(props.game.game_name)}</span>
+                {/* The run button - translating blocks to code and starting the animation */}
                 <button className='game-button' onClick={get_code} disabled={runButtonDisabled}> <img src={play_img} alt="error"/></button>
                 </div> 
           
