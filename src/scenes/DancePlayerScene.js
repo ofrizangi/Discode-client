@@ -8,7 +8,7 @@ const PAUSE = "pause"
 const STOP = "stop"
 const SLIDE_LEFT = "slide left"
 const SLIDE_RIGHT = "slide right"
-
+const STEP = 0.7
 export default class DancePlayerScene extends Phaser.Scene
 {
     constructor()
@@ -234,10 +234,10 @@ export default class DancePlayerScene extends Phaser.Scene
 	*/
 	update(){
 		if(this.nextAnimation === SLIDE_LEFT){
-			this.player.x-=0.7
+			this.player.x-=STEP
 		}
 		else if(this.nextAnimation === SLIDE_RIGHT){
-			this.player.x+=0.7
+			this.player.x+=STEP
 		}
 	}
 
