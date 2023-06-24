@@ -85,23 +85,21 @@ export class StarsQuestRunner extends BaseRunner{
             
             var next_x = this.actionsList[i].arg.x
             var next_y = this.actionsList[i].arg.y
-
-            for(let i=y; i<= Math.min(next_y, GameConstants.BOARD_SIZE-1); i++){
-                for(let j=x; j<= Math.min(next_x, GameConstants.BOARD_SIZE-1) ; j++){
-                    if(this.game_board[i][j] === GameConstants.NO_ENTRY_SIGN) {
-                        return {"score": 0, "message":`Game Over - ${GameConstants.NO_ENTRY_MESSAGE}`}
-                    }
-                }
-            }
-            if (next_x < 0 || next_x >= GameConstants.BOARD_SIZE  || next_y < 0 || next_y >= GameConstants.BOARD_SIZE ){
-                return {"score": 0, "message":`Game Over - ${GameConstants.WALL_MESSAGE}`}
-            }
+       
             //drive
             while (x !== next_x || y !== next_y){
                 if(angle === 0 && x < next_x){x+=1;}
                 else if(angle === 90 && y < next_y){y+=1; }
                 else if (angle === 180 && x > next_x){x-=1;}
                 else if(angle === 270 && y > next_y){y-=1}
+
+                if (x < 0 || x >= GameConstants.BOARD_SIZE  || y < 0 || y >= GameConstants.BOARD_SIZE ){
+                    return {"score": 0, "message":`Game Over - ${GameConstants.WALL_MESSAGE}`}
+                }
+
+                if(this.game_board[y][x] === GameConstants.NO_ENTRY_SIGN) {
+                    return {"score": 0, "message":`Game Over - ${GameConstants.NO_ENTRY_MESSAGE}`}
+                }
 
                 var val =  this.game_board[y][x]
                 score += val
@@ -221,11 +219,14 @@ export class StarsQuestRunner extends BaseRunner{
             if (x>=GameConstants.BOARD_SIZE + 1 || x<=0 || y<=0 || y>=GameConstants.BOARD_SIZE + 1 || board[y][x] === GameConstants.NO_ENTRY_){
                 throw new Error(Constants.GAME_FAILED)
             }
-            for(let i=prev_y; i<=y; i++){
-                for(let j= prev_x; j<=x ; j++){
-                    board[i][j] = 0
-                    score[i][j] = 0            
-                }
+            while (prev_x !== x || prev_y !== y){
+                if(angle === 0 && prev_x < x){prev_x+=1;}
+                else if(angle === 90 && prev_y < y){prev_y+=1; }
+                else if (angle === 180 && prev_x > x){prev_x-=1;}
+                else if(angle === 270 && prev_y > y){prev_y-=1}
+
+                board[prev_y][prev_x] = 0
+                score[prev_y][prev_x] = 0  
             }
         }
 
